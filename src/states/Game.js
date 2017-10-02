@@ -47,26 +47,29 @@ export default class extends Phaser.State {
       width: 32,
       height: 32
     })
+    
     this.mush1 = this.game.world.addAt(this.mushroom1, 1)
     this.mush1.player = 1
-    this.mush2 = this.game.world.addAt(this.mushroom2, 1)
+    this.mush2 = this.game.world.addAt(this.mushroom2, 2)
     this.mush2.player = 2
     this.mush1.inputEnabled = true
+    this.mush2.inputEnabled = true
     // this.mush1.events.onInputDown.add(this.showMoves, this)
     // this.mush2.events.onInputDown.add(this.showMoves, this)
     var style = { font: '20px Arial', fill: '#fff' }
     this.game.add.text(410, 20, 'Player:', style)
-    this.game.add.text(540, 20, 'misctext:', style)
     this.currentPlayer = 1
     this.playerText = this.game.add.text(480, 20, this.currentPlayer, style)
-    this.funText = this.game.add.text(585, 20, '11', style)
+    // this.funText = this.game.add.text(585, 20, '11', style)
   }
+
   togglePlayer () {
     this.currentPlayer = this.currentPlayer === 1 ? 2 : 1
     this.mush1.inputEnabled = this.currentPlayer === 1
     this.mush2.inputEnabled = this.currentPlayer === 2
     this.playerText.text = this.currentPlayer
   }
+
   // showMoves (sprite, event) {
   //   if (sprite.player === this.currentPlayer) {
   //     var alpha = this.showingBlue ? 1 : 0.5
