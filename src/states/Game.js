@@ -6,72 +6,98 @@ import Block from '../sprites/Block'
 // var easystar = new EasyStar.js();
 
 export default class extends Phaser.State {
-  init () {  
-    this.showingBlue = false;
+  init () {
+    this.showingBlue = false
   }
 
   preload () {}
 
   create () {
-    this.blocks = this.add.group()        
-    this.mushroom = new Mushroom({
+    this.blocks = this.add.group()
+    this.mushroom1 = new Mushroom({
       game: this.game,
       x: 775,
       y: 25,
-      asset: 'mushroom'
+      asset: 'mushroom',
+      width: 23,
+      height: 23
     })
-    this.mush = this.game.add.existing(this.mushroom)
-    this.mushroom.width = 23;
-    this.mushroom.height = 23;
-    this.mushroomMovement = this.game.add.tween(this.mush)
-    this.mush.inputEnabled = true;
-    this.mush.events.onInputDown.add(this.showMoves, this)
+    this.mushroom2 = new Mushroom({
+      game: this.game,
+      x: 25,
+      y: 775,
+      asset: 'mushroom',
+      width: 23,
+      height: 23
+    })
+    this.mush1 = this.game.add.existing(this.mushroom1)
+    this.mush1.player = 1
+    this.mush2 = this.game.add.existing(this.mushroom2)
+    this.mush2.player = 2
+    this.mush1.inputEnabled = true
+    this.mush1.events.onInputDown.add(this.showMoves, this)
+    this.mush2.events.onInputDown.add(this.showMoves, this)
     for (var i = 25; i < 800; i = i + 25) {
       for (var j = 25; j < 800; j = j + 25) {
         this.createBlock(i, j, 'greenSquare')
       }
     }
+    var style = { font: '20px Arial', fill: '#fff' }
+    this.game.add.text(410, 20, 'Player:', style)
+    this.game.add.text(540, 20, 'Fun:', style)
+    this.currentPlayer = 1
+    this.playerText = this.game.add.text(480, 20, this.currentPlayer, style)
+    this.funText = this.game.add.text(585, 20, '11', style)
   }
-
-  showMoves(sprite, event) {
-    var alpha = this.showingBlue ? 1 : 0.5
-    this.blocks.children.forEach((ele) => {
-      if (Math.abs(ele.x - sprite.x) < 125  && Math.abs(ele.y - sprite.y) < 125) {
-        if (!(ele.x === sprite.x && ele.y === sprite.y)) {
-          ele.alpha = alpha
-          ele.inputEnabled = true;
-          ele.events.onInputDown.add(this.moveHere, this)
-        }
-      }
-    }, this)
-    this.showingBlue = this.showingBlue ? false : true  
+  togglePlayer () {
+    this.currentPlayer = this.currentPlayer === 1 ? 2 : 1
+    this.mush1.inputEnabled = this.currentPlayer === 1
+    this.mush2.inputEnabled = this.currentPlayer === 2
+    this.playerText.text = this.currentPlayer
   }
-
-  createBlock(x, y, data) {
-      var block = new Block( x, y, data)
-      block.width = 23;
-      block.height = 23;
-      this.blocks.add(block)
-  }
-
-  moveHere(sprite, event) {
-    if (this.showingBlue) {
+  showMoves (sprite, event) {
+    if (sprite.player === this.currentPlayer) {
+      var alpha = this.showingBlue ? 1 : 0.5
       this.blocks.children.forEach((ele) => {
-            ele.alpha = 1
-            ele.inputEnabled = false
+        if (Math.abs(ele.x - sprite.x) < 125 && Math.abs(ele.y - sprite.y) < 125) {
+          if (!(ele.x === sprite.x && ele.y === sprite.y)) {
+            ele.alpha = alpha
+            ele.inputEnabled = true
+            ele.events.onInputDown.add(this.moveHere, this)
+          }
+        }
+      }, this)
+      this.showingBlue = !this.showingBlue
+    }
+  }
+
+  createBlock (x, y, data) {
+    var block = new Block(x, y, data)
+    block.width = 23
+    block.height = 23
+    this.blocks.add(block)
+  }
+
+  moveHere (sprite, event) {
+    if (this.showingBlue) {
+      this.mushroomMovement = this.currentPlayer === 1 ? this.game.add.tween(this.mush1) : this.game.add.tween(this.mush2)
+      this.blocks.children.forEach((ele) => {
+        ele.alpha = 1
+        ele.inputEnabled = false
       }, this)
       this.mushroomMovement.to({x: sprite.x, y: sprite.y}, 350)
       this.mushroomMovement.start()
-      this.mushroomMovement.onComplete.add(function() {
-        this.mushroomMovement.timeline.pop()        
+      this.mushroomMovement.onComplete.add(function () {
+        this.mushroomMovement.timeline = []
       }, this)
     }
-    this.showingBlue = false;
+    this.showingBlue = false
+    this.togglePlayer()
   }
 
   render () {
     if (__DEV__) {
-      this.game.debug.spriteInfo(this.mushroom, 32, 32)
+      this.game.debug.spriteInfo(this.mushroom1, 32, 32)
     }
   }
 }
