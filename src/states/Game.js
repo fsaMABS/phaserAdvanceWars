@@ -31,31 +31,47 @@ export default class extends Phaser.State {
     this.level1 = this.map.createLayer('Tile Layer 1').resizeWorld()
     this.start = this.map.objects['Object1'][0]
     this.obj1 = this.map.createLayer('StartingPoint')
-    this.mushroom1 = new Mushroom({
-      game: this.game,
-      x: 608,
-      y: 288,
-      asset: 'mushroom',
-      width: 32,
-      height: 32
-    })
-    this.mushroom2 = new Mushroom({
-      game: this.game,
-      x: 25,
-      y: 775,
-      asset: 'mushroom',
-      width: 32,
-      height: 32
-    })
     
-    this.mush1 = this.game.world.addAt(this.mushroom1, 1)
-    this.mush1.player = 1
-    this.mush2 = this.game.world.addAt(this.mushroom2, 2)
-    this.mush2.player = 2
-    this.mush1.inputEnabled = true
-    this.mush2.inputEnabled = true
+    let pieces = {
+      1: this.mushroom1 = new Mushroom({
+        game: this.game,
+        x: 608,
+        y: 288,
+        asset: 'mushroom',
+        width: 32,
+        height: 32
+      }),
+      2: this.mushroom2 = new Mushroom({
+        game: this.game,
+        x: 512,
+        y: 0,
+        asset: 'mushroom',
+        width: 32,
+        height: 32
+      })
+    }
+
+    for(var key in pieces) {
+      let current = pieces[key]
+      let added = this.game.world.add(current);
+      added.player = key % 2 >= 0 ? 1 : 2;
+      added.inputEnabled = true;
+      added.events.onInputDown.add(this.showMoves, this);
+      this[key] = added;
+    }
+
+
+    
+    // this.mush1 = this.game.world.addAt(this.mushroom1, 1)
+    // this.mush1.player = 1
+    // this.mush2 = this.game.world.addAt(this.mushroom2, 2)
+    // this.mush2.player = 2
+    // this.mush1.inputEnabled = true
+    // this.mush2.inputEnabled = true
     // this.mush1.events.onInputDown.add(this.showMoves, this)
     // this.mush2.events.onInputDown.add(this.showMoves, this)
+
+    
     var style = { font: '20px Arial', fill: '#fff' }
     this.game.add.text(410, 20, 'Player:', style)
     this.currentPlayer = 1
