@@ -13,14 +13,14 @@ export default class extends Phaser.State {
 
   create () {
     this.loadLevel()
-    this.mushroomMovement = this.game.add.tween(this.mush1)
-    this.mush1.inputEnabled = true;
+    // this.mushroomMovement = this.game.add.tween(this.mush1)
+    // this.mush1.inputEnabled = true;
     this.blocks = this.add.group()        
  
     // this.mushroomMovement = this.game.add.tween(this.mush1)
     // this.mush1.inputEnabled = true;
     // this.mush.events.onInputDown.add(this.showMoves, this)
-r
+
     for (var i = 0; i < 800; i = i + 32) {		
       for (var j = 0; j < 800; j = j + 32) {		
         var newBlock = this.createBlock(i, j, 'blueSquare')		
