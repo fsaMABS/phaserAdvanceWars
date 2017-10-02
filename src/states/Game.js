@@ -9,18 +9,17 @@ export default class extends Phaser.State {
     this.showingBlue = false
   }
 
-  preload () {}
+  preload () {
+    console.log('Preloading...');
+  }
 
   create () {
     this.loadLevel()
-    this.mushroomMovement = this.game.add.tween(this.mush1)
-    this.mush1.inputEnabled = true;
     this.blocks = this.add.group()        
  
     // this.mushroomMovement = this.game.add.tween(this.mush1)
     // this.mush1.inputEnabled = true;
     // this.mush.events.onInputDown.add(this.showMoves, this)
-r
     for (var i = 0; i < 800; i = i + 32) {		
       for (var j = 0; j < 800; j = j + 32) {		
         var newBlock = this.createBlock(i, j, 'blueSquare')		
@@ -36,7 +35,9 @@ r
     this.obj1 = this.map.createLayer('StartingPoint')
 
     this.pieces = {
-      1: this.infantry1 = new Infantry({
+
+      //NEED TO ADD TYPES TO THE NAME AT SOME POINT
+      1: new Infantry({
         game: this.game,
         x: 608,
         y: 288,
@@ -44,9 +45,9 @@ r
         width: 32,
         height: 32,
         HP: 10,
-        AP: 5
+        AP: 5,
       }),
-      2: this.infantry2 = new Infantry({
+      2: new Infantry({
         game: this.game,
         x: 512,
         y: 0,
@@ -130,20 +131,38 @@ r
         this.changePosition.timeline = []
       }, this)
 
-      button = game.add.button(game.world.centerX, game.world.centerY, 'mushroom', attackPiece, this, 2, 1, 0);
+      let button = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', (button) => this.attackPiece(button), this, 2, 1, 0);
     }
-    this.showingBlue = false
-    this.togglePlayer()
+    this.showingBlue = false;
   }
 
-  attackPiece() {
+  attackPiece(button) {
     button.pendingDestroy = true;
     let attackingPiece;
     let defendingPiece;
     if(this.currentPlayer === 1) {
-
+      attackingPiece = this.pieces[1]
+      defendingPiece = this.pieces[2]
+    } else if(this.currentPlayer === 2) {
+      attackingPiece = this.pieces[2]
+      defendingPiece = this.pieces[1]
     }
-    let attackingPiece = this.currentPlayer === 1 ? this.pieces[1] : this.pieces[2];
+    attackingPiece.HP -= Math.floor(defendingPiece.AP/2);
+    defendingPiece.HP -= attackingPiece.AP;
+
+    for(var key in this.pieces) {
+      console.log('HP of ' + key, this.pieces[key].HP);
+    }
+    this.togglePlayer()
+  }
+
+  update() {
+    for(var piece in this.pieces) {
+      if(this.pieces[piece].HP <= 0) {
+        delete this.pieces[piece];
+        console.log(this.pieces);
+      }
+    }
   }
 
   render () {
