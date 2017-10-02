@@ -2,8 +2,6 @@
 import Phaser from 'phaser'
 import Infantry from '../sprites/Infantry'
 import Block from '../sprites/Block'
-// import EasyStar from 'easystarjs'
-// var easystar = new EasyStar.js();
 
 export default class extends Phaser.State {
   init () {
@@ -13,49 +11,53 @@ export default class extends Phaser.State {
   preload () {}
 
   create () {
-    this.blocks = this.add.group()
-    this.pieces = {
-      1: this.infantry1 = new Infantry({
-        game: this.game,
-        x: 775,
-        y: 25,
-        asset: 'mushroom',
-        width: 23,
-        height: 23,
-        health: 10, 
-        AP: 10
-      }),
-      2: this.infantry2 = new Infantry({
-        game: this.game,
-        x: 25,
-        y: 775,
-        asset: 'mushroom',
-        width: 23,
-        height: 23,
-        health: 10,
-        AP: 10
-      })
-    };
-    console.log(this.pieces);
+    this.loadLevel()
+    this.blocks = this.add.group()        
+ 
+    this.mushroomMovement = this.game.add.tween(this.mush1)
+    this.mush1.inputEnabled = true;
+    // this.mush.events.onInputDown.add(this.showMoves, this)
+    this.game.input.onDown.add((pointer, event) => {
+      var newX = Math.floor(pointer.clientX / 32) * 32
+      var newY = Math.floor(pointer.clientY / 32) * 32      
+      this.mushroom1.x = newX;
+      this.mushroom1.y = newY;
+    })
+  }
 
-    this.mush1 = this.game.add.existing(this.infantry1)
-    console.log('mush', this.infantry1);
+  loadLevel () {
+    this.map = this.add.tilemap('map')
+    this.map.addTilesetImage('myMap', 'basicMap')
+    this.level1 = this.map.createLayer('Tile Layer 1').resizeWorld()
+    this.start = this.map.objects['Object1'][0]
+    this.obj1 = this.map.createLayer('StartingPoint')
+    this.mushroom1 = new Mushroom({
+      game: this.game,
+      x: 608,
+      y: 288,
+      asset: 'mushroom',
+      width: 32,
+      height: 32
+    })
+    this.mushroom2 = new Mushroom({
+      game: this.game,
+      x: 25,
+      y: 775,
+      asset: 'mushroom',
+      width: 32,
+      height: 32
+    })
+    this.mush1 = this.game.world.addAt(this.mushroom1, 1)
     this.mush1.player = 1
-    this.mush2 = this.game.add.existing(this.infantry2)
+    this.mush2 = this.game.world.addAt(this.mushroom2, 1)
     this.mush2.player = 2
     this.mush1.inputEnabled = true
-    this.mush1.events.onInputDown.add(this.showMoves, this)
-    this.mush2.events.onInputDown.add(this.showMoves, this)
-
-    for (var i = 25; i < 800; i = i + 25) {
-      for (var j = 25; j < 800; j = j + 25) {
-        this.createBlock(i, j, 'greenSquare')
-      }
-    }
+    // this.mush1.events.onInputDown.add(this.showMoves, this)
+    // this.mush2.events.onInputDown.add(this.showMoves, this)
 
     var style = { font: '20px Arial', fill: '#fff' }
     this.game.add.text(410, 20, 'Player:', style)
-    this.game.add.text(540, 20, 'Fun:', style)
+    this.game.add.text(540, 20, 'misctext:', style)
     this.currentPlayer = 1
     this.playerText = this.game.add.text(480, 20, this.currentPlayer, style)
     this.funText = this.game.add.text(585, 20, '11', style)
@@ -68,9 +70,26 @@ export default class extends Phaser.State {
     this.playerText.text = this.currentPlayer
   }
 
+//   showMoves (sprite, event) {
+//     if (sprite.player === this.currentPlayer) {
+//       var alpha = this.showingBlue ? 1 : 0.5
+//       this.blocks.children.forEach((ele) => {
+//         if (Math.abs(ele.x - sprite.x) < 125 && Math.abs(ele.y - sprite.y) < 125) {
+//           if (!(ele.x === sprite.x && ele.y === sprite.y)) {
+//             ele.alpha = alpha
+//             ele.inputEnabled = true
+//             ele.events.onInputDown.add(this.moveHere, this)
+//           }
+//         }
+//       }, this)
+//       this.showingBlue = !this.showingBlue
+//     }
+//   }
+
   showMoves (sprite, event) {
     if (sprite.player === this.currentPlayer) {
       var alpha = this.showingBlue ? 1 : 0.5
+      console.log('show moves here')
       this.blocks.children.forEach((ele) => {
         if (Math.abs(ele.x - sprite.x) < 125 && Math.abs(ele.y - sprite.y) < 125) {
           if (!(ele.x === sprite.x && ele.y === sprite.y)) {
