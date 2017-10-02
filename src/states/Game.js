@@ -2,8 +2,8 @@
 import Phaser from 'phaser'
 import Mushroom from '../sprites/Mushroom'
 import Block from '../sprites/Block'
-import EasyStar from 'easystarjs'
-var easystar = new EasyStar.js();
+// import EasyStar from 'easystarjs'
+// var easystar = new EasyStar.js();
 
 export default class extends Phaser.State {
   init () {  
