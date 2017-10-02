@@ -17,12 +17,18 @@ export default class extends Phaser.State {
     this.mushroomMovement = this.game.add.tween(this.mush1)
     this.mush1.inputEnabled = true;
     // this.mush.events.onInputDown.add(this.showMoves, this)
-    this.game.input.onDown.add((pointer, event) => {
-      var newX = Math.floor(pointer.clientX / 32) * 32
-      var newY = Math.floor(pointer.clientY / 32) * 32      
-      this.mushroom1.x = newX;
-      this.mushroom1.y = newY;
-    })
+    // this.game.input.onDown.add((pointer, event) => {
+    //   var newX = Math.floor(pointer.clientX / 32) * 32
+    //   var newY = Math.floor(pointer.clientY / 32) * 32      
+    //   this.mushroom1.x = newX;
+    //   this.mushroom1.y = newY;
+    //   // this.showMoves()
+    // })
+    for (var i = 0; i < 800; i = i + 32) {		
+      for (var j = 0; j < 800; j = j + 32) {		
+        var newBlock = this.createBlock(i, j, 'blueSquare')		
+      }		
+    }
   }
 
   loadLevel () {
@@ -41,8 +47,8 @@ export default class extends Phaser.State {
     })
     this.mushroom2 = new Mushroom({
       game: this.game,
-      x: 25,
-      y: 775,
+      x: 0,
+      y: 0,
       asset: 'mushroom',
       width: 32,
       height: 32
@@ -52,8 +58,8 @@ export default class extends Phaser.State {
     this.mush2 = this.game.world.addAt(this.mushroom2, 1)
     this.mush2.player = 2
     this.mush1.inputEnabled = true
-    // this.mush1.events.onInputDown.add(this.showMoves, this)
-    // this.mush2.events.onInputDown.add(this.showMoves, this)
+    this.mush1.events.onInputDown.add(this.showMoves, this)
+    this.mush2.events.onInputDown.add(this.showMoves, this)
     var style = { font: '20px Arial', fill: '#fff' }
     this.game.add.text(410, 20, 'Player:', style)
     this.game.add.text(540, 20, 'misctext:', style)
@@ -67,27 +73,24 @@ export default class extends Phaser.State {
     this.mush2.inputEnabled = this.currentPlayer === 2
     this.playerText.text = this.currentPlayer
   }
-  // showMoves (sprite, event) {
-  //   if (sprite.player === this.currentPlayer) {
-  //     var alpha = this.showingBlue ? 1 : 0.5
-  //     console.log('show moves here')
-  //     // this.blocks.children.forEach((ele) => {
-  //     //   if (Math.abs(ele.x - sprite.x) < 125 && Math.abs(ele.y - sprite.y) < 125) {
-  //     //     if (!(ele.x === sprite.x && ele.y === sprite.y)) {
-  //     //       ele.alpha = alpha
-  //     //       ele.inputEnabled = true
-  //     //       ele.events.onInputDown.add(this.moveHere, this)
-  //     //     }
-  //     //   }
-  //     // }, this)
-  //     this.showingBlue = !this.showingBlue
-  //   }
-  // }
+
+  showMoves (sprite, event) {
+    this.showingBlue = !this.showingBlue    
+    var alpha = this.showingBlue ? 0.5 : 0
+    this.blocks.children.forEach((ele) => {
+      if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < 160) {
+        if (!(ele.x === sprite.x && ele.y === sprite.y)) {
+          ele.alpha = alpha
+          ele.inputEnabled = true
+          ele.events.onInputDown.add(this.moveHere, this)
+        }
+      }
+    }, this)
+  }
 
   createBlock (x, y, data) {
-    var block = new Block(x, y, data)
-    block.width = 23
-    block.height = 23
+    var block = new Block(x, y, data, 32, 32)
+    block.alpha= 0.0
     this.blocks.add(block)
   }
 
@@ -95,7 +98,7 @@ export default class extends Phaser.State {
     if (this.showingBlue) {
       this.mushroomMovement = this.currentPlayer === 1 ? this.game.add.tween(this.mush1) : this.game.add.tween(this.mush2)
       this.blocks.children.forEach((ele) => {
-        ele.alpha = 1
+        ele.alpha = 0
         ele.inputEnabled = false
       }, this)
       this.mushroomMovement.to({x: sprite.x, y: sprite.y}, 350)
