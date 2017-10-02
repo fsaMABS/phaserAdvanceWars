@@ -70,7 +70,7 @@ export default class extends Phaser.State {
       this.pieces[key] = added;
     }
     console.log(this);
-    
+
     var style = { font: '20px Arial', fill: '#fff' }
     this.game.add.text(410, 20, 'Player:', style)
     this.currentPlayer = 1
@@ -129,9 +129,21 @@ export default class extends Phaser.State {
       this.changePosition.onComplete.add(function () {
         this.changePosition.timeline = []
       }, this)
+
+      button = game.add.button(game.world.centerX, game.world.centerY, 'mushroom', attackPiece, this, 2, 1, 0);
     }
     this.showingBlue = false
     this.togglePlayer()
+  }
+
+  attackPiece() {
+    button.pendingDestroy = true;
+    let attackingPiece;
+    let defendingPiece;
+    if(this.currentPlayer === 1) {
+
+    }
+    let attackingPiece = this.currentPlayer === 1 ? this.pieces[1] : this.pieces[2];
   }
 
   render () {
