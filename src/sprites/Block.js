@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 
 export default class extends Phaser.Sprite {
-  constructor ( x, y, data, width, height) {
+  constructor ( x, y, data, width, height, type) {
     super(game, x, y, data)
     this.grid = [];
     this.reserveGrid = [];
@@ -9,6 +9,7 @@ export default class extends Phaser.Sprite {
     this.col = data.col 
     this.width = width
     this.height = height
+    this.type = type
   }
 
   update () {

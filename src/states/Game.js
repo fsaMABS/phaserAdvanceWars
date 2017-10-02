@@ -2,6 +2,7 @@
 import Phaser from 'phaser'
 import Mushroom from '../sprites/Mushroom'
 import Block from '../sprites/Block'
+import {checkType} from '../levels/level1'
 
 export default class extends Phaser.State {
   init () {
@@ -12,18 +13,9 @@ export default class extends Phaser.State {
 
   create () {
     this.loadLevel()
-    this.blocks = this.add.group()        
- 
+    this.blocks = this.add.group()
     this.mushroomMovement = this.game.add.tween(this.mush1)
     this.mush1.inputEnabled = true;
-    // this.mush.events.onInputDown.add(this.showMoves, this)
-    // this.game.input.onDown.add((pointer, event) => {
-    //   var newX = Math.floor(pointer.clientX / 32) * 32
-    //   var newY = Math.floor(pointer.clientY / 32) * 32      
-    //   this.mushroom1.x = newX;
-    //   this.mushroom1.y = newY;
-    //   // this.showMoves()
-    // })
     for (var i = 0; i < 800; i = i + 32) {		
       for (var j = 0; j < 800; j = j + 32) {		
         var newBlock = this.createBlock(i, j, 'blueSquare')		
@@ -67,6 +59,7 @@ export default class extends Phaser.State {
     this.playerText = this.game.add.text(480, 20, this.currentPlayer, style)
     this.funText = this.game.add.text(585, 20, '11', style)
   }
+
   togglePlayer () {
     this.currentPlayer = this.currentPlayer === 1 ? 2 : 1
     this.mush1.inputEnabled = this.currentPlayer === 1
@@ -80,16 +73,19 @@ export default class extends Phaser.State {
     this.blocks.children.forEach((ele) => {
       if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < 160) {
         if (!(ele.x === sprite.x && ele.y === sprite.y)) {
-          ele.alpha = alpha
-          ele.inputEnabled = true
-          ele.events.onInputDown.add(this.moveHere, this)
+          if (ele.type === 'land') {
+            ele.alpha = alpha
+            ele.inputEnabled = true
+            ele.events.onInputDown.add(this.moveHere, this)
+          }
         }
       }
     }, this)
   }
 
   createBlock (x, y, data) {
-    var block = new Block(x, y, data, 32, 32)
+    var type = checkType(x, y)
+    var block = new Block(x, y, data, 32, 32, type)
     block.alpha= 0.0
     this.blocks.add(block)
   }
