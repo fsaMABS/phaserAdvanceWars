@@ -7,6 +7,7 @@ import {checkType} from '../levels/level1'
 export default class extends Phaser.State {
   init () {
     this.showingBlue = false
+    this.selectedPiece = undefined;
   }
 
   preload () {
@@ -47,6 +48,7 @@ export default class extends Phaser.State {
         height: 32,
         HP: 10,
         AP: 5,
+        player: 1
       }),
       2: new Infantry({
         game: this.game,
@@ -56,17 +58,18 @@ export default class extends Phaser.State {
         width: 32,
         height: 32,
         HP: 10,
-        AP: 5
+        AP: 5,
+        player: 2
       })
     }
 
     for(var key in this.pieces) {
       let current = this.pieces[key]
       let added = this.game.world.add(current);
-      added.player = key % 2 >= 0 ? 1 : 2;
       added.inputEnabled = true;
       added.events.onInputDown.add(this.showMoves, this);
       this.pieces[key] = added;
+      console.log(this.pieces[key].position)
     }
     console.log(this);
 
@@ -78,33 +81,30 @@ export default class extends Phaser.State {
 
   togglePlayer () {
     this.currentPlayer = this.currentPlayer === 1 ? 2 : 1
-
-    if(this.currentPlayer === 1) {
-      for(var key in this.pieces) {
-        if(key % 2 >=0 ) this.pieces[key].inputEnabled = true;
-      }
-    }
-    else if(this.currentPlayer === 2) {
-      for(var key in this.pieces) {
-        if(key % 2 === 0 ) this.pieces[key].inputEnabled = true;
-      }
+    //ENABLE PIECES
+    for(var key in this.pieces) {
+      if(this.pieces[key].player === this.currentPlayer) this.pieces[key].inputEnabled = true;
     }
     this.playerText.text = this.currentPlayer
   }
+
   showMoves (sprite, event) {
-    this.showingBlue = !this.showingBlue    
-    var alpha = this.showingBlue ? 0.5 : 0
-    this.blocks.children.forEach((ele) => {
-      if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < 160) {
-        if (!(ele.x === sprite.x && ele.y === sprite.y)) {
-          if (ele.type === 'land') {
-            ele.alpha = alpha
-            ele.inputEnabled = true
-            ele.events.onInputDown.add(this.moveHere, this)
+    this.selectedPiece = sprite;
+    if(this.currentPlayer === this.selectedPiece.player) {
+      this.showingBlue = !this.showingBlue    
+      var alpha = this.showingBlue ? 0.5 : 0
+      this.blocks.children.forEach((ele) => {
+        if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < 160) {
+          if (!(ele.x === sprite.x && ele.y === sprite.y)) {
+            if (ele.type === 'land') {
+              ele.alpha = alpha
+              ele.inputEnabled = true
+              ele.events.onInputDown.add(this.moveHere, this)
+            }
           }
         }
-      }
-    }, this)
+      }, this)
+    }
   }
 
   createBlock (x, y, data) {
@@ -122,47 +122,63 @@ export default class extends Phaser.State {
       }, this)
 
       //CHANGE THIS LATER TO WHATEVER THE SELECTED CHARACTER IS
-      this.changePosition = this.currentPlayer === 1 
-      ? this.game.add.tween(this.pieces[1]) 
-      : this.game.add.tween(this.pieces[2])
+
+      //PIECE BELONGS TO CURRENT PLAYER?
+      this.changePosition = this.selectedPiece.player === this.currentPlayer
+      ? this.game.add.tween(this.selectedPiece)
+      : null;
       
       this.changePosition.to({x: sprite.x, y: sprite.y}, 350)
       this.changePosition.start()
       this.changePosition.onComplete.add(function () {
         this.changePosition.timeline = []
+        for(var key in this.pieces) {
+          if(this.pieces[key] !== this.selectedPiece) {
+            let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
+            let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
+            if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
+              let button = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', (button) => this.attackPiece(button), this, 2, 1, 0);
+            }
+          }
+        }
       }, this)
 
-      let button = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', (button) => this.attackPiece(button), this, 2, 1, 0);
+      //Check for enemy units in the area... if there is prompt attack message
+      // * possibly janky solution
+      this.togglePlayer()
     }
     this.showingBlue = false;
   }
 
   attackPiece(button) {
     button.pendingDestroy = true;
-    let attackingPiece;
+    let attackingPiece = this.selectedPiece;
     let defendingPiece;
-    if(this.currentPlayer === 1) {
-      attackingPiece = this.pieces[1]
-      defendingPiece = this.pieces[2]
-    } else if(this.currentPlayer === 2) {
-      attackingPiece = this.pieces[2]
-      defendingPiece = this.pieces[1]
-    }
+
+
+    // if(this.currentPlayer === 1) {
+    //   attackingPiece = this.pieces[1]
+    //   defendingPiece = this.pieces[2]
+    // } else if(this.currentPlayer === 2) {
+    //   attackingPiece = this.pieces[2]
+    //   defendingPiece = this.pieces[1]
+    // }
     attackingPiece.HP -= Math.floor(defendingPiece.AP/2);
     defendingPiece.HP -= attackingPiece.AP;
 
     for(var key in this.pieces) {
       console.log('HP of ' + key, this.pieces[key].HP);
     }
-    this.togglePlayer()
   }
 
   update() {
+
+    //DESTROY PIECE FROM OBJECT IF HEALTH GONE
     for(var piece in this.pieces) {
       if(this.pieces[piece].HP <= 0) {
+        this.pieces[piece].destroy();
         delete this.pieces[piece];
-        console.log(this.pieces);
-      }
+      } 
     }
   }
 
