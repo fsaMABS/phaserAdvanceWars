@@ -2,8 +2,7 @@
 import Phaser from 'phaser'
 import Mushroom from '../sprites/Mushroom'
 import Block from '../sprites/Block'
-import EasyStar from 'easystarjs'
-var easystar = new EasyStar.js();
+
 
 export default class extends Phaser.State {
   init () {  
@@ -13,38 +12,50 @@ export default class extends Phaser.State {
   preload () {}
 
   create () {
+    this.loadLevel()
     this.blocks = this.add.group()        
-    this.mushroom = new Mushroom({
-      game: this.game,
-      x: 775,
-      y: 25,
-      asset: 'mushroom'
-    })
-    this.mush = this.game.add.existing(this.mushroom)
-    this.mushroom.width = 23;
-    this.mushroom.height = 23;
+ 
     this.mushroomMovement = this.game.add.tween(this.mush)
     this.mush.inputEnabled = true;
     this.mush.events.onInputDown.add(this.showMoves, this)
-    for (var i = 25; i < 800; i = i + 25) {
-      for (var j = 25; j < 800; j = j + 25) {
-        this.createBlock(i, j, 'greenSquare')
-      }
-    }
+    this.game.input.onDown.add((pointer, event) => {
+      var newX = Math.floor(pointer.clientX / 32) * 32
+      var newY = Math.floor(pointer.clientY / 32) * 32      
+      this.mushroom.x = newX;
+      this.mushroom.y = newY;
+    })
+  }
+
+  loadLevel() {
+    this.map = this.add.tilemap('map')
+    this.map.addTilesetImage('myMap', 'basicMap')
+    this.level1 = this.map.createLayer("Tile Layer 1").resizeWorld()
+    this.start = this.map.objects['Object1'][0]
+    this.obj1 = this.map.createLayer("StartingPoint")
+    this.mushroom = new Mushroom({
+      game: this.game,
+      x: 608,
+      y: 288,
+      asset: 'mushroom'
+    })
+    this.mushroom.height = 32;
+    this.mushroom.width = 32;
+    this.mush = this.game.world.addAt(this.mushroom, 1)    
   }
 
   showMoves(sprite, event) {
-    var alpha = this.showingBlue ? 1 : 0.5
-    this.blocks.children.forEach((ele) => {
-      if (Math.abs(ele.x - sprite.x) < 125  && Math.abs(ele.y - sprite.y) < 125) {
-        if (!(ele.x === sprite.x && ele.y === sprite.y)) {
-          ele.alpha = alpha
-          ele.inputEnabled = true;
-          ele.events.onInputDown.add(this.moveHere, this)
-        }
-      }
-    }, this)
-    this.showingBlue = this.showingBlue ? false : true  
+    // var alpha = this.showingBlue ? 1 : 0.5
+
+    // this.blocks.children.forEach((ele) => {
+    //   if (Math.abs(ele.x - sprite.x) < 125  && Math.abs(ele.y - sprite.y) < 125) {
+    //     if (!(ele.x === sprite.x && ele.y === sprite.y)) {
+    //       ele.alpha = alpha
+    //       ele.inputEnabled = true;
+    //       ele.events.onInputDown.add(this.moveHere, this)
+    //     }
+    //   }
+    // }, this)
+    // this.showingBlue = this.showingBlue ? false : true  
   }
 
   createBlock(x, y, data) {
