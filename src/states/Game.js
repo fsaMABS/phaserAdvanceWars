@@ -69,17 +69,8 @@ export default class extends Phaser.State {
       added.events.onInputDown.add(this.showMoves, this);
       this.pieces[key] = added;
     }
-
     console.log(this);
-
-    // this.mush1 = this.game.world.addAt(this.mushroom1, 1)
-    // this.mush1.player = 1
-    // this.mush2 = this.game.world.addAt(this.mushroom2, 2)
-    // this.mush2.player = 2
-    // this.mush1.inputEnabled = true
-    // this.mush2.inputEnabled = true
-    // this.mush1.events.onInputDown.add(this.showMoves, this)
-    // this.mush2.events.onInputDown.add(this.showMoves, this)
+    
     var style = { font: '20px Arial', fill: '#fff' }
     this.game.add.text(410, 20, 'Player:', style)
     this.currentPlayer = 1
