@@ -99,19 +99,19 @@ export default class extends Phaser.State {
     this.playerText.text = this.currentPlayer
   }
   showMoves (sprite, event) {
-    this.showingBlue = !this.showingBlue    
-    var alpha = this.showingBlue ? 0.5 : 0
-    this.blocks.children.forEach((ele) => {
-      if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < 160) {
-        if (!(ele.x === sprite.x && ele.y === sprite.y)) {
-          if (ele.type === 'land') {
-            ele.alpha = alpha
-            ele.inputEnabled = true
-            ele.events.onInputDown.add(this.moveHere, this)
+      this.showingBlue = !this.showingBlue    
+      var alpha = this.showingBlue ? 0.5 : 0
+      this.blocks.children.forEach((ele) => {
+        if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < 160) {
+          if (!(ele.x === sprite.x && ele.y === sprite.y)) {
+            if (ele.type === 'land') {
+              ele.alpha = alpha
+              ele.inputEnabled = true
+              ele.events.onInputDown.add(this.moveHere, this)
+            }
           }
         }
-      }
-    }, this)
+      }, this)
   }
 
   createBlock (x, y, data) {
