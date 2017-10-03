@@ -5,7 +5,8 @@ const socketCallback = io => socket => {
   })
   socket.on('moveFromClient', obj => {
     console.log('server received', obj)
-    io.sockets.emit('moveFromServer', obj)
+    // io.sockets.emit('moveFromServer', obj)
+    socket.broadcast.emit('moveFromServer', obj)
   })
 }
 const middlewareOptions = {

@@ -14433,9 +14433,9 @@ window.game = new Game();
 socket.on('connect', function () {
   console.log('Socket Connected!');
   socket.on('moveFromServer', function (obj) {
-    // console.log('window.game', )
+    // console.log('window.game', objc)
     console.log('obj.selectedPieceId', obj.selectedPieceId);
-    window.game.state.states.Game.moveHere(obj.sprite, obj.selectedPieceId);
+    // window.game.state.states.Game.moveHere(obj.sprite, obj.selectedPieceId)
   });
 });
 
@@ -14700,31 +14700,26 @@ var _class = function (_Phaser$State) {
   }, {
     key: 'sendMoveMessage',
     value: function sendMoveMessage(sprite) {
-      console.log('sendmovemessage', this.selectedPieceId);
-      var that = this.that;
-      if (that.showingBlue) {
+      //console.log('BEFORE: ', this.selectedPieceId)
+      if (this.showingBlue) {
         socket.emit('moveFromClient', {
-          currentPlayer: that.currentPlayer,
+          currentPlayer: this.currentPlayer,
           sprite: { x: sprite.x, y: sprite.y },
-          selectedPieceId: this.selectedPieceId
+          selectedPieceId: this.selectedPiece.id
         });
-        that.showingBlue = false;
+        this.showingBlue = false;
       }
     }
   }, {
     key: 'moveHere',
-    value: function moveHere(sprite, selectedPieceId) {
+    value: function moveHere(sprite) {
       var _this2 = this;
 
-      console.log('******movehere', this.pieces);
-      var attackButton = void 0;
-      var waitButton = void 0;
-
       // set selectedPiece
-      console.log('selectedpIece', selectedPieceId);
-      this.selectedPiece = this.pieces[+selectedPieceId];
-      console.log('selectedpIece', this.selectedPiece);
-      var button = void 0;
+      // console.log('RIGHT PIECE?', this.sprite === this.selectedPiece);
+      //console.log('AFTER (WRONG?): ', selectedPieceId)
+      // this.selectedPiece = this.pieces[+selectedPieceId]
+      // console.log('Selected Piece', this.selectedPiece, selectedPieceId)
       // janky fix for togglePlayer() running too early
       var attackPrompted = false;
 
@@ -14738,6 +14733,8 @@ var _class = function (_Phaser$State) {
       for (var i = 0; i < 10; i++) {
         this.grid.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
       }
+      console.log('HERE: ', this.selectedPiece);
+
       easystar.setGrid(this.grid);
       easystar.setAcceptableTiles([0]);
       easystar.findPath(this.selectedPiece.x / 32, this.selectedPiece.y / 32, sprite.x / 32, sprite.y / 32, function (path) {
@@ -14751,50 +14748,66 @@ var _class = function (_Phaser$State) {
           }
           _this2.changePosition.start();
           _this2.changePosition.onComplete.add(function () {
-            var _this3 = this;
-
-            this.changePosition.timeline = [];
-            for (var key in this.pieces) {
-              if (this.pieces[key] !== this.selectedPiece) {
-                var diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x);
-                var diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y);
-                if (diffX === 32 && diffY === 0 || diffX === 0 && diffY === 32) {
-                  (function () {
-                    var defender = _this3.pieces[key];
-                    attackButton = _this3.game.add.button(_this3.game.world.centerX - 64, _this3.game.world.centerY, 'mushroom', function () {
-                      return _this3.attackPiece(attackButton, defender);
-                    }, _this3, 2, 1, 0);
-                  })();
-                }
-              }
-            }
-            waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', function () {
-              return _this3.wait(waitButton);
-            }, this, 2, 1, 0);
+            // this.changePosition.timeline = []
+            this.sendMoveMessage(this.selectedPiece);
+            this.disablePieceMovement(this.selectedPiece);
+            this.checkForPieceOptions();
           }, _this2);
         }
       });
       easystar.calculate();
     }
   }, {
+    key: 'checkForPieceOptions',
+    value: function checkForPieceOptions() {
+      var _this3 = this;
+
+      for (var key in this.pieces) {
+        if (this.pieces[key] !== this.selectedPiece) {
+          var diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x);
+          var diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y);
+          if (diffX === 32 && diffY === 0 || diffX === 0 && diffY === 32) {
+            (function () {
+              var defender = _this3.pieces[key];
+              _this3.attackButton = _this3.game.add.button(_this3.game.world.centerX - 64, _this3.game.world.centerY, 'mushroom', function () {
+                return _this3.attackPiece(defender);
+              }, _this3, 2, 1, 0);
+            })();
+          }
+        }
+      }
+      this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+    }
+  }, {
     key: 'attackPiece',
-    value: function attackPiece(button, defendingPiece) {
-      button.pendingDestroy = true;
-      var attackingPiece = this.selectedPiece;
-      attackingPiece.HP -= Math.floor(defendingPiece.AP / 2);
-      defendingPiece.HP -= attackingPiece.AP;
+    value: function attackPiece(defendingPiece) {
+      //this.attackButton.pendingDestroy = true
+      this.selectedPiece;
+      this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2);
+      defendingPiece.HP -= this.selectedPiece.AP;
 
       for (var key in this.pieces) {
         console.log('HP of ' + key, this.pieces[key].HP);
       }
-      this.togglePlayer();
+      this.disablePieceOptions();
+    }
+  }, {
+    key: 'disablePieceMovement',
+    value: function disablePieceMovement(piece) {
+      piece.inputEnabled = false;
+    }
+  }, {
+    key: 'disablePieceOptions',
+    value: function disablePieceOptions() {
+      if (this.waitButton) this.waitButton.destroy();
+      if (this.attackButton) this.attackButton.destroy();
     }
   }, {
     key: 'wait',
-    value: function wait(waitButton) {
-      waitButton.pendingDestroy = true;
+    value: function wait() {
+      //this.waitButton.pendingDestroy = true;
       console.log('Waiting...');
-      this.togglePlayer();
+      this.disablePieceOptions();
     }
   }, {
     key: 'endTurn',
@@ -14802,10 +14815,12 @@ var _class = function (_Phaser$State) {
       var _this4 = this;
 
       console.log('Turn ended!');
+      this.disablePieceOptions();
       var style = { font: '20px Arial', fill: '#fff' };
       this.turnEnded = this.game.add.text(this.game.world.centerX - 32, this.game.world.centerY - 32, "Turn Ended", style);
-      this.time.events.add(1200, function () {
+      this.time.events.add(100, function () {
         _this4.turnEnded.destroy();
+        //disable any buttons that may have popped up
         _this4.togglePlayer();
       }, this.turnEnded);
     }
@@ -15925,6 +15940,8 @@ var loadLevel = exports.loadLevel = function loadLevel(that) {
   that.start = that.map.objects['Object1'][0];
   that.obj1 = that.map.createLayer('StartingPoint');
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+  that.attackButton = undefined;
+  that.waitButton = undefined;
 
   that.pieces = startingPieces(that);
 
@@ -15965,7 +15982,10 @@ var showMoves = function showMoves(that) {
             if (ele.type === 'land') {
               ele.alpha = alpha;
               ele.inputEnabled = true;
-              ele.events.onInputDown.add(that.sendMoveMessage, { that: that, selectedPieceId: sprite.id });
+              // ele.events.onInputDown.add(that.sendMoveMessage, {that, selectedPieceId: sprite.id})
+              ele.events.onInputDown.add(function (sprite) {
+                return that.moveHere(sprite);
+              }, that);
             }
           }
         }
