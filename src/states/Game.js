@@ -12,15 +12,13 @@ export default class extends Phaser.State {
 
   preload () {
     console.log('Preloading...');
+    this.game.load.spritesheet('button', 'assets/images/button-round-b.png', 64, 64);
   }
 
   create () {
     this.loadLevel()
-    this.blocks = this.add.group()        
- 
-    // this.mushroomMovement = this.game.add.tween(this.mush1)
-    // this.mush1.inputEnabled = true;
-    // this.mush.events.onInputDown.add(this.showMoves, this)
+    this.blocks = this.add.group()     
+    this.enterKey = this.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);   
 
     for (var i = 0; i < 800; i = i + 32) {		
       for (var j = 0; j < 800; j = j + 32) {		
@@ -60,7 +58,30 @@ export default class extends Phaser.State {
         HP: 10,
         AP: 5,
         player: 2
+      }),
+      3: new Infantry({
+        game: this.game,
+        x: 576,
+        y: 288,
+        asset: 'mushroom',
+        width: 32,
+        height: 32,
+        HP: 10,
+        AP: 5,
+        player: 1
+      }),
+      4: new Infantry({
+        game: this.game,
+        x: 480,
+        y: 0,
+        asset: 'mushroom',
+        width: 32,
+        height: 32,
+        HP: 10,
+        AP: 5,
+        player: 2
       })
+
     }
 
     for(var key in this.pieces) {
@@ -69,7 +90,6 @@ export default class extends Phaser.State {
       added.inputEnabled = true;
       added.events.onInputDown.add(this.showMoves, this);
       this.pieces[key] = added;
-      console.log(this.pieces[key].position)
     }
     console.log(this);
 
@@ -84,6 +104,7 @@ export default class extends Phaser.State {
     //ENABLE PIECES
     for(var key in this.pieces) {
       if(this.pieces[key].player === this.currentPlayer) this.pieces[key].inputEnabled = true;
+      else this.pieces[key].inputEnabled = false;
     }
     this.playerText.text = this.currentPlayer
   }
@@ -95,13 +116,14 @@ export default class extends Phaser.State {
       var alpha = this.showingBlue ? 0.5 : 0
       this.blocks.children.forEach((ele) => {
         if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < 160) {
-          if (!(ele.x === sprite.x && ele.y === sprite.y)) {
+          // With the below check, players can't attack from the current position they're in
+          // if (!(ele.x === sprite.x && ele.y === sprite.y)) {
             if (ele.type === 'land') {
               ele.alpha = alpha
               ele.inputEnabled = true
               ele.events.onInputDown.add(this.moveHere, this)
             }
-          }
+          //}
         }
       }, this)
     }
@@ -116,9 +138,9 @@ export default class extends Phaser.State {
 
   moveHere (sprite, event) {
     if (this.showingBlue) {
-      let button;
+      let attackButton;
+      let waitButton;
       //janky fix for togglePlayer() running too early
-      let attackPrompted = false;
 
       this.blocks.children.forEach((ele) => {
         ele.alpha = 0
@@ -136,14 +158,14 @@ export default class extends Phaser.State {
             let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
             let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
             if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
-              attackPrompted = true;
-              const defender = this.pieces[key]
-              button = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', 
-                () => this.attackPiece(button, defender), this, 2, 1, 0);
+              let defender = this.pieces[key]
+              attackButton = this.game.add.button(this.game.world.centerX-64, this.game.world.centerY, 'button', 
+                () => this.attackPiece(attackButton, defender), this, 2, 1, 0);
             }
           }
         }
-        if(!attackPrompted) this.togglePlayer();
+        waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'button', 
+          () => this.wait(waitButton), this, 2, 1, 0);
       }, this)
     }
     this.showingBlue = false;
@@ -157,8 +179,24 @@ export default class extends Phaser.State {
 
     for(var key in this.pieces) {
       console.log('HP of ' + key, this.pieces[key].HP);
+      
     }
+  }
+
+  wait(waitButton) {
+    waitButton.pendingDestroy = true;
+    console.log('Waiting...')
     this.togglePlayer();
+  }
+
+  endTurn() {
+    console.log('Turn ended!');
+    var style = { font: '20px Arial', fill: '#fff' }
+    this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
+    this.time.events.add(1200, () => {
+      this.turnEnded.destroy()
+      this.togglePlayer()
+    }, this.turnEnded);
   }
 
   update() {
@@ -170,6 +208,7 @@ export default class extends Phaser.State {
         delete this.pieces[piece];
       } 
     }
+    this.enterKey.onDown.add(this.endTurn, this);
   }
 
   render () {
