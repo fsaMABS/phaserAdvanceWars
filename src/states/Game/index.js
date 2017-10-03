@@ -27,27 +27,23 @@ export default class extends Phaser.State {
     this.playerText.text = this.currentPlayer
   }
   sendMoveMessage (sprite) {
-    console.log('sendmovemessage', this.selectedPieceId)
-    const that = this.that
-    if (that.showingBlue) {
+    //console.log('BEFORE: ', this.selectedPieceId)
+    if (this.showingBlue) {
       socket.emit('moveFromClient', {
-        currentPlayer: that.currentPlayer,
+        currentPlayer: this.currentPlayer,
         sprite: {x: sprite.x, y: sprite.y},
-        selectedPieceId: this.selectedPieceId
+        selectedPieceId: this.selectedPiece.id
       })
-      that.showingBlue = false
+      this.showingBlue = false
     }
   }
-  moveHere (sprite, selectedPieceId) {
-    console.log('******movehere', this.pieces)
-    let attackButton;
-    let waitButton;
 
+  moveHere (sprite) {
     // set selectedPiece
-    console.log('selectedpIece', selectedPieceId)
-    this.selectedPiece = this.pieces[+selectedPieceId]
-    console.log('selectedpIece', this.selectedPiece)
-    let button
+    // console.log('RIGHT PIECE?', this.sprite === this.selectedPiece);
+    //console.log('AFTER (WRONG?): ', selectedPieceId)
+    // this.selectedPiece = this.pieces[+selectedPieceId]
+    // console.log('Selected Piece', this.selectedPiece, selectedPieceId)
     // janky fix for togglePlayer() running too early
     let attackPrompted = false
 
@@ -61,6 +57,8 @@ export default class extends Phaser.State {
     for (var i = 0; i < 10; i++) {
       this.grid.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,])	
     }
+    console.log('HERE: ', this.selectedPiece)
+
     easystar.setGrid(this.grid);
     easystar.setAcceptableTiles([0]);
     easystar.findPath(this.selectedPiece.x/32, this.selectedPiece.y/32, sprite.x/32, sprite.y/32, ( path ) => {
@@ -74,54 +72,70 @@ export default class extends Phaser.State {
         }
         this.changePosition.start()
         this.changePosition.onComplete.add(function () {
-          this.changePosition.timeline = []
-          for(var key in this.pieces) {
-            if(this.pieces[key] !== this.selectedPiece) {
-              let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
-              let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
-              if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
-                let defender = this.pieces[key]
-                attackButton = this.game.add.button(this.game.world.centerX-64, this.game.world.centerY, 'mushroom', 
-                  () => this.attackPiece(attackButton, defender), this, 2, 1, 0);
-              }
-            }
-          }
-          waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', 
-            () => this.wait(waitButton), this, 2, 1, 0);
+          // this.changePosition.timeline = []
+          this.sendMoveMessage(this.selectedPiece);
+          this.disablePieceMovement(this.selectedPiece);
+          this.checkForPieceOptions();
         }, this)
       }
     });
     easystar.calculate() 
   }
 
+  checkForPieceOptions() {
+    for(var key in this.pieces) {
+      if(this.pieces[key] !== this.selectedPiece) {
+        let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
+        let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
+        if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
+          let defender = this.pieces[key]
+          this.attackButton = this.game.add.button(this.game.world.centerX-64, this.game.world.centerY, 'mushroom', 
+            () => this.attackPiece(defender), this, 2, 1, 0);
+        }
+      }
+    }
+    this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+  }
 
-  attackPiece (button, defendingPiece) {
-    button.pendingDestroy = true
-    let attackingPiece = this.selectedPiece
-    attackingPiece.HP -= Math.floor(defendingPiece.AP / 2)
-    defendingPiece.HP -= attackingPiece.AP
+  attackPiece (defendingPiece) {
+    //this.attackButton.pendingDestroy = true
+    this.selectedPiece
+    this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2)
+    defendingPiece.HP -= this.selectedPiece.AP
 
     for (var key in this.pieces) {
       console.log('HP of ' + key, this.pieces[key].HP)
     }
-    this.togglePlayer()
+    this.disablePieceOptions();
   }
 
-  wait(waitButton) {
-    waitButton.pendingDestroy = true;
+  disablePieceMovement(piece) {
+    piece.inputEnabled = false;
+  }
+
+  disablePieceOptions() {
+    if(this.waitButton) this.waitButton.destroy();
+    if(this.attackButton) this.attackButton.destroy();
+  }
+
+  wait() {
+    //this.waitButton.pendingDestroy = true;
     console.log('Waiting...')
-    this.togglePlayer();
+    this.disablePieceOptions();
   }
 
   endTurn() {
     console.log('Turn ended!');
+    this.disablePieceOptions();
     var style = { font: '20px Arial', fill: '#fff' }
     this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
-    this.time.events.add(1200, () => {
+    this.time.events.add(100, () => {
       this.turnEnded.destroy()
+      //disable any buttons that may have popped up
       this.togglePlayer()
     }, this.turnEnded);
   }
+
 
   update () {
     // DESTROY PIECE FROM OBJECT IF HEALTH GONE

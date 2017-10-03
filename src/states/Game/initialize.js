@@ -37,6 +37,8 @@ export const loadLevel = (that) => {
   that.start = that.map.objects['Object1'][0]
   that.obj1 = that.map.createLayer('StartingPoint')
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);  
+  that.attackButton = undefined;
+  that.waitButton = undefined;
 
   that.pieces = startingPieces(that)
 
@@ -76,7 +78,8 @@ const showMoves = that => (sprite, event) => {
           if (ele.type === 'land') {
             ele.alpha = alpha
             ele.inputEnabled = true
-            ele.events.onInputDown.add(that.sendMoveMessage, {that, selectedPieceId: sprite.id})
+            // ele.events.onInputDown.add(that.sendMoveMessage, {that, selectedPieceId: sprite.id})
+            ele.events.onInputDown.add((sprite) => that.moveHere(sprite), that)
           }
         }
       }
