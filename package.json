@@ -28,6 +28,7 @@
     "webpack": "^3.4.1"
   },
   "dependencies": {
+    "easystarjs": "^0.4.1",
     "phaser-ce": "^2.8.3",
     "swyx": "^0.1.14",
     "webfontloader": "^1.6.28"
