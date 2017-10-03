@@ -1,12 +1,12 @@
 {
-  "name": "PhaserES6Webpack",
+  "name": "phaserdavancewars",
   "version": "1.0.0",
   "description": "",
   "author": "leandro cabrera <leandcabrera@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack",
-    "deploy": "webpack --config webpack.production.config.js",
+    "dev": "webpack -w & nodemon server/index.js",
+    "deploy": "PLSDOUBLECHECK THIS IS OUTDATED webpack --config webpack.production.config.js",
     "test": "eslint ./src/**/**.js"
   },
   "license": "MIT",
@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "phaser-ce": "^2.8.3",
+    "swyx": "^0.1.14",
     "webfontloader": "^1.6.28"
   }
 }

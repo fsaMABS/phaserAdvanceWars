@@ -8,6 +8,13 @@ import GameState from './states/Game'
 
 import config from './config'
 
+import io from 'socket.io-client'
+
+const socket = io(window.location.origin)
+socket.on('connect', () => {
+  console.log('Socket Connected!')
+  socket.on('server', val => console.log('server', val))
+})
 class Game extends Phaser.Game {
   constructor () {
     const docElement = document.documentElement
