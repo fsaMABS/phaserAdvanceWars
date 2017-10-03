@@ -40,6 +40,8 @@ export default class extends Phaser.State {
   }
   moveHere (sprite, selectedPieceId) {
     console.log('******movehere', this.pieces)
+    let attackButton;
+    let waitButton;
 
     // set selectedPiece
     console.log('selectedpIece', selectedPieceId)
@@ -78,14 +80,14 @@ export default class extends Phaser.State {
               let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
               let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
               if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
-                attackPrompted = true;
-                const defender = this.pieces[key]
-                button = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', 
-                  () => this.attackPiece(button, defender), this, 2, 1, 0);
+                let defender = this.pieces[key]
+                attackButton = this.game.add.button(this.game.world.centerX-64, this.game.world.centerY, 'button', 
+                  () => this.attackPiece(attackButton, defender), this, 2, 1, 0);
               }
             }
           }
-          if(!attackPrompted) this.togglePlayer();
+          waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'button', 
+            () => this.wait(waitButton), this, 2, 1, 0);
         }, this)
       }
     });
@@ -105,6 +107,22 @@ export default class extends Phaser.State {
     this.togglePlayer()
   }
 
+  wait(waitButton) {
+    waitButton.pendingDestroy = true;
+    console.log('Waiting...')
+    this.togglePlayer();
+  }
+
+  endTurn() {
+    console.log('Turn ended!');
+    var style = { font: '20px Arial', fill: '#fff' }
+    this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
+    this.time.events.add(1200, () => {
+      this.turnEnded.destroy()
+      this.togglePlayer()
+    }, this.turnEnded);
+  }
+
   update () {
     // DESTROY PIECE FROM OBJECT IF HEALTH GONE
     for (var piece in this.pieces) {
@@ -113,6 +131,7 @@ export default class extends Phaser.State {
         delete this.pieces[piece]
       }
     }
+    this.enterKey.onDown.add(this.endTurn, this);
   }
 
   render () {
