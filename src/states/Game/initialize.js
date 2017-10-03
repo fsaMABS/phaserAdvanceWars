@@ -29,7 +29,6 @@ export const startingPieces = that => ({
 })
 
 export const loadLevel = (that) => {
-  console.log('showMoves', showMoves)
   that.map = that.add.tilemap('map')
   that.map.addTilesetImage('myMap', 'basicMap')
   that.level1 = that.map.createLayer('Tile Layer 1').resizeWorld()
