@@ -36,6 +36,7 @@ export const loadLevel = (that) => {
   that.level1 = that.map.createLayer('Tile Layer 1').resizeWorld()
   that.start = that.map.objects['Object1'][0]
   that.obj1 = that.map.createLayer('StartingPoint')
+  that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);  
 
   that.pieces = startingPieces(that)
 

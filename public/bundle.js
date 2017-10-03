@@ -14717,6 +14717,8 @@ var _class = function (_Phaser$State) {
       var _this2 = this;
 
       console.log('******movehere', this.pieces);
+      var attackButton = void 0;
+      var waitButton = void 0;
 
       // set selectedPiece
       console.log('selectedpIece', selectedPieceId);
@@ -14758,16 +14760,17 @@ var _class = function (_Phaser$State) {
                 var diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y);
                 if (diffX === 32 && diffY === 0 || diffX === 0 && diffY === 32) {
                   (function () {
-                    attackPrompted = true;
                     var defender = _this3.pieces[key];
-                    button = _this3.game.add.button(_this3.game.world.centerX, _this3.game.world.centerY, 'mushroom', function () {
-                      return _this3.attackPiece(button, defender);
+                    attackButton = _this3.game.add.button(_this3.game.world.centerX - 64, _this3.game.world.centerY, 'mushroom', function () {
+                      return _this3.attackPiece(attackButton, defender);
                     }, _this3, 2, 1, 0);
                   })();
                 }
               }
             }
-            if (!attackPrompted) this.togglePlayer();
+            waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', function () {
+              return _this3.wait(waitButton);
+            }, this, 2, 1, 0);
           }, _this2);
         }
       });
@@ -14787,6 +14790,26 @@ var _class = function (_Phaser$State) {
       this.togglePlayer();
     }
   }, {
+    key: 'wait',
+    value: function wait(waitButton) {
+      waitButton.pendingDestroy = true;
+      console.log('Waiting...');
+      this.togglePlayer();
+    }
+  }, {
+    key: 'endTurn',
+    value: function endTurn() {
+      var _this4 = this;
+
+      console.log('Turn ended!');
+      var style = { font: '20px Arial', fill: '#fff' };
+      this.turnEnded = this.game.add.text(this.game.world.centerX - 32, this.game.world.centerY - 32, "Turn Ended", style);
+      this.time.events.add(1200, function () {
+        _this4.turnEnded.destroy();
+        _this4.togglePlayer();
+      }, this.turnEnded);
+    }
+  }, {
     key: 'update',
     value: function update() {
       // DESTROY PIECE FROM OBJECT IF HEALTH GONE
@@ -14796,6 +14819,7 @@ var _class = function (_Phaser$State) {
           delete this.pieces[piece];
         }
       }
+      this.enterKey.onDown.add(this.endTurn, this);
     }
   }, {
     key: 'render',
@@ -15900,6 +15924,7 @@ var loadLevel = exports.loadLevel = function loadLevel(that) {
   that.level1 = that.map.createLayer('Tile Layer 1').resizeWorld();
   that.start = that.map.objects['Object1'][0];
   that.obj1 = that.map.createLayer('StartingPoint');
+  that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
 
   that.pieces = startingPieces(that);
 
