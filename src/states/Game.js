@@ -162,6 +162,7 @@ export default class extends Phaser.State {
   }
 
   update() {
+
     //DESTROY PIECE FROM OBJECT IF HEALTH GONE
     for(var piece in this.pieces) {
       if(this.pieces[piece].HP <= 0) {
