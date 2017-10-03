@@ -13,7 +13,8 @@ export const startingPieces = that => ({
     height: 32,
     HP: 10,
     AP: 5,
-    player: 1
+    player: 1,
+    id: 1
   }),
   2: new Infantry({
     game: that.game,
@@ -24,7 +25,8 @@ export const startingPieces = that => ({
     height: 32,
     HP: 10,
     AP: 5,
-    player: 2
+    player: 2,
+    id: 2
   })
 })
 
@@ -73,7 +75,7 @@ const showMoves = that => (sprite, event) => {
           if (ele.type === 'land') {
             ele.alpha = alpha
             ele.inputEnabled = true
-            ele.events.onInputDown.add(that.moveHere, that)
+            ele.events.onInputDown.add(that.sendMoveMessage, {that, selectedPieceId: sprite.id})
           }
         }
       }
