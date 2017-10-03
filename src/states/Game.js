@@ -116,17 +116,16 @@ export default class extends Phaser.State {
 
   moveHere (sprite, event) {
     if (this.showingBlue) {
+      let button;
+      //janky fix for togglePlayer() running too early
+      let attackPrompted = false;
+
       this.blocks.children.forEach((ele) => {
         ele.alpha = 0
         ele.inputEnabled = false
       }, this)
 
-      //CHANGE THIS LATER TO WHATEVER THE SELECTED CHARACTER IS
-
-      //PIECE BELONGS TO CURRENT PLAYER?
-      this.changePosition = this.selectedPiece.player === this.currentPlayer
-      ? this.game.add.tween(this.selectedPiece)
-      : null;
+      if(this.selectedPiece.player === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece)
       
       this.changePosition.to({x: sprite.x, y: sprite.y}, 350)
       this.changePosition.start()
@@ -137,38 +136,29 @@ export default class extends Phaser.State {
             let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
             let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
             if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
-              let button = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', (button) => this.attackPiece(button), this, 2, 1, 0);
+              attackPrompted = true;
+              const defender = this.pieces[key]
+              button = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', 
+                () => this.attackPiece(button, defender), this, 2, 1, 0);
             }
           }
         }
+        if(!attackPrompted) this.togglePlayer();
       }, this)
-
-      //Check for enemy units in the area... if there is prompt attack message
-      // * possibly janky solution
-      this.togglePlayer()
     }
     this.showingBlue = false;
   }
 
-  attackPiece(button) {
+  attackPiece(button, defendingPiece) {
     button.pendingDestroy = true;
     let attackingPiece = this.selectedPiece;
-    let defendingPiece;
-
-
-    // if(this.currentPlayer === 1) {
-    //   attackingPiece = this.pieces[1]
-    //   defendingPiece = this.pieces[2]
-    // } else if(this.currentPlayer === 2) {
-    //   attackingPiece = this.pieces[2]
-    //   defendingPiece = this.pieces[1]
-    // }
     attackingPiece.HP -= Math.floor(defendingPiece.AP/2);
     defendingPiece.HP -= attackingPiece.AP;
 
     for(var key in this.pieces) {
       console.log('HP of ' + key, this.pieces[key].HP);
     }
+    this.togglePlayer();
   }
 
   update() {
