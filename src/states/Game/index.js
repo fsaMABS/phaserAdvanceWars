@@ -59,7 +59,6 @@ export default class extends Phaser.State {
     //PROBLEM WITH EASY STAR ==> RUNNING ELSE STATEMENT TWICE FOR SAME PIECE, 
     // issue I think with it finding multiple pieces within that path and calling it for both
     easystar.findPath(this.selectedPiece.x/32, this.selectedPiece.y/32, sprite.x/32, sprite.y/32, ( path ) => {
-      console.log('after path', this.selectedPiece)
       if (path === null) {
         alert("Path was not found.");
       } else {
@@ -87,16 +86,19 @@ export default class extends Phaser.State {
         let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
         if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
           let defender = this.pieces[key]
-          this.attackButton = this.game.add.button(this.game.world.centerX-64, this.game.world.centerY, 'mushroom', 
-            () => this.attackPiece(defender), this, 2, 1, 0);
+          if(!this.attackButton || !this.attackButton.alive) {
+            this.attackButton = this.game.add.button(this.game.world.centerX-64, this.game.world.centerY, 'mushroom', 
+              () => this.attackPiece(defender), this, 2, 1, 0);
+          }
         }
       }
     }
-    this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+    if(!this.waitButton || !this.waitButton.alive) {
+      this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+    }
   }
 
   attackPiece (defendingPiece) {
-    //this.attackButton.pendingDestroy = true
     this.selectedPiece
     this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2)
     defendingPiece.HP -= this.selectedPiece.AP
@@ -108,6 +110,7 @@ export default class extends Phaser.State {
   }
 
   disablePieceMovement(piece) {
+    console.log('inside disable piece', this.selectedPiece);
     piece.inputEnabled = false;
   }
 
@@ -141,6 +144,11 @@ export default class extends Phaser.State {
         this.pieces[piece].destroy()
         delete this.pieces[piece]
       }
+
+      //Update Health by Destroying Old Health and Rendering New
+      this.pieces[piece].children[0].destroy() 
+      let newHealth = this.game.add.text(40, 40, this.pieces[piece].HP, this.healthStyle)
+      this.pieces[piece].addChild(newHealth);
     }
     this.enterKey.onDown.add(this.endTurn, this);
   }

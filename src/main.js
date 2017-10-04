@@ -33,6 +33,6 @@ socket.on('connect', () => {
   socket.on('moveFromServer', obj => {
     // console.log('window.game', objc)
     console.log('obj.selectedPieceId', obj.selectedPieceId)
-    // window.game.state.states.Game.moveHere(obj.sprite, obj.selectedPieceId)
+    window.game.state.states.Game.moveHere(obj.sprite)
   })
 })

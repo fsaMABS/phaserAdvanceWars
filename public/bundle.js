@@ -14435,7 +14435,7 @@ socket.on('connect', function () {
   socket.on('moveFromServer', function (obj) {
     // console.log('window.game', objc)
     console.log('obj.selectedPieceId', obj.selectedPieceId);
-    // window.game.state.states.Game.moveHere(obj.sprite, obj.selectedPieceId)
+    window.game.state.states.Game.moveHere(obj.sprite);
   });
 });
 
@@ -14734,7 +14734,6 @@ var _class = function (_Phaser$State) {
       //PROBLEM WITH EASY STAR ==> RUNNING ELSE STATEMENT TWICE FOR SAME PIECE, 
       // issue I think with it finding multiple pieces within that path and calling it for both
       easystar.findPath(this.selectedPiece.x / 32, this.selectedPiece.y / 32, sprite.x / 32, sprite.y / 32, function (path) {
-        console.log('after path', _this2.selectedPiece);
         if (path === null) {
           alert("Path was not found.");
         } else {
@@ -14766,19 +14765,22 @@ var _class = function (_Phaser$State) {
           if (diffX === 32 && diffY === 0 || diffX === 0 && diffY === 32) {
             (function () {
               var defender = _this3.pieces[key];
-              _this3.attackButton = _this3.game.add.button(_this3.game.world.centerX - 64, _this3.game.world.centerY, 'mushroom', function () {
-                return _this3.attackPiece(defender);
-              }, _this3, 2, 1, 0);
+              if (!_this3.attackButton || !_this3.attackButton.alive) {
+                _this3.attackButton = _this3.game.add.button(_this3.game.world.centerX - 64, _this3.game.world.centerY, 'mushroom', function () {
+                  return _this3.attackPiece(defender);
+                }, _this3, 2, 1, 0);
+              }
             })();
           }
         }
       }
-      this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+      if (!this.waitButton || !this.waitButton.alive) {
+        this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+      }
     }
   }, {
     key: 'attackPiece',
     value: function attackPiece(defendingPiece) {
-      //this.attackButton.pendingDestroy = true
       this.selectedPiece;
       this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2);
       defendingPiece.HP -= this.selectedPiece.AP;
@@ -14791,6 +14793,7 @@ var _class = function (_Phaser$State) {
   }, {
     key: 'disablePieceMovement',
     value: function disablePieceMovement(piece) {
+      console.log('inside disable piece', this.selectedPiece);
       piece.inputEnabled = false;
     }
   }, {
@@ -14829,6 +14832,10 @@ var _class = function (_Phaser$State) {
           this.pieces[piece].destroy();
           delete this.pieces[piece];
         }
+        var style = { font: "30px Arial", fill: "#ffffff" };
+        this.pieces[piece].children[0].destroy();
+        var newHealth = this.game.add.text(40, 40, this.pieces[piece].HP, style);
+        this.pieces[piece].addChild(newHealth);
       }
       this.enterKey.onDown.add(this.endTurn, this);
     }
@@ -15947,7 +15954,10 @@ var loadLevel = exports.loadLevel = function loadLevel(that) {
     added.inputEnabled = true;
     added.events.onInputDown.add(showMoves(that), undefined);
     that.pieces[key] = added;
-    console.log(that.pieces[key].position);
+
+    var _style = { font: "30px Arial", fill: "#ffffff" };
+    var pieceHealth = that.game.add.text(40, 40, that.pieces[key].HP, _style);
+    that.pieces[key].addChild(pieceHealth);
   }
 
   var style = { font: '20px Arial', fill: '#fff' };
@@ -15969,6 +15979,7 @@ var loadLevel = exports.loadLevel = function loadLevel(that) {
 var showMoves = function showMoves(that) {
   return function (sprite, event) {
     that.selectedPiece = sprite;
+    that.selectedPiece.moveAdded = false;
     if (that.currentPlayer === that.selectedPiece.player) {
       that.showingBlue = !that.showingBlue;
       var alpha = that.showingBlue ? 0.5 : 0;
@@ -15979,13 +15990,14 @@ var showMoves = function showMoves(that) {
               ele.alpha = alpha;
               ele.inputEnabled = true;
               // ele.events.onInputDown.add(that.sendMoveMessage, {that, selectedPieceId: sprite.id})
-              ele.events.onInputDown.add(function (sprite) {
+              if (!that.selectedPiece.moveAdded) ele.events.onInputDown.add(function (sprite) {
                 return that.moveHere(sprite);
               }, that);
             }
           }
         }
       }, that);
+      that.selectedPiece.moveAdded = true;
     }
   };
 };
