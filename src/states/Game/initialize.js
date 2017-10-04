@@ -42,7 +42,7 @@ export const loadLevel = (that) => {
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);  
   that.attackButton = undefined;
   that.waitButton = undefined;
-  that.healthStyle = { font: "30px Arial", fill: "#ffffff" };  
+  that.healthStyle = { font: "15px Arial", fill: "black" };  
 
   that.pieces = startingPieces(that)
   
@@ -53,7 +53,7 @@ export const loadLevel = (that) => {
     added.events.onInputDown.add(showMoves(that), this)
     that.pieces[key] = added
     
-    let pieceHealth = that.game.add.text(40, 40, that.pieces[key].HP, that.healthStyle);
+    let pieceHealth = that.game.add.text(10, 10, that.pieces[key].HP, that.healthStyle);
     that.pieces[key].addChild(pieceHealth);
   }
 
