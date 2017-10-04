@@ -23,6 +23,7 @@ const listenOptions = {
   socketCallback // off by default. supply a callback fn `socket => {socket.on('event', ()=>console.log('event'))}` to turn on
 }
 const server = require('swyx').server(middlewareOptions, listenOptions)
+
 const app = server.app
 app.get('/api', (req, res) => res.send('this is api route'))
 app.use(server.finalHandler) // optional error handling
@@ -38,4 +39,4 @@ function writeUserData(userId, name, email, imageUrl) {
   });
 }
 
-writeUserData('1','Larry','larry@larry.com','url')
+writeUserData('1', 'Larry', 'larry@larry.com', 'url')

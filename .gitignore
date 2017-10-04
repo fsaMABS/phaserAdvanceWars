@@ -3,3 +3,7 @@ server/config.js
 dist/
 .vscode/
 *.log
+public/bundle.js
+public/bundle.js.map
+public/vendor.bundle.js
+public/vendor.bundle.js.map
