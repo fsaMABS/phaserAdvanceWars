@@ -1,7 +1,6 @@
 const aw2Map = require('../public/assets/js/aw2.json')
 
-console.log('aw2map', aw2Map)
-export default function createGrid(mapName) {
+export default function createGrid(boolean) {
     const gridWidth = aw2Map.width;
     const gridHeight = aw2Map.height;
     const grid = []
@@ -15,7 +14,7 @@ export default function createGrid(mapName) {
     for (var i = 0; i < finaldata.length; i += gridWidth) {
         grid.push(finaldata.slice(i, i + gridWidth))
     }
-    console.log('grid', grid)
+    
     
     return grid
 }

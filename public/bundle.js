@@ -4389,8 +4389,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 
 var aw2Map = __webpack_require__(/*! ../public/assets/js/aw2.json */ 359);
 
-console.log('aw2map', aw2Map);
-function createGrid(mapName) {
+function createGrid(boolean) {
     var gridWidth = aw2Map.width;
     var gridHeight = aw2Map.height;
     var grid = [];
@@ -4406,7 +4405,6 @@ function createGrid(mapName) {
     for (var i = 0; i < finaldata.length; i += gridWidth) {
         grid.push(finaldata.slice(i, i + gridWidth));
     }
-    console.log('grid', grid);
 
     return grid;
 }
@@ -14752,6 +14750,8 @@ var _class = function (_Phaser$State) {
   }, {
     key: 'create',
     value: function create() {
+      easystar.setGrid((0, _processMap2.default)());
+      easystar.setAcceptableTiles([2]);
       (0, _initialize.loadLevel)(this);
     }
   }, {
@@ -14781,42 +14781,23 @@ var _class = function (_Phaser$State) {
     value: function moveHere(sprite) {
       var _this2 = this;
 
-      // console.log('SELECTED PIECE HERE', this.selectedPiece)
       this.blocks.children.forEach(function (ele) {
         ele.alpha = 0;
         ele.inputEnabled = false;
       }, this);
-
       if (this.selectedPiece.player === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece);
-
-      this.grid = [];
-      for (var i = 0; i < 25; i++) {
-        this.grid.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
-      }
-
-      easystar.setGrid((0, _processMap2.default)());
-      easystar.setAcceptableTiles([2]);
-      console.log('before path', this.selectedPiece);
-
-      //PROBLEM WITH EASY STAR ==> RUNNING ELSE STATEMENT TWICE FOR SAME PIECE, 
-      // issue I think with it finding multiple pieces within that path and calling it for both
       easystar.findPath(this.selectedPiece.x / 32, this.selectedPiece.y / 32, sprite.x / 32, sprite.y / 32, function (path) {
-        if (path === null) {
-          alert("Path was not found.");
-        } else {
-          _this2.changePosition = _this2.game.add.tween(_this2.selectedPiece);
-          for (var i = 0; i < path.length; i++) {
-            var currCoords = path[i];
-            _this2.changePosition.to({ x: currCoords.x * 32, y: currCoords.y * 32 }, 150);
-          }
-          _this2.changePosition.start();
-          _this2.changePosition.onComplete.add(function () {
-            // this.changePosition.timeline = []
-            this.sendMoveMessage(this.selectedPiece);
-            this.checkForPieceOptions();
-            this.disablePieceMovement(this.selectedPiece);
-          }, _this2);
+        _this2.changePosition = _this2.game.add.tween(_this2.selectedPiece);
+        for (var i = 0; i < path.length; i++) {
+          var currCoords = path[i];
+          _this2.changePosition.to({ x: currCoords.x * 32, y: currCoords.y * 32 }, 150);
         }
+        _this2.changePosition.start();
+        _this2.changePosition.onComplete.add(function () {
+          this.sendMoveMessage(this.selectedPiece);
+          this.checkForPieceOptions();
+          this.disablePieceMovement(this.selectedPiece);
+        }, _this2);
       });
       easystar.calculate();
     }
@@ -15983,9 +15964,14 @@ var _processMap = __webpack_require__(/*! ../../processMap */ 98);
 
 var _processMap2 = _interopRequireDefault(_processMap);
 
+var _easystarjs = __webpack_require__(/*! easystarjs */ 364);
+
+var _easystarjs2 = _interopRequireDefault(_easystarjs);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log('grid in iintilize ', (0, _processMap2.default)());
+var easystar = new _easystarjs2.default.js();
+
 var startingPieces = exports.startingPieces = function startingPieces(that) {
   return {
     // NEED TO ADD TYPES TO THE NAME AT SOME POINT
@@ -15999,7 +15985,8 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
       HP: 10,
       AP: 5,
       player: 1,
-      id: 1
+      id: 1,
+      mobility: 5
     }),
     2: new _Infantry2.default({
       game: that.game,
@@ -16011,16 +15998,14 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
       HP: 10,
       AP: 5,
       player: 2,
-      id: 2
+      id: 2,
+      mobility: 5
     })
   };
 };
 
 var loadLevel = exports.loadLevel = function loadLevel(that) {
   that.background = that.game.add.sprite(0, 0, 'aw1Map');
-  // that.background.width = 696;
-  // that.background.height = 580;
-  // that.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
   that.scale.pageAlignHorizontally = true;
   that.scale.pageAlignVertically = true;
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -16064,20 +16049,41 @@ var showMoves = function showMoves(that) {
     if (that.currentPlayer === that.selectedPiece.player) {
       that.showingBlue = !that.showingBlue;
       var alpha = that.showingBlue ? 0.5 : 0;
-      that.blocks.children.forEach(function (ele) {
-        if (Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 160) {
+      var childrenPromises = that.blocks.children.map(function (ele) {
+        if (Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * sprite.mobility) {
           if (!(ele.x === sprite.x && ele.y === sprite.y)) {
             if (ele.type === 'land') {
-              ele.alpha = alpha;
-              ele.inputEnabled = true;
-              // ele.events.onInputDown.add(that.sendMoveMessage, {that, selectedPieceId: sprite.id})
-              if (!that.selectedPiece.moveAdded) ele.events.onInputDown.add(function (sprite) {
-                return that.moveHere(sprite);
-              }, that);
+              easystar.setGrid((0, _processMap2.default)());
+              easystar.setAcceptableTiles([2]);
+              return new Promise(function (resolve, reject) {
+                easystar.findPath(sprite.x / 32, sprite.y / 32, ele.x / 32, ele.y / 32, function (path) {
+                  if (path === null || path.length > sprite.mobility) {
+                    resolve(null);
+                  } else {
+                    resolve(ele);
+                  }
+                });
+                easystar.calculate();
+              });
             }
           }
         }
-      }, that);
+      }, that).filter(function (x) {
+        return !!x;
+      });
+
+      Promise.all(childrenPromises).then(function (elements) {
+        elements.forEach(function (ele) {
+          if (ele !== null) {
+            ele.alpha = alpha;
+            ele.inputEnabled = true;
+            ele.events.onInputDown.add(function (sprite) {
+              return that.moveHere(sprite);
+            }, that);
+          }
+        });
+      });
+
       that.selectedPiece.moveAdded = true;
     }
   };
@@ -16126,7 +16132,8 @@ var _class = function (_Phaser$Sprite) {
         HP = _ref.HP,
         AP = _ref.AP,
         player = _ref.player,
-        id = _ref.id;
+        id = _ref.id,
+        mobility = _ref.mobility;
 
     _classCallCheck(this, _class);
 
@@ -16139,6 +16146,7 @@ var _class = function (_Phaser$Sprite) {
     _this.AP = AP;
     _this.player = player;
     _this.id = id;
+    _this.mobility = mobility;
     return _this;
   }
 

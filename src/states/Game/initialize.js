@@ -2,7 +2,9 @@ import Infantry from '../../sprites/Infantry'
 import {checkType} from '../../levels/level1'
 import Block from '../../sprites/Block'
 import newGrid from '../../processMap'
-console.log('grid in iintilize ', newGrid())
+import easystarjs from 'easystarjs'
+var easystar = new easystarjs.js()
+
 export const startingPieces = that => ({
   // NEED TO ADD TYPES TO THE NAME AT SOME POINT
   1: new Infantry({
@@ -15,7 +17,8 @@ export const startingPieces = that => ({
     HP: 10,
     AP: 5,
     player: 1,
-    id: 1
+    id: 1,
+    mobility: 5
   }),
   2: new Infantry({
     game: that.game,
@@ -27,15 +30,13 @@ export const startingPieces = that => ({
     HP: 10,
     AP: 5,
     player: 2,
-    id: 2
+    id: 2,
+    mobility: 5
   })
 })
 
 export const loadLevel = (that) => {
   that.background = that.game.add.sprite(0, 0, 'aw1Map')
-  // that.background.width = 696;
-  // that.background.height = 580;
-  // that.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
   that.scale.pageAlignHorizontally = true;
   that.scale.pageAlignVertically = true;
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);  
@@ -78,18 +79,40 @@ const showMoves = that => (sprite, event) => {
   if (that.currentPlayer === that.selectedPiece.player) {
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
-    that.blocks.children.forEach((ele) => {
-      if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < 160) {
+    let childrenPromises = that.blocks.children.map((ele) => {
+      if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < (32 * sprite.mobility)) {
         if (!(ele.x === sprite.x && ele.y === sprite.y)) {
           if (ele.type === 'land') {
-            ele.alpha = alpha
-            ele.inputEnabled = true
-            // ele.events.onInputDown.add(that.sendMoveMessage, {that, selectedPieceId: sprite.id})
-            if(!that.selectedPiece.moveAdded) ele.events.onInputDown.add((sprite) => that.moveHere(sprite), that)
+            easystar.setGrid(newGrid())
+            easystar.setAcceptableTiles([2]);
+            return new Promise((resolve, reject) => {
+              easystar.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {
+                if (path === null || (path.length > sprite.mobility)) {
+                  resolve(null)
+                } else {
+                  resolve(ele)
+                }
+              });
+              easystar.calculate()
+
+            })
           }
         }
       }
     }, that)
+      .filter(x => !!x)
+
+    Promise.all(childrenPromises).then(elements => {
+      elements.forEach((ele) => {
+        if (ele !== null ) {
+          ele.alpha = alpha;
+          ele.inputEnabled = true
+          ele.events.onInputDown.add((sprite) => that.moveHere(sprite), that)
+        }
+      })
+
+    })
+
     that.selectedPiece.moveAdded = true;
   }
 }
