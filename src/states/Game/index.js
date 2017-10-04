@@ -91,13 +91,21 @@ export default class extends Phaser.State {
   }
 
   selectTargets(defenders) {
-    defenders.forEach(defender => {
-      this.target = this.game.add.image(defender.x, defender.y, 'target')
-      defender.events.onInputDown.add((defender) => this.attackPiece(defender), this)
+    this.targets = [];
+    defenders.forEach((defender, index) => {
+      let target = this.game.add.image(defender.x, defender.y, 'target')
+      this.targets.push(target);
+      defender.inputEnabled = true;
+      defender.events.onInputDown.add((defender) => {
+        this.attackPiece(defender)
+      }, this)
     })
   }
 
   attackPiece (defendingPiece) {
+    this.targets.forEach(target => {
+      target.destroy();
+    })
     this.selectedPiece
     this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2)
     defendingPiece.HP -= this.selectedPiece.AP

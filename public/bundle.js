@@ -11587,16 +11587,22 @@ var _class = function (_Phaser$State) {
     value: function selectTargets(defenders) {
       var _this4 = this;
 
-      defenders.forEach(function (defender) {
-        _this4.target = _this4.game.add.image(defender.x, defender.y, 'target');
+      this.targets = [];
+      defenders.forEach(function (defender, index) {
+        var target = _this4.game.add.image(defender.x, defender.y, 'target');
+        _this4.targets.push(target);
+        defender.inputEnabled = true;
         defender.events.onInputDown.add(function (defender) {
-          return _this4.attackPiece(defender);
+          _this4.attackPiece(defender);
         }, _this4);
       });
     }
   }, {
     key: 'attackPiece',
     value: function attackPiece(defendingPiece) {
+      this.targets.forEach(function (target) {
+        target.destroy();
+      });
       this.selectedPiece;
       this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2);
       defendingPiece.HP -= this.selectedPiece.AP;
