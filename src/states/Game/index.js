@@ -144,9 +144,10 @@ export default class extends Phaser.State {
         this.pieces[piece].destroy()
         delete this.pieces[piece]
       }
-      let style = { font: "30px Arial", fill: "#ffffff" }; 
+
+      //Update Health by Destroying Old Health and Rendering New
       this.pieces[piece].children[0].destroy() 
-      let newHealth = this.game.add.text(40, 40, this.pieces[piece].HP, style)
+      let newHealth = this.game.add.text(40, 40, this.pieces[piece].HP, this.healthStyle)
       this.pieces[piece].addChild(newHealth);
     }
     this.enterKey.onDown.add(this.endTurn, this);
