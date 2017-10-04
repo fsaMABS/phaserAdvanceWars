@@ -1,4 +1,5 @@
 node_modules/
+server/config.js
 dist/
 .vscode/
 *.log

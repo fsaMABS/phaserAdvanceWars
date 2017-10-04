@@ -3,14 +3,14 @@ import {checkType} from '../../levels/level1'
 import Block from '../../sprites/Block'
 import newGrid from '../../processMap'
 import easystarjs from 'easystarjs'
-var easystar = new easystarjs.js()
+var easystarz = new easystarjs.js()
 
 export const startingPieces = that => ({
   // NEED TO ADD TYPES TO THE NAME AT SOME POINT
   1: new Infantry({
     game: that.game,
-    x: 0,
-    y: 0,
+    x: 320,
+    y: 320,
     asset: 'infantry',
     width: 32,
     height: 32,
@@ -18,12 +18,13 @@ export const startingPieces = that => ({
     AP: 5,
     player: 1,
     id: 1,
-    mobility: 5
+    mobility: 5,
+    team: 'blue'
   }),
   2: new Infantry({
     game: that.game,
-    x: 64,
-    y: 0,
+    x: 320,
+    y: 320+32,
     asset: 'infantry',
     width: 32,
     height: 32,
@@ -31,8 +32,37 @@ export const startingPieces = that => ({
     AP: 5,
     player: 2,
     id: 2,
-    mobility: 5
-  })
+    mobility: 5,
+    team: 'blue'
+  }),
+  3: new Infantry({
+    game: that.game,
+    x: 64,
+    y: 32,
+    asset: 'infantry',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 5,
+    player: 2,
+    id: 2,
+    mobility: 5,
+    team: 'red'
+  }),
+  4: new Infantry({
+    game: that.game,
+    x: 32,
+    y: 32,
+    asset: 'infantry',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 5,
+    player: 2,
+    id: 2,
+    mobility: 5,
+    team: 'red'
+  }),
 })
 
 export const loadLevel = (that) => {
@@ -59,7 +89,7 @@ export const loadLevel = (that) => {
 
   var style = { font: '20px Arial', fill: '#fff' }
   that.game.add.text(410, 20, 'Player:', style)
-  that.currentPlayer = 1
+  that.currentPlayer = 'red'
   that.playerText = that.game.add.text(480, 20, that.currentPlayer, style)
   that.blocks = that.add.group()
 
@@ -76,24 +106,25 @@ export const loadLevel = (that) => {
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
   that.selectedPiece.moveAdded = false;
-  if (that.currentPlayer === that.selectedPiece.player) {
+  console.log('teamin showmoves', that.selectedPiece.team)
+  if (that.currentPlayer === that.selectedPiece.team) {
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
-    let childrenPromises = that.blocks.children.map((ele) => {
+    var childrenPromises = that.blocks.children.map((ele) => {
       if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < (32 * sprite.mobility)) {
         if (!(ele.x === sprite.x && ele.y === sprite.y)) {
           if (ele.type === 'land') {
-            easystar.setGrid(newGrid())
-            easystar.setAcceptableTiles([2]);
+            easystarz.setGrid(newGrid())
+            easystarz.setAcceptableTiles([2]);
             return new Promise((resolve, reject) => {
-              easystar.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {
+              easystarz.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {
                 if (path === null || (path.length > sprite.mobility)) {
                   resolve(null)
                 } else {
                   resolve(ele)
                 }
               });
-              easystar.calculate()
+              easystarz.calculate()
 
             })
           }
@@ -111,8 +142,11 @@ const showMoves = that => (sprite, event) => {
       elements.forEach((ele) => {
         if (ele !== null ) {
           ele.alpha = alpha;
-          ele.inputEnabled = inputEnabled
+          ele.inputEnabled = inputEnabled          
           ele.events.onInputDown.add((sprite) => that.moveHere(sprite), that)
+          if (ele.events.onInputDown._bindings.length > 1) {
+            ele.events.onInputDown._bindings.shift()            
+          }
         }
       })
 
@@ -121,4 +155,3 @@ const showMoves = that => (sprite, event) => {
     that.selectedPiece.moveAdded = true;
   }
 }
-

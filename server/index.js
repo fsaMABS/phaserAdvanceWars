@@ -1,3 +1,6 @@
+const firebase = require('firebase')
+const FIREBASE_CONFIG = require('./config').FIREBASE_CONFIG
+
 const socketCallback = io => socket => {
   console.log(`A socket connection to the server has been made: ${socket.id}`)
   socket.on('disconnect', () => {
@@ -20,7 +23,20 @@ const listenOptions = {
   socketCallback // off by default. supply a callback fn `socket => {socket.on('event', ()=>console.log('event'))}` to turn on
 }
 const server = require('swyx').server(middlewareOptions, listenOptions)
+
 const app = server.app
 app.get('/api', (req, res) => res.send('this is api route'))
 app.use(server.finalHandler) // optional error handling
 server.listen()
+
+firebase.initializeApp(FIREBASE_CONFIG);
+
+function writeUserData(userId, name, email, imageUrl) {
+  firebase.database().ref('players/' + userId).set({
+    username: name,
+    email: email,
+    profile_picture: imageUrl
+  });
+}
+
+writeUserData('1', 'Larry', 'larry@larry.com', 'url')
