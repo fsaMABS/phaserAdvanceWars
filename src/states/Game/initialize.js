@@ -19,8 +19,8 @@ export const startingPieces = that => ({
   }),
   2: new Infantry({
     game: that.game,
-    x: 64,
-    y: 0,
+    x: 0,
+    y: 64,
     asset: 'infantry',
     width: 32,
     height: 32,
@@ -28,7 +28,31 @@ export const startingPieces = that => ({
     AP: 5,
     player: 2,
     id: 2
-  })
+  }),
+  3: new Infantry({
+    game: that.game,
+    x: 64,
+    y: 0,
+    asset: 'infantry',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 5,
+    player: 1,
+    id: 3
+  }),
+  4: new Infantry({
+    game: that.game,
+    x: 64,
+    y: 64,
+    asset: 'infantry',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 5,
+    player: 2,
+    id: 4
+  }),
 })
 
 export const loadLevel = (that) => {
@@ -41,7 +65,7 @@ export const loadLevel = (that) => {
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);  
   that.attackButton = undefined;
   that.waitButton = undefined;
-  that.healthStyle = { font: "30px Arial", fill: "#ffffff" };  
+  that.healthStyle = { font: "15px Arial", fill: "black" };  
 
   that.pieces = startingPieces(that)
   
@@ -52,7 +76,8 @@ export const loadLevel = (that) => {
     added.events.onInputDown.add(showMoves(that), this)
     that.pieces[key] = added
     
-    let pieceHealth = that.game.add.text(40, 40, that.pieces[key].HP, that.healthStyle);
+    console.log(that.pieces[key])
+    let pieceHealth = that.game.add.text(10, 10, that.pieces[key].HP, that.healthStyle);
     that.pieces[key].addChild(pieceHealth);
   }
 
@@ -74,7 +99,6 @@ export const loadLevel = (that) => {
 
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
-  that.selectedPiece.moveAdded = false;
   if (that.currentPlayer === that.selectedPiece.player) {
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
@@ -84,13 +108,31 @@ const showMoves = that => (sprite, event) => {
           if (ele.type === 'land') {
             ele.alpha = alpha
             ele.inputEnabled = true
-            // ele.events.onInputDown.add(that.sendMoveMessage, {that, selectedPieceId: sprite.id})
-            if(!that.selectedPiece.moveAdded) ele.events.onInputDown.add((sprite) => that.moveHere(sprite), that)
+            ele.events.onInputDown.add((sprite) => that.moveHere(sprite), that)
+            //console.log('ele events after up', ele.events)
           }
         }
       }
     }, that)
-    that.selectedPiece.moveAdded = true;
   }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ele.events.onInputDown.add(that.sendMoveMessage, {that, selectedPieceId: sprite.id})

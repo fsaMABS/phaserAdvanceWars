@@ -24,6 +24,7 @@ export default class extends Phaser.State {
     this.currentPlayer = this.currentPlayer === 1 ? 2 : 1
     // ENABLE PIECES
     for (var key in this.pieces) {
+      this.pieces[key].alpha = 1.0;
       if (this.pieces[key].player === this.currentPlayer) this.pieces[key].inputEnabled = true
       else this.pieces[key].inputEnabled = false
     }
@@ -41,7 +42,6 @@ export default class extends Phaser.State {
   }
 
   moveHere (sprite) {
-    // console.log('SELECTED PIECE HERE', this.selectedPiece)
     this.blocks.children.forEach((ele) => {
       ele.alpha = 0
       ele.inputEnabled = false
@@ -49,21 +49,17 @@ export default class extends Phaser.State {
 
     if (this.selectedPiece.player === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece)
     
-      this.grid = []
+    this.grid = []
     for (var i = 0; i < 25; i++) {
       this.grid.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])	
     }
 
     easystar.setGrid(newGrid());
     easystar.setAcceptableTiles([2]);
-    console.log('before path', this.selectedPiece)
 
     //PROBLEM WITH EASY STAR ==> RUNNING ELSE STATEMENT TWICE FOR SAME PIECE, 
     // issue I think with it finding multiple pieces within that path and calling it for both
     easystar.findPath(this.selectedPiece.x/32, this.selectedPiece.y/32, sprite.x/32, sprite.y/32, ( path ) => {
-      if (path === null) {
-        alert("Path was not found.");
-      } else {
         this.changePosition = this.game.add.tween(this.selectedPiece)          
         for (var i = 0 ; i < path.length; i++) {
           var currCoords = path[i]
@@ -71,12 +67,10 @@ export default class extends Phaser.State {
         }
         this.changePosition.start()
         this.changePosition.onComplete.add(function () {
-          // this.changePosition.timeline = []
           this.sendMoveMessage(this.selectedPiece);
           this.checkForPieceOptions();
           this.disablePieceMovement(this.selectedPiece);
         }, this)
-      }
     });
     easystar.calculate() 
   }
@@ -132,7 +126,7 @@ export default class extends Phaser.State {
     this.disablePieceOptions();
     var style = { font: '20px Arial', fill: '#fff' }
     this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
-    this.time.events.add(100, () => {
+    this.time.events.add(1000, () => {
       this.turnEnded.destroy()
       this.togglePlayer()
     }, this.turnEnded);
@@ -158,7 +152,7 @@ export default class extends Phaser.State {
       
       //If piece is disabled, make it transparent --- but this turns off when it can't move
       //  so it looks disabled when the piece can still attack or what...
-      this.pieces[piece].alpha = this.pieces[piece].inputEnabled === false ? 0.7 : 1.0
+      //this.pieces[piece].alpha = this.pieces[piece].inputEnabled === false ? 0.7 : 1.0
     }
   }
 

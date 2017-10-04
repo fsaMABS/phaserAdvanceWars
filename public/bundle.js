@@ -4406,7 +4406,7 @@ function createGrid(mapName) {
     for (var i = 0; i < finaldata.length; i += gridWidth) {
         grid.push(finaldata.slice(i, i + gridWidth));
     }
-    console.log('grid', grid);
+    //console.log('grid', grid)
 
     return grid;
 }
@@ -8077,7 +8077,7 @@ module.exports = function(obj, fn){
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! babel-polyfill */153);
-module.exports = __webpack_require__(/*! /Users/abrarsher/Desktop/Fullstack/Senior/Capstone/phaserAdvanceWars/src/main.js */355);
+module.exports = __webpack_require__(/*! /Users/brianparrish/Documents/Fullstack/SeniorStage/capstone/backup/phaserAdvanceWars/src/main.js */355);
 
 
 /***/ }),
@@ -14484,7 +14484,7 @@ socket.on('connect', function () {
   socket.on('moveFromServer', function (obj) {
     // console.log('window.game', objc)
     console.log('obj.selectedPieceId', obj.selectedPieceId);
-    window.game.state.states.Game.moveHere(obj.sprite);
+    //window.game.state.states.Game.moveHere(obj.sprite)
   });
 });
 
@@ -14760,6 +14760,7 @@ var _class = function (_Phaser$State) {
       this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
       // ENABLE PIECES
       for (var key in this.pieces) {
+        this.pieces[key].alpha = 1.0;
         if (this.pieces[key].player === this.currentPlayer) this.pieces[key].inputEnabled = true;else this.pieces[key].inputEnabled = false;
       }
       this.playerText.text = this.currentPlayer;
@@ -14781,7 +14782,6 @@ var _class = function (_Phaser$State) {
     value: function moveHere(sprite) {
       var _this2 = this;
 
-      // console.log('SELECTED PIECE HERE', this.selectedPiece)
       this.blocks.children.forEach(function (ele) {
         ele.alpha = 0;
         ele.inputEnabled = false;
@@ -14796,27 +14796,21 @@ var _class = function (_Phaser$State) {
 
       easystar.setGrid((0, _processMap2.default)());
       easystar.setAcceptableTiles([2]);
-      console.log('before path', this.selectedPiece);
 
       //PROBLEM WITH EASY STAR ==> RUNNING ELSE STATEMENT TWICE FOR SAME PIECE, 
       // issue I think with it finding multiple pieces within that path and calling it for both
       easystar.findPath(this.selectedPiece.x / 32, this.selectedPiece.y / 32, sprite.x / 32, sprite.y / 32, function (path) {
-        if (path === null) {
-          alert("Path was not found.");
-        } else {
-          _this2.changePosition = _this2.game.add.tween(_this2.selectedPiece);
-          for (var i = 0; i < path.length; i++) {
-            var currCoords = path[i];
-            _this2.changePosition.to({ x: currCoords.x * 32, y: currCoords.y * 32 }, 150);
-          }
-          _this2.changePosition.start();
-          _this2.changePosition.onComplete.add(function () {
-            // this.changePosition.timeline = []
-            this.sendMoveMessage(this.selectedPiece);
-            this.checkForPieceOptions();
-            this.disablePieceMovement(this.selectedPiece);
-          }, _this2);
+        _this2.changePosition = _this2.game.add.tween(_this2.selectedPiece);
+        for (var i = 0; i < path.length; i++) {
+          var currCoords = path[i];
+          _this2.changePosition.to({ x: currCoords.x * 32, y: currCoords.y * 32 }, 150);
         }
+        _this2.changePosition.start();
+        _this2.changePosition.onComplete.add(function () {
+          this.sendMoveMessage(this.selectedPiece);
+          this.checkForPieceOptions();
+          this.disablePieceMovement(this.selectedPiece);
+        }, _this2);
       });
       easystar.calculate();
     }
@@ -14885,7 +14879,7 @@ var _class = function (_Phaser$State) {
       this.disablePieceOptions();
       var style = { font: '20px Arial', fill: '#fff' };
       this.turnEnded = this.game.add.text(this.game.world.centerX - 32, this.game.world.centerY - 32, "Turn Ended", style);
-      this.time.events.add(100, function () {
+      this.time.events.add(1000, function () {
         _this4.turnEnded.destroy();
         _this4.togglePlayer();
       }, this.turnEnded);
@@ -14911,7 +14905,7 @@ var _class = function (_Phaser$State) {
 
         //If piece is disabled, make it transparent --- but this turns off when it can't move
         //  so it looks disabled when the piece can still attack or what...
-        this.pieces[piece].alpha = this.pieces[piece].inputEnabled === false ? 0.7 : 1.0;
+        //this.pieces[piece].alpha = this.pieces[piece].inputEnabled === false ? 0.7 : 1.0
       }
     }
   }, {
@@ -16003,8 +15997,8 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
     }),
     2: new _Infantry2.default({
       game: that.game,
-      x: 64,
-      y: 0,
+      x: 0,
+      y: 64,
       asset: 'infantry',
       width: 32,
       height: 32,
@@ -16012,6 +16006,30 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
       AP: 5,
       player: 2,
       id: 2
+    }),
+    3: new _Infantry2.default({
+      game: that.game,
+      x: 64,
+      y: 0,
+      asset: 'infantry',
+      width: 32,
+      height: 32,
+      HP: 10,
+      AP: 5,
+      player: 1,
+      id: 3
+    }),
+    4: new _Infantry2.default({
+      game: that.game,
+      x: 64,
+      y: 64,
+      asset: 'infantry',
+      width: 32,
+      height: 32,
+      HP: 10,
+      AP: 5,
+      player: 2,
+      id: 4
     })
   };
 };
@@ -16026,7 +16044,7 @@ var loadLevel = exports.loadLevel = function loadLevel(that) {
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
   that.attackButton = undefined;
   that.waitButton = undefined;
-  that.healthStyle = { font: "30px Arial", fill: "#ffffff" };
+  that.healthStyle = { font: "15px Arial", fill: "black" };
 
   that.pieces = startingPieces(that);
 
@@ -16037,7 +16055,8 @@ var loadLevel = exports.loadLevel = function loadLevel(that) {
     added.events.onInputDown.add(showMoves(that), undefined);
     that.pieces[key] = added;
 
-    var pieceHealth = that.game.add.text(40, 40, that.pieces[key].HP, that.healthStyle);
+    console.log(that.pieces[key]);
+    var pieceHealth = that.game.add.text(10, 10, that.pieces[key].HP, that.healthStyle);
     that.pieces[key].addChild(pieceHealth);
   }
 
@@ -16060,7 +16079,6 @@ var loadLevel = exports.loadLevel = function loadLevel(that) {
 var showMoves = function showMoves(that) {
   return function (sprite, event) {
     that.selectedPiece = sprite;
-    that.selectedPiece.moveAdded = false;
     if (that.currentPlayer === that.selectedPiece.player) {
       that.showingBlue = !that.showingBlue;
       var alpha = that.showingBlue ? 0.5 : 0;
@@ -16070,18 +16088,19 @@ var showMoves = function showMoves(that) {
             if (ele.type === 'land') {
               ele.alpha = alpha;
               ele.inputEnabled = true;
-              // ele.events.onInputDown.add(that.sendMoveMessage, {that, selectedPieceId: sprite.id})
-              if (!that.selectedPiece.moveAdded) ele.events.onInputDown.add(function (sprite) {
+              ele.events.onInputDown.add(function (sprite) {
                 return that.moveHere(sprite);
               }, that);
+              //console.log('ele events after up', ele.events)
             }
           }
         }
       }, that);
-      that.selectedPiece.moveAdded = true;
     }
   };
 };
+
+// ele.events.onInputDown.add(that.sendMoveMessage, {that, selectedPieceId: sprite.id})
 
 /***/ }),
 /* 370 */
