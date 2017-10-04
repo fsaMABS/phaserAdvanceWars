@@ -14788,12 +14788,12 @@ var _class = function (_Phaser$State) {
       for (var key in this.pieces) {
         console.log('HP of ' + key, this.pieces[key].HP);
       }
+      this.selectedPiece.alpha = 0.7;
       this.disablePieceOptions();
     }
   }, {
     key: 'disablePieceMovement',
     value: function disablePieceMovement(piece) {
-      console.log('inside disable piece', this.selectedPiece);
       piece.inputEnabled = false;
     }
   }, {
@@ -14806,7 +14806,7 @@ var _class = function (_Phaser$State) {
     key: 'wait',
     value: function wait() {
       this.waitButton.pendingDestroy = true;
-      console.log('Waiting...');
+      this.selectedPiece.alpha = 0.7;
       this.disablePieceOptions();
     }
   }, {
@@ -14826,18 +14826,26 @@ var _class = function (_Phaser$State) {
   }, {
     key: 'update',
     value: function update() {
-      // DESTROY PIECE FROM OBJECT IF HEALTH GONE
+      this.enterKey.onDown.add(this.endTurn, this);
+
+      //ALL PIECE UPDATES
       for (var piece in this.pieces) {
+        //If dead: destroy it
         if (this.pieces[piece].HP <= 0) {
           this.pieces[piece].destroy();
           delete this.pieces[piece];
         }
-        var style = { font: "30px Arial", fill: "#ffffff" };
-        this.pieces[piece].children[0].destroy();
-        var newHealth = this.game.add.text(40, 40, this.pieces[piece].HP, style);
-        this.pieces[piece].addChild(newHealth);
+        //Else: Update Health by Destroying Old Health and Rendering New
+        else {
+            this.pieces[piece].children[0].destroy();
+            var newHealth = this.game.add.text(40, 40, this.pieces[piece].HP, this.healthStyle);
+            this.pieces[piece].addChild(newHealth);
+          }
+
+        //If piece is disabled, make it transparent --- but this turns off when it can't move
+        //  so it looks disabled when the piece can still attack or what...
+        this.pieces[piece].alpha = this.pieces[piece].inputEnabled === false ? 0.7 : 1.0;
       }
-      this.enterKey.onDown.add(this.endTurn, this);
     }
   }, {
     key: 'render',
@@ -15945,6 +15953,7 @@ var loadLevel = exports.loadLevel = function loadLevel(that) {
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
   that.attackButton = undefined;
   that.waitButton = undefined;
+  that.healthStyle = { font: "30px Arial", fill: "#ffffff" };
 
   that.pieces = startingPieces(that);
 
@@ -15955,8 +15964,7 @@ var loadLevel = exports.loadLevel = function loadLevel(that) {
     added.events.onInputDown.add(showMoves(that), undefined);
     that.pieces[key] = added;
 
-    var _style = { font: "30px Arial", fill: "#ffffff" };
-    var pieceHealth = that.game.add.text(40, 40, that.pieces[key].HP, _style);
+    var pieceHealth = that.game.add.text(40, 40, that.pieces[key].HP, that.healthStyle);
     that.pieces[key].addChild(pieceHealth);
   }
 

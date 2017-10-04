@@ -106,11 +106,11 @@ export default class extends Phaser.State {
     for (var key in this.pieces) {
       console.log('HP of ' + key, this.pieces[key].HP)
     }
+    this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
   }
 
   disablePieceMovement(piece) {
-    console.log('inside disable piece', this.selectedPiece);
     piece.inputEnabled = false;
   }
 
@@ -121,7 +121,7 @@ export default class extends Phaser.State {
 
   wait() {
     this.waitButton.pendingDestroy = true;
-    console.log('Waiting...')
+    this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
   }
 
@@ -138,19 +138,26 @@ export default class extends Phaser.State {
 
 
   update () {
-    // DESTROY PIECE FROM OBJECT IF HEALTH GONE
+    this.enterKey.onDown.add(this.endTurn, this);
+
+    //ALL PIECE UPDATES
     for (var piece in this.pieces) {
+      //If dead: destroy it
       if (this.pieces[piece].HP <= 0) {
         this.pieces[piece].destroy()
         delete this.pieces[piece]
       }
-
-      //Update Health by Destroying Old Health and Rendering New
-      this.pieces[piece].children[0].destroy() 
-      let newHealth = this.game.add.text(40, 40, this.pieces[piece].HP, this.healthStyle)
-      this.pieces[piece].addChild(newHealth);
+      //Else: Update Health by Destroying Old Health and Rendering New
+      else {
+        this.pieces[piece].children[0].destroy() 
+        let newHealth = this.game.add.text(40, 40, this.pieces[piece].HP, this.healthStyle)
+        this.pieces[piece].addChild(newHealth);
+      }
+      
+      //If piece is disabled, make it transparent --- but this turns off when it can't move
+      //  so it looks disabled when the piece can still attack or what...
+      this.pieces[piece].alpha = this.pieces[piece].inputEnabled === false ? 0.7 : 1.0
     }
-    this.enterKey.onDown.add(this.endTurn, this);
   }
 
   render () {
