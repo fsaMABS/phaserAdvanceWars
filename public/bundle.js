@@ -11200,7 +11200,7 @@ var _Game = __webpack_require__(/*! ./states/Game */ 342);
 
 var _Game2 = _interopRequireDefault(_Game);
 
-var _config = __webpack_require__(/*! ./config */ 351);
+var _config = __webpack_require__(/*! ./config */ 350);
 
 var _config2 = _interopRequireDefault(_config);
 
@@ -12139,7 +12139,7 @@ var _Infantry = __webpack_require__(/*! ../../sprites/Infantry */ 348);
 
 var _Infantry2 = _interopRequireDefault(_Infantry);
 
-var _Block = __webpack_require__(/*! ../../sprites/Block */ 350);
+var _Block = __webpack_require__(/*! ../../sprites/Block */ 349);
 
 var _Block2 = _interopRequireDefault(_Block);
 
@@ -12381,8 +12381,7 @@ var _class = function (_Phaser$Sprite) {
 exports.default = _class;
 
 /***/ }),
-/* 349 */,
-/* 350 */
+/* 349 */
 /*!******************************!*\
   !*** ./src/sprites/Block.js ***!
   \******************************/
@@ -12455,7 +12454,7 @@ var _class = function (_Phaser$Sprite) {
 exports.default = _class;
 
 /***/ }),
-/* 351 */
+/* 350 */
 /*!***********************!*\
   !*** ./src/config.js ***!
   \***********************/
