@@ -23,16 +23,11 @@ export default class extends Phaser.State {
   togglePlayer () {
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
     // ENABLE PIECES
-    console.log('this current player in togle', this.currentPlayer)
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0;
-      console.log('currplay', this.currentPlayer)
-      console.log('actualplayer', this.pieces[key].player )
-      if (this.pieces[key].team === this.currentPlayer) {
-        console.log('im setting ', this.pieces[key].id, 'to true')        
+      if (this.pieces[key].team === this.currentPlayer) {    
         this.pieces[key].inputEnabled = true
       } else {
-        console.log('im setting ', this.pieces[key].id, 'to false')
         this.pieces[key].inputEnabled = false
       }
     }
@@ -49,11 +44,9 @@ export default class extends Phaser.State {
       ele.alpha = 0
       ele.inputEnabled = false
     }, this)
-    console.log('pieceteam',this.selectedPiece.team)
     
     if (this.selectedPiece.team === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece)
     easystar.findPath(this.selectedPiece.x/32, this.selectedPiece.y/32, sprite.x/32, sprite.y/32, ( path ) => {
-      console.log('pathhhh', path)
       this.changePosition = this.game.add.tween(this.selectedPiece)          
       for (var i = 0 ; i < path.length; i++) {
         var currCoords = path[i]
@@ -71,22 +64,37 @@ export default class extends Phaser.State {
   }
 
   checkForPieceOptions() {
+    let defenders = [];
     for(var key in this.pieces) {
       if(this.pieces[key] !== this.selectedPiece) {
         let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
         let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
         if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
-          let defender = this.pieces[key]
-          if(!this.attackButton || !this.attackButton.alive) {
-            this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+99, 'fireSprite', 
-              () => this.attackPiece(defender), this, 2, 1, 0);
-          }
+          defenders.push(this.pieces[key]);
         }
       }
     }
+    console.log('defenders', defenders.length)
+    if(!this.attackButton || !this.attackButton.alive) {
+      if(defenders.length === 1) {
+        this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+99, 'fireSprite', 
+          () => this.attackPiece(defenders[0]), this, 2, 1, 0);
+      }
+      else if(defenders.length > 1) {
+        this.selectTargets(defenders)
+      }
+    }
+
     if(!this.waitButton || !this.waitButton.alive) {
       this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+64, 'waitSprite', this.wait, this, 2, 1, 0);
     }
+  }
+
+  selectTargets(defenders) {
+    defenders.forEach(defender => {
+      this.target = this.game.add.image(defender.x, defender.y, 'target')
+      defender.events.onInputDown.add((defender) => this.attackPiece(defender), this)
+    })
   }
 
   attackPiece (defendingPiece) {

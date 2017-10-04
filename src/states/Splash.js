@@ -16,6 +16,7 @@ export default class extends Phaser.State {
     this.load.image('infantry', 'assets/images/infantry.png')
     this.load.image('waitSprite', 'assets/images/wait.png')
     this.load.image('fireSprite', 'assets/images/fireSprite.png')
+    this.load.image('target', 'assets/images/defenderTarget.png');
     this.load.tilemap('map', 'assets/js/secondMap.json', null, Phaser.Tilemap.TILED_JSON)
     this.load.image('basicMap', 'assets/images/basicMap.png')
     this.load.image('greenSquare', 'assets/images/greenSquare.jpeg')
