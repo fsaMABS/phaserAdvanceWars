@@ -15208,6 +15208,8 @@ var _class = function (_Phaser$State) {
       // load your assets
       //
       this.load.image('infantry', 'assets/images/infantry.png');
+      this.load.image('waitSprite', 'assets/images/wait.png');
+      this.load.image('fireSprite', 'assets/images/fireSprite.png');
       this.load.tilemap('map', 'assets/js/secondMap.json', null, _phaser2.default.Tilemap.TILED_JSON);
       this.load.image('basicMap', 'assets/images/basicMap.png');
       this.load.image('greenSquare', 'assets/images/greenSquare.jpeg');
@@ -15383,7 +15385,7 @@ var _class = function (_Phaser$State) {
             (function () {
               var defender = _this3.pieces[key];
               if (!_this3.attackButton || !_this3.attackButton.alive) {
-                _this3.attackButton = _this3.game.add.button(_this3.game.world.centerX - 64, _this3.game.world.centerY, 'mushroom', function () {
+                _this3.attackButton = _this3.game.add.button(_this3.selectedPiece.x, _this3.selectedPiece.y + 99, 'fireSprite', function () {
                   return _this3.attackPiece(defender);
                 }, _this3, 2, 1, 0);
               }
@@ -15392,7 +15394,7 @@ var _class = function (_Phaser$State) {
         }
       }
       if (!this.waitButton || !this.waitButton.alive) {
-        this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+        this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'waitSprite', this.wait, this, 2, 1, 0);
       }
     }
   }, {
