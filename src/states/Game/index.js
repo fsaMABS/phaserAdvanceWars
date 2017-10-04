@@ -23,45 +23,43 @@ export default class extends Phaser.State {
     // ENABLE PIECES
     for (var key in this.pieces) {
       if (this.pieces[key].player === this.currentPlayer) this.pieces[key].inputEnabled = true
+      else this.pieces[key].inputEnabled = false
     }
     this.playerText.text = this.currentPlayer
   }
   sendMoveMessage (sprite) {
-    //console.log('BEFORE: ', this.selectedPieceId)
     if (this.showingBlue) {
       socket.emit('moveFromClient', {
         currentPlayer: this.currentPlayer,
         sprite: {x: sprite.x, y: sprite.y},
-        selectedPieceId: this.selectedPiece.id
+        selectedPieceId: sprite.id
       })
       this.showingBlue = false
     }
   }
 
   moveHere (sprite) {
-    // set selectedPiece
-    // console.log('RIGHT PIECE?', this.sprite === this.selectedPiece);
-    //console.log('AFTER (WRONG?): ', selectedPieceId)
-    // this.selectedPiece = this.pieces[+selectedPieceId]
-    // console.log('Selected Piece', this.selectedPiece, selectedPieceId)
-    // janky fix for togglePlayer() running too early
-    let attackPrompted = false
-
+    // console.log('SELECTED PIECE HERE', this.selectedPiece)
     this.blocks.children.forEach((ele) => {
       ele.alpha = 0
       ele.inputEnabled = false
     }, this)
 
     if (this.selectedPiece.player === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece)
-    this.grid = []
+    
+      this.grid = []
     for (var i = 0; i < 10; i++) {
       this.grid.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,])	
     }
-    console.log('HERE: ', this.selectedPiece)
 
     easystar.setGrid(this.grid);
     easystar.setAcceptableTiles([0]);
+    console.log('before path', this.selectedPiece)
+
+    //PROBLEM WITH EASY STAR ==> RUNNING ELSE STATEMENT TWICE FOR SAME PIECE, 
+    // issue I think with it finding multiple pieces within that path and calling it for both
     easystar.findPath(this.selectedPiece.x/32, this.selectedPiece.y/32, sprite.x/32, sprite.y/32, ( path ) => {
+      console.log('after path', this.selectedPiece)
       if (path === null) {
         alert("Path was not found.");
       } else {
@@ -74,8 +72,8 @@ export default class extends Phaser.State {
         this.changePosition.onComplete.add(function () {
           // this.changePosition.timeline = []
           this.sendMoveMessage(this.selectedPiece);
-          this.disablePieceMovement(this.selectedPiece);
           this.checkForPieceOptions();
+          this.disablePieceMovement(this.selectedPiece);
         }, this)
       }
     });
@@ -119,7 +117,7 @@ export default class extends Phaser.State {
   }
 
   wait() {
-    //this.waitButton.pendingDestroy = true;
+    this.waitButton.pendingDestroy = true;
     console.log('Waiting...')
     this.disablePieceOptions();
   }
@@ -131,7 +129,6 @@ export default class extends Phaser.State {
     this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
     this.time.events.add(100, () => {
       this.turnEnded.destroy()
-      //disable any buttons that may have popped up
       this.togglePlayer()
     }, this.turnEnded);
   }
