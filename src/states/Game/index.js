@@ -26,6 +26,7 @@ export default class extends Phaser.State {
     this.currentPlayer = this.currentPlayer === 1 ? 2 : 1
     // ENABLE PIECES
     for (var key in this.pieces) {
+      this.pieces[key].alpha = 1.0;
       if (this.pieces[key].player === this.currentPlayer) this.pieces[key].inputEnabled = true
       else this.pieces[key].inputEnabled = false
     }
@@ -143,7 +144,6 @@ export default class extends Phaser.State {
       
       //If piece is disabled, make it transparent --- but this turns off when it can't move
       //  so it looks disabled when the piece can still attack or what...
-      this.pieces[piece].alpha = this.pieces[piece].inputEnabled === false ? 0.7 : 1.0
     }
   }
 
