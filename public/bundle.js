@@ -12139,8 +12139,6 @@ var _Infantry = __webpack_require__(/*! ../../sprites/Infantry */ 348);
 
 var _Infantry2 = _interopRequireDefault(_Infantry);
 
-var _level = __webpack_require__(/*! ../../levels/level1 */ 349);
-
 var _Block = __webpack_require__(/*! ../../sprites/Block */ 350);
 
 var _Block2 = _interopRequireDefault(_Block);
@@ -12249,8 +12247,7 @@ var loadLevel = exports.loadLevel = function loadLevel(that) {
 
   for (var i = 0; i < 3000; i = i + 32) {
     for (var j = 0; j < 3000; j = j + 32) {
-      var type = (0, _level.checkType)(i, j);
-      var block = new _Block2.default(i, j, 'blueSquare', 32, 32, type);
+      var block = new _Block2.default(i, j, 'blueSquare', 32, 32);
       block.alpha = 0.0;
       that.blocks.add(block);
     }
@@ -12261,27 +12258,24 @@ var showMoves = function showMoves(that) {
   return function (sprite, event) {
     that.selectedPiece = sprite;
     that.selectedPiece.moveAdded = false;
-    console.log('teamin showmoves', that.selectedPiece.team);
     if (that.currentPlayer === that.selectedPiece.team) {
       that.showingBlue = !that.showingBlue;
       var alpha = that.showingBlue ? 0.5 : 0;
       var childrenPromises = that.blocks.children.map(function (ele) {
         if (Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * sprite.mobility) {
           if (!(ele.x === sprite.x && ele.y === sprite.y)) {
-            if (ele.type === 'land') {
-              easystarz.setGrid((0, _processMap2.default)());
-              easystarz.setAcceptableTiles([2]);
-              return new Promise(function (resolve, reject) {
-                easystarz.findPath(sprite.x / 32, sprite.y / 32, ele.x / 32, ele.y / 32, function (path) {
-                  if (path === null || path.length > sprite.mobility) {
-                    resolve(null);
-                  } else {
-                    resolve(ele);
-                  }
-                });
-                easystarz.calculate();
+            easystarz.setGrid((0, _processMap2.default)());
+            easystarz.setAcceptableTiles([2]);
+            return new Promise(function (resolve, reject) {
+              easystarz.findPath(sprite.x / 32, sprite.y / 32, ele.x / 32, ele.y / 32, function (path) {
+                if (path === null || path.length > sprite.mobility) {
+                  resolve(null);
+                } else {
+                  resolve(ele);
+                }
               });
-            }
+              easystarz.calculate();
+            });
           }
         }
       }, that).filter(function (x) {
@@ -12387,61 +12381,7 @@ var _class = function (_Phaser$Sprite) {
 exports.default = _class;
 
 /***/ }),
-/* 349 */
-/*!******************************!*\
-  !*** ./src/levels/level1.js ***!
-  \******************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
-var waterCoords = [];
-
-var treeCoords = [];
-
-var mountainCoords = [[]];
-var checkType = exports.checkType = function checkType(x, y) {
-  var type = 'land';
-  waterCoords.forEach(function (ele) {
-    var _ele = _slicedToArray(ele, 2),
-        eleX = _ele[0],
-        eleY = _ele[1];
-
-    if (x === eleX && y === eleY) {
-      type = 'water';
-    }
-  });
-  treeCoords.forEach(function (ele) {
-    var _ele2 = _slicedToArray(ele, 2),
-        eleX = _ele2[0],
-        eleY = _ele2[1];
-
-    if (x === eleX && y === eleY) {
-      type = 'tree';
-    }
-  });
-  mountainCoords.forEach(function (ele) {
-    var _ele3 = _slicedToArray(ele, 2),
-        eleX = _ele3[0],
-        eleY = _ele3[1];
-
-    if (x === eleX && y === eleY) {
-      type = 'mountain';
-    }
-  });
-  return type;
-};
-
-/***/ }),
+/* 349 */,
 /* 350 */
 /*!******************************!*\
   !*** ./src/sprites/Block.js ***!

@@ -1,5 +1,4 @@
 import Infantry from '../../sprites/Infantry'
-import {checkType} from '../../levels/level1'
 import Block from '../../sprites/Block'
 import newGrid from '../../processMap'
 import easystarjs from 'easystarjs'
@@ -95,8 +94,7 @@ export const loadLevel = (that) => {
 
   for (var i = 0; i < 3000; i = i + 32) {
     for (var j = 0; j < 3000; j = j + 32) {
-      var type = checkType(i, j)
-      var block = new Block(i, j, 'blueSquare', 32, 32, type)
+      var block = new Block(i, j, 'blueSquare', 32, 32)
       block.alpha = 0.0
       that.blocks.add(block)
     }
@@ -106,14 +104,12 @@ export const loadLevel = (that) => {
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
   that.selectedPiece.moveAdded = false;
-  console.log('teamin showmoves', that.selectedPiece.team)
   if (that.currentPlayer === that.selectedPiece.team) {
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
     var childrenPromises = that.blocks.children.map((ele) => {
       if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < (32 * sprite.mobility)) {
         if (!(ele.x === sprite.x && ele.y === sprite.y)) {
-          if (ele.type === 'land') {
             easystarz.setGrid(newGrid())
             easystarz.setAcceptableTiles([2]);
             return new Promise((resolve, reject) => {
@@ -127,7 +123,6 @@ const showMoves = that => (sprite, event) => {
               easystarz.calculate()
 
             })
-          }
         }
       }
     }, that)
