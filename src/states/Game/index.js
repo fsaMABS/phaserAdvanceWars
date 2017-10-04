@@ -78,14 +78,14 @@ export default class extends Phaser.State {
         if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
           let defender = this.pieces[key]
           if(!this.attackButton || !this.attackButton.alive) {
-            this.attackButton = this.game.add.button(this.game.world.centerX-64, this.game.world.centerY, 'mushroom', 
+            this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+99, 'fireSprite', 
               () => this.attackPiece(defender), this, 2, 1, 0);
           }
         }
       }
     }
     if(!this.waitButton || !this.waitButton.alive) {
-      this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+64, 'waitSprite', this.wait, this, 2, 1, 0);
     }
   }
 
