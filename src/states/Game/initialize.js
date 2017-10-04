@@ -103,10 +103,15 @@ const showMoves = that => (sprite, event) => {
       .filter(x => !!x)
 
     Promise.all(childrenPromises).then(elements => {
+      if (that.showingBlue) {
+        var inputEnabled = true
+      } else {
+        var inputEnabled = false
+      }
       elements.forEach((ele) => {
         if (ele !== null ) {
           ele.alpha = alpha;
-          ele.inputEnabled = true
+          ele.inputEnabled = inputEnabled
           ele.events.onInputDown.add((sprite) => that.moveHere(sprite), that)
         }
       })
