@@ -41,14 +41,18 @@ export const loadLevel = (that) => {
   that.waitButton = undefined;
 
   that.pieces = startingPieces(that)
-
+  
   for (var key in that.pieces) {
     let current = that.pieces[key]
     let added = that.game.world.add(current)
     added.inputEnabled = true
     added.events.onInputDown.add(showMoves(that), this)
     that.pieces[key] = added
-    console.log(that.pieces[key].position)
+    
+    
+    let style = { font: "30px Arial", fill: "#ffffff" };  
+    let pieceHealth = that.game.add.text(40, 40, that.pieces[key].HP, style);
+    that.pieces[key].addChild(pieceHealth);
   }
 
   var style = { font: '20px Arial', fill: '#fff' }
@@ -69,6 +73,7 @@ export const loadLevel = (that) => {
 
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
+  that.selectedPiece.moveAdded = false;
   if (that.currentPlayer === that.selectedPiece.player) {
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
@@ -79,11 +84,12 @@ const showMoves = that => (sprite, event) => {
             ele.alpha = alpha
             ele.inputEnabled = true
             // ele.events.onInputDown.add(that.sendMoveMessage, {that, selectedPieceId: sprite.id})
-            ele.events.onInputDown.add((sprite) => that.moveHere(sprite), that)
+            if(!that.selectedPiece.moveAdded) ele.events.onInputDown.add((sprite) => that.moveHere(sprite), that)
           }
         }
       }
     }, that)
+    that.selectedPiece.moveAdded = true;
   }
 }
 
