@@ -61,7 +61,6 @@ export default class extends Phaser.State {
     //PROBLEM WITH EASY STAR ==> RUNNING ELSE STATEMENT TWICE FOR SAME PIECE, 
     // issue I think with it finding multiple pieces within that path and calling it for both
     easystar.findPath(this.selectedPiece.x/32, this.selectedPiece.y/32, sprite.x/32, sprite.y/32, ( path ) => {
-      console.log('after path', this.selectedPiece)
       if (path === null) {
         alert("Path was not found.");
       } else {
@@ -89,16 +88,19 @@ export default class extends Phaser.State {
         let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
         if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
           let defender = this.pieces[key]
-          this.attackButton = this.game.add.button(this.game.world.centerX-64, this.game.world.centerY, 'infantry', 
-            () => this.attackPiece(defender), this, 2, 1, 0);
+          if(!this.attackButton || !this.attackButton.alive) {
+            this.attackButton = this.game.add.button(this.game.world.centerX-64, this.game.world.centerY, 'mushroom', 
+              () => this.attackPiece(defender), this, 2, 1, 0);
+          }
         }
       }
     }
-    this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'infantry', this.wait, this, 2, 1, 0);
+    if(!this.waitButton || !this.waitButton.alive) {
+      this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+    }
   }
 
   attackPiece (defendingPiece) {
-    //this.attackButton.pendingDestroy = true
     this.selectedPiece
     this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2)
     defendingPiece.HP -= this.selectedPiece.AP
@@ -106,6 +108,7 @@ export default class extends Phaser.State {
     for (var key in this.pieces) {
       console.log('HP of ' + key, this.pieces[key].HP)
     }
+    this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
   }
 
@@ -120,7 +123,7 @@ export default class extends Phaser.State {
 
   wait() {
     this.waitButton.pendingDestroy = true;
-    console.log('Waiting...')
+    this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
   }
 
@@ -137,14 +140,26 @@ export default class extends Phaser.State {
 
 
   update () {
-    // DESTROY PIECE FROM OBJECT IF HEALTH GONE
+    this.enterKey.onDown.add(this.endTurn, this);
+
+    //ALL PIECE UPDATES
     for (var piece in this.pieces) {
+      //If dead: destroy it
       if (this.pieces[piece].HP <= 0) {
         this.pieces[piece].destroy()
         delete this.pieces[piece]
       }
+      //Else: Update Health by Destroying Old Health and Rendering New
+      else {
+        this.pieces[piece].children[0].destroy() 
+        let newHealth = this.game.add.text(40, 40, this.pieces[piece].HP, this.healthStyle)
+        this.pieces[piece].addChild(newHealth);
+      }
+      
+      //If piece is disabled, make it transparent --- but this turns off when it can't move
+      //  so it looks disabled when the piece can still attack or what...
+      this.pieces[piece].alpha = this.pieces[piece].inputEnabled === false ? 0.7 : 1.0
     }
-    this.enterKey.onDown.add(this.endTurn, this);
   }
 
   render () {
