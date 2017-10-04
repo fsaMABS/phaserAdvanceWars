@@ -47,6 +47,7 @@ export default class extends Phaser.State {
       ele.alpha = 0
       ele.inputEnabled = false
     }, this)
+    
     if (this.selectedPiece.player === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece)
     easystar.findPath(this.selectedPiece.x/32, this.selectedPiece.y/32, sprite.x/32, sprite.y/32, ( path ) => {
       this.changePosition = this.game.add.tween(this.selectedPiece)          
