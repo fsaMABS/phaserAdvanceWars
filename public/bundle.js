@@ -8034,7 +8034,7 @@ module.exports = function(obj, fn){
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! babel-polyfill */152);
-module.exports = __webpack_require__(/*! /Users/brianparrish/Documents/Fullstack/SeniorStage/capstone/backup/phaserAdvanceWars/src/main.js */354);
+module.exports = __webpack_require__(/*! /Users/abrarsher/Desktop/Fullstack/Senior/Capstone/phaserAdvanceWars/src/main.js */354);
 
 
 /***/ }),
@@ -14376,6 +14376,10 @@ var _phaser = __webpack_require__(/*! phaser */ 43);
 
 var _phaser2 = _interopRequireDefault(_phaser);
 
+var _processMap = __webpack_require__(/*! ./processMap */ 398);
+
+var _processMap2 = _interopRequireDefault(_processMap);
+
 var _Boot = __webpack_require__(/*! ./states/Boot */ 358);
 
 var _Boot2 = _interopRequireDefault(_Boot);
@@ -14403,6 +14407,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+(0, _processMap2.default)();
 
 var socket = (0, _socket2.default)(window.location.origin);
 
@@ -14582,11 +14588,13 @@ var _class = function (_Phaser$State) {
       //
       // load your assets
       //
-      this.load.image('mushroom', 'assets/images/mushroom2.png');
+      this.load.image('infantry', 'assets/images/infantry.png');
       this.load.tilemap('map', 'assets/js/secondMap.json', null, _phaser2.default.Tilemap.TILED_JSON);
       this.load.image('basicMap', 'assets/images/basicMap.png');
       this.load.image('greenSquare', 'assets/images/greenSquare.jpeg');
       this.load.image('blueSquare', 'assets/images/blueSquare.jpg');
+      this.load.image('aw1Map', 'assets/images/aw1.bmp');
+      // this.load.image('infantry')
     }
   }, {
     key: 'create',
@@ -14653,6 +14661,10 @@ var _socket = __webpack_require__(/*! socket.io-client */ 139);
 
 var _socket2 = _interopRequireDefault(_socket);
 
+var _processMap = __webpack_require__(/*! ../../processMap */ 398);
+
+var _processMap2 = _interopRequireDefault(_processMap);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -14662,6 +14674,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* globals __DEV__ */
 
 
+console.log('grid in iintilize ', (0, _processMap2.default)());
 // var easystarjs = require('easystarjs')
 var easystar = new _easystarjs2.default.js();
 
@@ -14723,12 +14736,12 @@ var _class = function (_Phaser$State) {
       if (this.selectedPiece.player === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece);
 
       this.grid = [];
-      for (var i = 0; i < 10; i++) {
-        this.grid.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+      for (var i = 0; i < 25; i++) {
+        this.grid.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
       }
 
-      easystar.setGrid(this.grid);
-      easystar.setAcceptableTiles([0]);
+      easystar.setGrid((0, _processMap2.default)());
+      easystar.setAcceptableTiles([2]);
       console.log('before path', this.selectedPiece);
 
       //PROBLEM WITH EASY STAR ==> RUNNING ELSE STATEMENT TWICE FOR SAME PIECE, 
@@ -14766,14 +14779,14 @@ var _class = function (_Phaser$State) {
           if (diffX === 32 && diffY === 0 || diffX === 0 && diffY === 32) {
             (function () {
               var defender = _this3.pieces[key];
-              _this3.attackButton = _this3.game.add.button(_this3.game.world.centerX - 64, _this3.game.world.centerY, 'mushroom', function () {
+              _this3.attackButton = _this3.game.add.button(_this3.game.world.centerX - 64, _this3.game.world.centerY, 'infantry', function () {
                 return _this3.attackPiece(defender);
               }, _this3, 2, 1, 0);
             })();
           }
         }
       }
-      this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+      this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'infantry', this.wait, this, 2, 1, 0);
     }
   }, {
     key: 'attackPiece',
@@ -15897,16 +15910,21 @@ var _Block = __webpack_require__(/*! ../../sprites/Block */ 370);
 
 var _Block2 = _interopRequireDefault(_Block);
 
+var _processMap = __webpack_require__(/*! ../../processMap */ 398);
+
+var _processMap2 = _interopRequireDefault(_processMap);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+console.log('grid in iintilize ', (0, _processMap2.default)());
 var startingPieces = exports.startingPieces = function startingPieces(that) {
   return {
     // NEED TO ADD TYPES TO THE NAME AT SOME POINT
     1: new _Infantry2.default({
       game: that.game,
-      x: 608,
-      y: 288,
-      asset: 'mushroom',
+      x: 0,
+      y: 0,
+      asset: 'infantry',
       width: 32,
       height: 32,
       HP: 10,
@@ -15916,9 +15934,9 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
     }),
     2: new _Infantry2.default({
       game: that.game,
-      x: 512,
+      x: 64,
       y: 0,
-      asset: 'mushroom',
+      asset: 'infantry',
       width: 32,
       height: 32,
       HP: 10,
@@ -15930,11 +15948,12 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
 };
 
 var loadLevel = exports.loadLevel = function loadLevel(that) {
-  that.map = that.add.tilemap('map');
-  that.map.addTilesetImage('myMap', 'basicMap');
-  that.level1 = that.map.createLayer('Tile Layer 1').resizeWorld();
-  that.start = that.map.objects['Object1'][0];
-  that.obj1 = that.map.createLayer('StartingPoint');
+  that.background = that.game.add.sprite(0, 0, 'aw1Map');
+  // that.background.width = 696;
+  // that.background.height = 580;
+  // that.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+  that.scale.pageAlignHorizontally = true;
+  that.scale.pageAlignVertically = true;
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);
   that.attackButton = undefined;
   that.waitButton = undefined;
@@ -15956,8 +15975,8 @@ var loadLevel = exports.loadLevel = function loadLevel(that) {
   that.playerText = that.game.add.text(480, 20, that.currentPlayer, style);
   that.blocks = that.add.group();
 
-  for (var i = 0; i < 800; i = i + 32) {
-    for (var j = 0; j < 800; j = j + 32) {
+  for (var i = 0; i < 3000; i = i + 32) {
+    for (var j = 0; j < 3000; j = j + 32) {
       var type = (0, _level.checkType)(i, j);
       var block = new _Block2.default(i, j, 'blueSquare', 32, 32, type);
       block.alpha = 0.0;
@@ -16072,46 +16091,46 @@ exports.default = _class;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var waterCoords = [[64, 0], [64, 32], [64, 64], [64, 96], [64, 128], [96, 128], [128, 128], [160, 128], [192, 128], [192, 160], [224, 160], [352, 224], [384, 224], [416, 224], [448, 224], [480, 224], [512, 224], [544, 224], [576, 224], [608, 224]];
+var waterCoords = [];
 
-var treeCoords = [[32, 192], [32, 224]];
+var treeCoords = [];
 
 var mountainCoords = [[]];
 var checkType = exports.checkType = function checkType(x, y) {
-    var type = 'land';
-    waterCoords.forEach(function (ele) {
-        var _ele = _slicedToArray(ele, 2),
-            eleX = _ele[0],
-            eleY = _ele[1];
+  var type = 'land';
+  waterCoords.forEach(function (ele) {
+    var _ele = _slicedToArray(ele, 2),
+        eleX = _ele[0],
+        eleY = _ele[1];
 
-        if (x === eleX && y === eleY) {
-            type = 'water';
-        }
-    });
-    treeCoords.forEach(function (ele) {
-        var _ele2 = _slicedToArray(ele, 2),
-            eleX = _ele2[0],
-            eleY = _ele2[1];
+    if (x === eleX && y === eleY) {
+      type = 'water';
+    }
+  });
+  treeCoords.forEach(function (ele) {
+    var _ele2 = _slicedToArray(ele, 2),
+        eleX = _ele2[0],
+        eleY = _ele2[1];
 
-        if (x === eleX && y === eleY) {
-            type = 'tree';
-        }
-    });
-    mountainCoords.forEach(function (ele) {
-        var _ele3 = _slicedToArray(ele, 2),
-            eleX = _ele3[0],
-            eleY = _ele3[1];
+    if (x === eleX && y === eleY) {
+      type = 'tree';
+    }
+  });
+  mountainCoords.forEach(function (ele) {
+    var _ele3 = _slicedToArray(ele, 2),
+        eleX = _ele3[0],
+        eleY = _ele3[1];
 
-        if (x === eleX && y === eleY) {
-            type = 'mountain';
-        }
-    });
-    return type;
+    if (x === eleX && y === eleY) {
+      type = 'mountain';
+    }
+  });
+  return type;
 };
 
 /***/ }),
@@ -19819,10 +19838,65 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = {
-  gameWidth: 640,
-  gameHeight: 320,
+  gameWidth: 960,
+  gameHeight: 800,
   localStorageName: 'phaseres6webpack'
 };
+
+/***/ }),
+/* 397 */,
+/* 398 */
+/*!***************************!*\
+  !*** ./src/processMap.js ***!
+  \***************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = createGrid;
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+var aw2Map = __webpack_require__(/*! ../public/assets/js/aw2.json */ 399);
+
+console.log('aw2map', aw2Map);
+function createGrid(mapName) {
+    var gridWidth = aw2Map.width;
+    var gridHeight = aw2Map.height;
+    var grid = [];
+    var layers = aw2Map.layers;
+    var finaldata = layers[0].data;
+    finaldata = finaldata.map(function (datapoint, index) {
+        return Math.max.apply(Math, _toConsumableArray(layers.map(function (layer) {
+            return layer.data[index];
+        })));
+    });
+    // console.log('finaldata', finaldata)
+
+    for (var i = 0; i < finaldata.length; i += gridWidth) {
+        grid.push(finaldata.slice(i, i + gridWidth));
+    }
+    console.log('grid', grid);
+
+    return grid;
+}
+
+/***/ }),
+/* 399 */
+/*!***********************************!*\
+  !*** ./public/assets/js/aw2.json ***!
+  \***********************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports) {
+
+module.exports = {"height":25,"layers":[{"data":[2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],"height":25,"name":"Tile Layer 1","opacity":1,"type":"tilelayer","visible":true,"width":30,"x":0,"y":0},{"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,902,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,934,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"height":25,"name":"Red City","opacity":1,"type":"tilelayer","visible":true,"width":30,"x":0,"y":0},{"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,907,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,939,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"height":25,"name":"Blue City","opacity":1,"type":"tilelayer","visible":true,"width":30,"x":0,"y":0},{"data":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,511,511,511,511,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,511,511,511,511,511,511,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,511,511,511,511,511,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,511,511,511,511,511,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,511,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,615,616,0,0,0,0,0,0,0,0,0,0,0,0,0,615,616,0,0,0,0,0,0,0,0,0,0,0,0,0,615,616,0,0,0,0,0,0,0,0,0,0,0,0,0,615,615,616,0,0,0,0,0,0,0,0,0,0,0,0,615,616,0,0,0,0,0,808,808,0,0,0,0,0,0,0,615,616,0,0,0,0,0,0,0,0,0,0,0,0,615,616,0,0,0,0,0,808,808,808,0,0,0,0,0,0,0,615,616,0,0,0,0,0,0,0,0,0,0,0,615,616,0,0,0,0,808,808,808,808,808,808,0,0,0,615,616,616,616,0,0,0,0,0,0,0,0,0,0,0,615,616,0,0,0,0,0,808,808,808,808,808,808,808,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,615,616,0,0,0,0,0,808,808,808,808,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,615,616,0,0,0,0,0,808,808,808,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,615,616,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,615,616,616,616,616,616,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,615,616,616,616,616,616,616,616,616,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,615,616,616,616,616,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,615,616,616,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"height":25,"name":"Water","opacity":1,"type":"tilelayer","visible":true,"width":30,"x":0,"y":0}],"nextobjectid":1,"orientation":"orthogonal","renderorder":"right-down","tiledversion":"1.0.3","tileheight":16,"tilesets":[{"firstgid":1,"source":"../../../../../../../aw2Tiles.tsx"},{"firstgid":481,"source":"../../../../../../../aw2transparent.tsx"}],"tilewidth":16,"type":"map","version":1,"width":30}
 
 /***/ })
 ],[151]);

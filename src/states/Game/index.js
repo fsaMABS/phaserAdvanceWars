@@ -3,6 +3,8 @@ import Phaser from 'phaser'
 import easystarjs from 'easystarjs'
 import {loadLevel} from './initialize'
 import io from 'socket.io-client'
+import newGrid from '../../processMap'
+console.log('grid in iintilize ', newGrid())
 // var easystarjs = require('easystarjs')
 var easystar = new easystarjs.js()
 
@@ -48,12 +50,12 @@ export default class extends Phaser.State {
     if (this.selectedPiece.player === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece)
     
       this.grid = []
-    for (var i = 0; i < 10; i++) {
-      this.grid.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,])	
+    for (var i = 0; i < 25; i++) {
+      this.grid.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])	
     }
 
-    easystar.setGrid(this.grid);
-    easystar.setAcceptableTiles([0]);
+    easystar.setGrid(newGrid());
+    easystar.setAcceptableTiles([2]);
     console.log('before path', this.selectedPiece)
 
     //PROBLEM WITH EASY STAR ==> RUNNING ELSE STATEMENT TWICE FOR SAME PIECE, 
@@ -87,12 +89,12 @@ export default class extends Phaser.State {
         let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
         if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
           let defender = this.pieces[key]
-          this.attackButton = this.game.add.button(this.game.world.centerX-64, this.game.world.centerY, 'mushroom', 
+          this.attackButton = this.game.add.button(this.game.world.centerX-64, this.game.world.centerY, 'infantry', 
             () => this.attackPiece(defender), this, 2, 1, 0);
         }
       }
     }
-    this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+    this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'infantry', this.wait, this, 2, 1, 0);
   }
 
   attackPiece (defendingPiece) {
