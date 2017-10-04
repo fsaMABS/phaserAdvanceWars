@@ -93,4 +93,3 @@ const showMoves = that => (sprite, event) => {
     that.selectedPiece.moveAdded = true;
   }
 }
-
