@@ -3,6 +3,8 @@ import Phaser from 'phaser'
 import easystarjs from 'easystarjs'
 import {loadLevel} from './initialize'
 import io from 'socket.io-client'
+import newGrid from '../../processMap'
+console.log('grid in iintilize ', newGrid())
 // var easystarjs = require('easystarjs')
 var easystar = new easystarjs.js()
 
@@ -48,12 +50,12 @@ export default class extends Phaser.State {
     if (this.selectedPiece.player === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece)
     
       this.grid = []
-    for (var i = 0; i < 10; i++) {
-      this.grid.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,])	
+    for (var i = 0; i < 25; i++) {
+      this.grid.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])	
     }
 
-    easystar.setGrid(this.grid);
-    easystar.setAcceptableTiles([0]);
+    easystar.setGrid(newGrid());
+    easystar.setAcceptableTiles([2]);
     console.log('before path', this.selectedPiece)
 
     //PROBLEM WITH EASY STAR ==> RUNNING ELSE STATEMENT TWICE FOR SAME PIECE, 

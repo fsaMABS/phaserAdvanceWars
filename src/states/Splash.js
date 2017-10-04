@@ -13,11 +13,13 @@ export default class extends Phaser.State {
     //
     // load your assets
     //
-    this.load.image('mushroom', 'assets/images/mushroom2.png')
+    this.load.image('infantry', 'assets/images/infantry.png')
     this.load.tilemap('map', 'assets/js/secondMap.json', null, Phaser.Tilemap.TILED_JSON)
     this.load.image('basicMap', 'assets/images/basicMap.png')
     this.load.image('greenSquare', 'assets/images/greenSquare.jpeg')
     this.load.image('blueSquare', 'assets/images/blueSquare.jpg')
+    this.load.image('aw1Map', 'assets/images/aw1.bmp')
+    // this.load.image('infantry')
   }
 
   create () {

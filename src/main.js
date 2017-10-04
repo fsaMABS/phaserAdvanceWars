@@ -1,12 +1,15 @@
 import 'pixi'
 import 'p2'
 import Phaser from 'phaser'
-
+import runthis from './processMap'
 import BootState from './states/Boot'
 import SplashState from './states/Splash'
 import GameState from './states/Game'
 import io from 'socket.io-client'
 import config from './config'
+
+
+runthis()
 
 const socket = io(window.location.origin)
 
