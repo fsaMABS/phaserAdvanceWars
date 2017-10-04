@@ -2,14 +2,12 @@
 import Phaser from 'phaser'
 import easystarjs from 'easystarjs'
 import {loadLevel} from './initialize'
-import io from 'socket.io-client'
 import newGrid from '../../processMap'
 console.log('grid in iintilize ', newGrid())
 // var easystarjs = require('easystarjs')
 var easystar = new easystarjs.js()
 
 
-const socket = io(window.location.origin)
 export default class extends Phaser.State {
   init () {
     this.showingBlue = false
@@ -23,22 +21,25 @@ export default class extends Phaser.State {
   }
 
   togglePlayer () {
-    this.currentPlayer = this.currentPlayer === 1 ? 2 : 1
+    this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
     // ENABLE PIECES
+    console.log('this current player in togle', this.currentPlayer)
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0;
-      if (this.pieces[key].player === this.currentPlayer) this.pieces[key].inputEnabled = true
-      else this.pieces[key].inputEnabled = false
+      console.log('currplay', this.currentPlayer)
+      console.log('actualplayer', this.pieces[key].player )
+      if (this.pieces[key].team === this.currentPlayer) {
+        console.log('im setting ', this.pieces[key].id, 'to true')        
+        this.pieces[key].inputEnabled = true
+      } else {
+        console.log('im setting ', this.pieces[key].id, 'to false')
+        this.pieces[key].inputEnabled = false
+      }
     }
     this.playerText.text = this.currentPlayer
   }
   sendMoveMessage (sprite) {
     if (this.showingBlue) {
-      socket.emit('moveFromClient', {
-        currentPlayer: this.currentPlayer,
-        sprite: {x: sprite.x, y: sprite.y},
-        selectedPieceId: sprite.id
-      })
       this.showingBlue = false
     }
   }
@@ -48,9 +49,11 @@ export default class extends Phaser.State {
       ele.alpha = 0
       ele.inputEnabled = false
     }, this)
+    console.log('pieceteam',this.selectedPiece.team)
     
-    if (this.selectedPiece.player === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece)
+    if (this.selectedPiece.team === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece)
     easystar.findPath(this.selectedPiece.x/32, this.selectedPiece.y/32, sprite.x/32, sprite.y/32, ( path ) => {
+      console.log('pathhhh', path)
       this.changePosition = this.game.add.tween(this.selectedPiece)          
       for (var i = 0 ; i < path.length; i++) {
         var currCoords = path[i]
@@ -117,11 +120,11 @@ export default class extends Phaser.State {
     console.log('Turn ended!');
     this.disablePieceOptions();
     var style = { font: '20px Arial', fill: '#fff' }
-    this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
-    this.time.events.add(100, () => {
-      this.turnEnded.destroy()
+    // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
+    // this.time.events.add(1000, () => {
+      // this.turnEnded.destroy()
       this.togglePlayer()
-    }, this.turnEnded);
+    // }, this.turnEnded);
   }
 
 
