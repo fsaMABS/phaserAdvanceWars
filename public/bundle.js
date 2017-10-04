@@ -11394,6 +11394,7 @@ var _class = function (_Phaser$State) {
       // load your assets
       //
       this.load.image('infantry', 'assets/images/infantry.png');
+      this.load.image('infantry_blue', 'assets/images/infantry_blue.png');
       this.load.tilemap('map', 'assets/js/secondMap.json', null, _phaser2.default.Tilemap.TILED_JSON);
       this.load.image('basicMap', 'assets/images/basicMap.png');
       this.load.image('greenSquare', 'assets/images/greenSquare.jpeg');
@@ -12164,7 +12165,7 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
       game: that.game,
       x: 320,
       y: 320,
-      asset: 'infantry',
+      asset: 'infantry_blue',
       width: 32,
       height: 32,
       HP: 10,
@@ -12178,7 +12179,7 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
       game: that.game,
       x: 320,
       y: 320 + 32,
-      asset: 'infantry',
+      asset: 'infantry_blue',
       width: 32,
       height: 32,
       HP: 10,
