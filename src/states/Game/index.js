@@ -17,6 +17,8 @@ export default class extends Phaser.State {
   }
 
   create () {
+    easystar.setGrid(newGrid());
+    easystar.setAcceptableTiles([2]);
     loadLevel(this)
   }
 
@@ -41,42 +43,24 @@ export default class extends Phaser.State {
   }
 
   moveHere (sprite) {
-    // console.log('SELECTED PIECE HERE', this.selectedPiece)
     this.blocks.children.forEach((ele) => {
       ele.alpha = 0
       ele.inputEnabled = false
     }, this)
-
     if (this.selectedPiece.player === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece)
-    
-      this.grid = []
-    for (var i = 0; i < 25; i++) {
-      this.grid.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0])	
-    }
-
-    easystar.setGrid(newGrid());
-    easystar.setAcceptableTiles([2]);
-    console.log('before path', this.selectedPiece)
-
-    //PROBLEM WITH EASY STAR ==> RUNNING ELSE STATEMENT TWICE FOR SAME PIECE, 
-    // issue I think with it finding multiple pieces within that path and calling it for both
     easystar.findPath(this.selectedPiece.x/32, this.selectedPiece.y/32, sprite.x/32, sprite.y/32, ( path ) => {
-      if (path === null) {
-        alert("Path was not found.");
-      } else {
-        this.changePosition = this.game.add.tween(this.selectedPiece)          
-        for (var i = 0 ; i < path.length; i++) {
-          var currCoords = path[i]
-          this.changePosition.to({x: currCoords.x*32, y: currCoords.y* 32}, 150) 
-        }
-        this.changePosition.start()
-        this.changePosition.onComplete.add(function () {
-          // this.changePosition.timeline = []
-          this.sendMoveMessage(this.selectedPiece);
-          this.checkForPieceOptions();
-          this.disablePieceMovement(this.selectedPiece);
-        }, this)
+      this.changePosition = this.game.add.tween(this.selectedPiece)          
+      for (var i = 0 ; i < path.length; i++) {
+        var currCoords = path[i]
+        this.changePosition.to({x: currCoords.x*32, y: currCoords.y* 32}, 150) 
       }
+      this.changePosition.start()
+      this.changePosition.onComplete.add(function () {
+        this.sendMoveMessage(this.selectedPiece);
+        this.checkForPieceOptions();
+        this.disablePieceMovement(this.selectedPiece);
+      }, this)
+    
     });
     easystar.calculate() 
   }
