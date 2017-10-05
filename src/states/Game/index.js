@@ -69,7 +69,6 @@ export default class extends Phaser.State {
         let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
         if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
           defenders.push(this.pieces[key]);
-          console.log('hi');
         }
       }
     }
