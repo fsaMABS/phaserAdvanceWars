@@ -8769,28 +8769,6 @@ $export($export.S, 'Reflect', {
 });
 
 
-<<<<<<< HEAD
-      this.load.setPreloadSprite(this.loaderBar);
-      //
-      // load your assets
-      //
-      this.load.image('infantry', 'assets/images/infantry.png');
-      this.load.image('waitSprite', 'assets/images/wait.png');
-      this.load.image('fireSprite', 'assets/images/fireSprite.png');
-      this.load.tilemap('map', 'assets/js/secondMap.json', null, _phaser2.default.Tilemap.TILED_JSON);
-      this.load.image('basicMap', 'assets/images/basicMap.png');
-      this.load.image('greenSquare', 'assets/images/greenSquare.jpeg');
-      this.load.image('blueSquare', 'assets/images/blueSquare.jpg');
-      this.load.image('aw1Map', 'assets/images/aw1.bmp');
-      // this.load.image('infantry')
-    }
-  }, {
-    key: 'create',
-    value: function create() {
-      this.state.start('Game');
-    }
-  }]);
-=======
 /***/ }),
 /* 266 */
 /*!**************************************************************!*\
@@ -8799,7 +8777,6 @@ $export($export.S, 'Reflect', {
 /*! no static exports found */
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
->>>>>>> master
 
 // 26.1.11 Reflect.ownKeys(target)
 var $export = __webpack_require__(/*! ./_export */ 0);
@@ -8990,103 +8967,7 @@ $export($export.P, 'Array', {
   }
 });
 
-<<<<<<< HEAD
-  _createClass(_class, [{
-    key: 'init',
-    value: function init() {
-      this.showingBlue = false;
-      this.selectedPiece = undefined;
-    }
-  }, {
-    key: 'create',
-    value: function create() {
-      easystar.setGrid((0, _processMap2.default)());
-      easystar.setAcceptableTiles([2]);
-      (0, _initialize.loadLevel)(this);
-    }
-  }, {
-    key: 'togglePlayer',
-    value: function togglePlayer() {
-      this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
-      // ENABLE PIECES
-      for (var key in this.pieces) {
-        this.pieces[key].alpha = 1.0;
-        if (this.pieces[key].player === this.currentPlayer) this.pieces[key].inputEnabled = true;else this.pieces[key].inputEnabled = false;
-      }
-      this.playerText.text = this.currentPlayer;
-    }
-  }, {
-    key: 'sendMoveMessage',
-    value: function sendMoveMessage(sprite) {
-      if (this.showingBlue) {
-        socket.emit('moveFromClient', {
-          currentPlayer: this.currentPlayer,
-          sprite: { x: sprite.x, y: sprite.y },
-          selectedPieceId: sprite.id
-        });
-        this.showingBlue = false;
-      }
-    }
-  }, {
-    key: 'moveHere',
-    value: function moveHere(sprite) {
-      var _this2 = this;
-
-      this.blocks.children.forEach(function (ele) {
-        ele.alpha = 0;
-        ele.inputEnabled = false;
-      }, this);
-
-      if (this.selectedPiece.player === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece);
-      easystar.findPath(this.selectedPiece.x / 32, this.selectedPiece.y / 32, sprite.x / 32, sprite.y / 32, function (path) {
-        _this2.changePosition = _this2.game.add.tween(_this2.selectedPiece);
-        for (var i = 0; i < path.length; i++) {
-          var currCoords = path[i];
-          _this2.changePosition.to({ x: currCoords.x * 32, y: currCoords.y * 32 }, 150);
-        }
-        _this2.changePosition.start();
-        _this2.changePosition.onComplete.add(function () {
-          this.sendMoveMessage(this.selectedPiece);
-          this.checkForPieceOptions();
-          this.disablePieceMovement(this.selectedPiece);
-        }, _this2);
-      });
-      easystar.calculate();
-    }
-  }, {
-    key: 'checkForPieceOptions',
-    value: function checkForPieceOptions() {
-      var _this3 = this;
-
-      for (var key in this.pieces) {
-        if (this.pieces[key] !== this.selectedPiece) {
-          var diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x);
-          var diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y);
-          if (diffX === 32 && diffY === 0 || diffX === 0 && diffY === 32) {
-            (function () {
-              var defender = _this3.pieces[key];
-              if (!_this3.attackButton || !_this3.attackButton.alive) {
-                _this3.attackButton = _this3.game.add.button(_this3.selectedPiece.x, _this3.selectedPiece.y + 99, 'fireSprite', function () {
-                  return _this3.attackPiece(defender);
-                }, _this3, 2, 1, 0);
-              }
-            })();
-          }
-        }
-      }
-      if (!this.waitButton || !this.waitButton.alive) {
-        this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'waitSprite', this.wait, this, 2, 1, 0);
-      }
-    }
-  }, {
-    key: 'attackPiece',
-    value: function attackPiece(defendingPiece) {
-      this.selectedPiece;
-      this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2);
-      defendingPiece.HP -= this.selectedPiece.AP;
-=======
 __webpack_require__(/*! ./_add-to-unscopables */ 30)('flatten');
->>>>>>> master
 
 
 /***/ }),
@@ -11513,6 +11394,8 @@ var _class = function (_Phaser$State) {
       // load your assets
       //
       this.load.image('infantry', 'assets/images/infantry.png');
+      this.load.image('waitSprite', 'assets/images/wait.png');
+      this.load.image('fireSprite', 'assets/images/fireSprite.png');
       this.load.tilemap('map', 'assets/js/secondMap.json', null, _phaser2.default.Tilemap.TILED_JSON);
       this.load.image('basicMap', 'assets/images/basicMap.png');
       this.load.image('greenSquare', 'assets/images/greenSquare.jpeg');
@@ -11688,7 +11571,7 @@ var _class = function (_Phaser$State) {
             (function () {
               var defender = _this3.pieces[key];
               if (!_this3.attackButton || !_this3.attackButton.alive) {
-                _this3.attackButton = _this3.game.add.button(_this3.game.world.centerX - 64, _this3.game.world.centerY, 'mushroom', function () {
+                _this3.attackButton = _this3.game.add.button(_this3.selectedPiece.x, _this3.selectedPiece.y + 99, 'fireSprite', function () {
                   return _this3.attackPiece(defender);
                 }, _this3, 2, 1, 0);
               }
@@ -11697,7 +11580,7 @@ var _class = function (_Phaser$State) {
         }
       }
       if (!this.waitButton || !this.waitButton.alive) {
-        this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+        this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'waitSprite', this.wait, this, 2, 1, 0);
       }
     }
   }, {
