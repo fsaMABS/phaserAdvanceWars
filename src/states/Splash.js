@@ -14,6 +14,7 @@ export default class extends Phaser.State {
     // load your assets
     //
     this.load.image('infantry', 'assets/images/infantry.png')
+    this.load.image('infantry_blue', 'assets/images/infantry_blue.png')
     this.load.image('waitSprite', 'assets/images/wait.png')
     this.load.image('fireSprite', 'assets/images/fireSprite.png')
     this.load.image('target', 'assets/images/defenderTarget.png');
