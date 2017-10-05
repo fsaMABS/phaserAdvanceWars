@@ -171,13 +171,13 @@ var _assert = __webpack_require__(/*! ../../../utils/assert */ 2);
 
 var _obj = __webpack_require__(/*! ../../../utils/obj */ 8);
 
-var _crypt = __webpack_require__(/*! ../../../utils/crypt */ 442);
+var _crypt = __webpack_require__(/*! ../../../utils/crypt */ 445);
 
-var _Sha = __webpack_require__(/*! ../../../utils/Sha1 */ 443);
+var _Sha = __webpack_require__(/*! ../../../utils/Sha1 */ 446);
 
 var _utf = __webpack_require__(/*! ../../../utils/utf8 */ 125);
 
-var _json = __webpack_require__(/*! ../../../utils/json */ 35);
+var _json = __webpack_require__(/*! ../../../utils/json */ 36);
 
 var _storage = __webpack_require__(/*! ../storage/storage */ 87);
 
@@ -2612,7 +2612,8 @@ module.exports = function (TYPE, $create) {
 
 
 /***/ }),
-/* 35 */
+/* 35 */,
+/* 36 */
 /*!*********************************************!*\
   !*** ./node_modules/firebase/utils/json.js ***!
   \*********************************************/
@@ -2666,7 +2667,7 @@ var stringify = exports.stringify = function stringify(data) {
 
 
 /***/ }),
-/* 36 */
+/* 37 */
 /*!******************************************************!*\
   !*** ./node_modules/core-js/modules/_typed-array.js ***!
   \******************************************************/
@@ -3158,7 +3159,7 @@ if (__webpack_require__(/*! ./_descriptors */ 9)) {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /*!***************************************************!*\
   !*** ./node_modules/core-js/modules/_metadata.js ***!
   \***************************************************/
@@ -3220,7 +3221,6 @@ module.exports = {
 
 
 /***/ }),
-/* 38 */,
 /* 39 */
 /*!***************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/error.js ***!
@@ -3558,9 +3558,9 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-__webpack_require__(/*! ./utils/shims */ 435);
+__webpack_require__(/*! ./utils/shims */ 438);
 
-var _firebase_app = __webpack_require__(/*! ./app/firebase_app */ 436);
+var _firebase_app = __webpack_require__(/*! ./app/firebase_app */ 439);
 
 // Export a single instance of firebase app
 /**
@@ -3855,7 +3855,7 @@ exports.attachDummyErrorHandler = exports.Deferred = exports.PromiseImpl = undef
 
 var _globalScope = __webpack_require__(/*! ../utils/globalScope */ 177);
 
-var PromiseImpl = exports.PromiseImpl = _globalScope.globalScope.Promise || __webpack_require__(/*! promise-polyfill */ 437);
+var PromiseImpl = exports.PromiseImpl = _globalScope.globalScope.Promise || __webpack_require__(/*! promise-polyfill */ 440);
 /**
  * A deferred promise implementation.
  */
@@ -5692,9 +5692,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SessionStorage = exports.PersistentStorage = undefined;
 
-var _DOMStorageWrapper = __webpack_require__(/*! ./DOMStorageWrapper */ 445);
+var _DOMStorageWrapper = __webpack_require__(/*! ./DOMStorageWrapper */ 448);
 
-var _MemoryStorage = __webpack_require__(/*! ./MemoryStorage */ 446);
+var _MemoryStorage = __webpack_require__(/*! ./MemoryStorage */ 449);
 
 /**
  * Helper to create a DOMStorageWrapper or else fall back to MemoryStorage.
@@ -6184,29 +6184,29 @@ var _Path = __webpack_require__(/*! ./util/Path */ 12);
 
 var _SparseSnapshotTree = __webpack_require__(/*! ./SparseSnapshotTree */ 191);
 
-var _SyncTree = __webpack_require__(/*! ./SyncTree */ 452);
+var _SyncTree = __webpack_require__(/*! ./SyncTree */ 455);
 
-var _SnapshotHolder = __webpack_require__(/*! ./SnapshotHolder */ 463);
+var _SnapshotHolder = __webpack_require__(/*! ./SnapshotHolder */ 466);
 
-var _json = __webpack_require__(/*! ../../utils/json */ 35);
+var _json = __webpack_require__(/*! ../../utils/json */ 36);
 
 var _util = __webpack_require__(/*! ./util/util */ 3);
 
 var _obj = __webpack_require__(/*! ../../utils/obj */ 8);
 
-var _AuthTokenProvider = __webpack_require__(/*! ./AuthTokenProvider */ 464);
+var _AuthTokenProvider = __webpack_require__(/*! ./AuthTokenProvider */ 467);
 
 var _StatsManager = __webpack_require__(/*! ./stats/StatsManager */ 130);
 
-var _StatsReporter = __webpack_require__(/*! ./stats/StatsReporter */ 466);
+var _StatsReporter = __webpack_require__(/*! ./stats/StatsReporter */ 469);
 
 var _StatsListener = __webpack_require__(/*! ./stats/StatsListener */ 196);
 
-var _EventQueue = __webpack_require__(/*! ./view/EventQueue */ 467);
+var _EventQueue = __webpack_require__(/*! ./view/EventQueue */ 470);
 
 var _PersistentConnection = __webpack_require__(/*! ./PersistentConnection */ 197);
 
-var _ReadonlyRestClient = __webpack_require__(/*! ./ReadonlyRestClient */ 473);
+var _ReadonlyRestClient = __webpack_require__(/*! ./ReadonlyRestClient */ 476);
 
 var _Database = __webpack_require__(/*! ../api/Database */ 179);
 
@@ -8373,13 +8373,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Reference = undefined;
 
-var _onDisconnect = __webpack_require__(/*! ./onDisconnect */ 447);
+var _onDisconnect = __webpack_require__(/*! ./onDisconnect */ 450);
 
-var _TransactionResult = __webpack_require__(/*! ./TransactionResult */ 448);
+var _TransactionResult = __webpack_require__(/*! ./TransactionResult */ 451);
 
 var _util = __webpack_require__(/*! ../core/util/util */ 3);
 
-var _NextPushId = __webpack_require__(/*! ../core/util/NextPushId */ 449);
+var _NextPushId = __webpack_require__(/*! ../core/util/NextPushId */ 452);
 
 var _Query = __webpack_require__(/*! ./Query */ 182);
 
@@ -8387,7 +8387,7 @@ var _Repo = __webpack_require__(/*! ../core/Repo */ 91);
 
 var _Path = __webpack_require__(/*! ../core/util/Path */ 12);
 
-var _QueryParams = __webpack_require__(/*! ../core/view/QueryParams */ 475);
+var _QueryParams = __webpack_require__(/*! ../core/view/QueryParams */ 478);
 
 var _validation = __webpack_require__(/*! ../core/util/validation */ 57);
 
@@ -9863,7 +9863,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.StatsManager = undefined;
 
-var _StatsCollection = __webpack_require__(/*! ./StatsCollection */ 465);
+var _StatsCollection = __webpack_require__(/*! ./StatsCollection */ 468);
 
 var StatsManager = /** @class */function () {
     function StatsManager() {}
@@ -9934,7 +9934,7 @@ var _parser = __webpack_require__(/*! ./util/libs/parser */ 180);
 
 var _validation = __webpack_require__(/*! ./util/validation */ 57);
 
-__webpack_require__(/*! ./Repo_transaction */ 477);
+__webpack_require__(/*! ./Repo_transaction */ 480);
 
 /** @const {string} */
 /**
@@ -10470,7 +10470,7 @@ exports.fromResourceString = fromResourceString;
 exports.toResourceString = toResourceString;
 exports.metadataValidator = metadataValidator;
 
-var _json = __webpack_require__(/*! ./json */ 484);
+var _json = __webpack_require__(/*! ./json */ 487);
 
 var json = _interopRequireWildcard(_json);
 
@@ -13363,7 +13363,7 @@ var _validation = __webpack_require__(/*! ../core/util/validation */ 57);
 
 var _validation2 = __webpack_require__(/*! ../../utils/validation */ 56);
 
-var _EventRegistration = __webpack_require__(/*! ../core/view/EventRegistration */ 450);
+var _EventRegistration = __webpack_require__(/*! ../core/view/EventRegistration */ 453);
 
 var _promise = __webpack_require__(/*! ../../utils/promise */ 55);
 
@@ -15267,7 +15267,7 @@ var _obj = __webpack_require__(/*! ../../utils/obj */ 8);
 
 var _ViewCache = __webpack_require__(/*! ./view/ViewCache */ 195);
 
-var _View = __webpack_require__(/*! ./view/View */ 456);
+var _View = __webpack_require__(/*! ./view/View */ 459);
 
 /**
  * Copyright 2017 Google Inc.
@@ -15703,7 +15703,7 @@ var _app2 = _interopRequireDefault(_app);
 
 var _obj = __webpack_require__(/*! ../../utils/obj */ 8);
 
-var _json = __webpack_require__(/*! ../../utils/json */ 35);
+var _json = __webpack_require__(/*! ../../utils/json */ 36);
 
 var _assert = __webpack_require__(/*! ../../utils/assert */ 2);
 
@@ -15711,11 +15711,11 @@ var _util = __webpack_require__(/*! ./util/util */ 3);
 
 var _Path = __webpack_require__(/*! ./util/Path */ 12);
 
-var _VisibilityMonitor = __webpack_require__(/*! ./util/VisibilityMonitor */ 468);
+var _VisibilityMonitor = __webpack_require__(/*! ./util/VisibilityMonitor */ 471);
 
-var _OnlineMonitor = __webpack_require__(/*! ./util/OnlineMonitor */ 469);
+var _OnlineMonitor = __webpack_require__(/*! ./util/OnlineMonitor */ 472);
 
-var _jwt = __webpack_require__(/*! ../../utils/jwt */ 470);
+var _jwt = __webpack_require__(/*! ../../utils/jwt */ 473);
 
 var _Connection = __webpack_require__(/*! ../realtime/Connection */ 199);
 
@@ -16603,7 +16603,7 @@ var _storage = __webpack_require__(/*! ../core/storage/storage */ 87);
 
 var _Constants = __webpack_require__(/*! ./Constants */ 88);
 
-var _TransportManager = __webpack_require__(/*! ./TransportManager */ 471);
+var _TransportManager = __webpack_require__(/*! ./TransportManager */ 474);
 
 // Abort upgrade attempt if it takes longer than 60s.
 /**
@@ -17090,11 +17090,11 @@ var _CountedSet = __webpack_require__(/*! ../core/util/CountedSet */ 192);
 
 var _StatsManager = __webpack_require__(/*! ../core/stats/StatsManager */ 130);
 
-var _PacketReceiver = __webpack_require__(/*! ./polling/PacketReceiver */ 472);
+var _PacketReceiver = __webpack_require__(/*! ./polling/PacketReceiver */ 475);
 
 var _Constants = __webpack_require__(/*! ./Constants */ 88);
 
-var _json = __webpack_require__(/*! ../../utils/json */ 35);
+var _json = __webpack_require__(/*! ../../utils/json */ 36);
 
 var _environment = __webpack_require__(/*! ../../utils/environment */ 64);
 
@@ -17712,7 +17712,7 @@ var _constants = __webpack_require__(/*! ../../utils/constants */ 86);
 
 var _storage = __webpack_require__(/*! ../core/storage/storage */ 87);
 
-var _json = __webpack_require__(/*! ../../utils/json */ 35);
+var _json = __webpack_require__(/*! ../../utils/json */ 36);
 
 var _environment = __webpack_require__(/*! ../../utils/environment */ 64);
 
@@ -18482,7 +18482,7 @@ var _type = __webpack_require__(/*! ./implementation/type */ 25);
 
 var type = _interopRequireWildcard(_type);
 
-var _task = __webpack_require__(/*! ./task */ 487);
+var _task = __webpack_require__(/*! ./task */ 490);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -18814,7 +18814,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FbsBlob = undefined;
 
-var _fs = __webpack_require__(/*! ./fs */ 485);
+var _fs = __webpack_require__(/*! ./fs */ 488);
 
 var fs = _interopRequireWildcard(_fs);
 
@@ -18999,7 +18999,7 @@ var _object = __webpack_require__(/*! ./object */ 66);
 
 var object = _interopRequireWildcard(_object);
 
-var _requestinfo = __webpack_require__(/*! ./requestinfo */ 486);
+var _requestinfo = __webpack_require__(/*! ./requestinfo */ 489);
 
 var _type = __webpack_require__(/*! ./type */ 25);
 
@@ -19352,7 +19352,7 @@ var _errors2 = __webpack_require__(/*! ../models/errors */ 95);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _tokenManager = __webpack_require__(/*! ../models/token-manager */ 499);
+var _tokenManager = __webpack_require__(/*! ../models/token-manager */ 502);
 
 var _tokenManager2 = _interopRequireDefault(_tokenManager);
 
@@ -23169,7 +23169,7 @@ $export($export.G + $export.W + $export.F * !__webpack_require__(/*! ./_typed */
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./_typed-array */ 36)('Int8', 1, function (init) {
+__webpack_require__(/*! ./_typed-array */ 37)('Int8', 1, function (init) {
   return function Int8Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -23185,7 +23185,7 @@ __webpack_require__(/*! ./_typed-array */ 36)('Int8', 1, function (init) {
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./_typed-array */ 36)('Uint8', 1, function (init) {
+__webpack_require__(/*! ./_typed-array */ 37)('Uint8', 1, function (init) {
   return function Uint8Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -23201,7 +23201,7 @@ __webpack_require__(/*! ./_typed-array */ 36)('Uint8', 1, function (init) {
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./_typed-array */ 36)('Uint8', 1, function (init) {
+__webpack_require__(/*! ./_typed-array */ 37)('Uint8', 1, function (init) {
   return function Uint8ClampedArray(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -23217,7 +23217,7 @@ __webpack_require__(/*! ./_typed-array */ 36)('Uint8', 1, function (init) {
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./_typed-array */ 36)('Int16', 2, function (init) {
+__webpack_require__(/*! ./_typed-array */ 37)('Int16', 2, function (init) {
   return function Int16Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -23233,7 +23233,7 @@ __webpack_require__(/*! ./_typed-array */ 36)('Int16', 2, function (init) {
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./_typed-array */ 36)('Uint16', 2, function (init) {
+__webpack_require__(/*! ./_typed-array */ 37)('Uint16', 2, function (init) {
   return function Uint16Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -23249,7 +23249,7 @@ __webpack_require__(/*! ./_typed-array */ 36)('Uint16', 2, function (init) {
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./_typed-array */ 36)('Int32', 4, function (init) {
+__webpack_require__(/*! ./_typed-array */ 37)('Int32', 4, function (init) {
   return function Int32Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -23265,7 +23265,7 @@ __webpack_require__(/*! ./_typed-array */ 36)('Int32', 4, function (init) {
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./_typed-array */ 36)('Uint32', 4, function (init) {
+__webpack_require__(/*! ./_typed-array */ 37)('Uint32', 4, function (init) {
   return function Uint32Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -23281,7 +23281,7 @@ __webpack_require__(/*! ./_typed-array */ 36)('Uint32', 4, function (init) {
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./_typed-array */ 36)('Float32', 4, function (init) {
+__webpack_require__(/*! ./_typed-array */ 37)('Float32', 4, function (init) {
   return function Float32Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -23297,7 +23297,7 @@ __webpack_require__(/*! ./_typed-array */ 36)('Float32', 4, function (init) {
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! ./_typed-array */ 36)('Float64', 8, function (init) {
+__webpack_require__(/*! ./_typed-array */ 37)('Float64', 8, function (init) {
   return function Float64Array(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
@@ -24640,7 +24640,7 @@ $export($export.S, 'Promise', { 'try': function (callbackfn) {
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(/*! ./_metadata */ 37);
+var metadata = __webpack_require__(/*! ./_metadata */ 38);
 var anObject = __webpack_require__(/*! ./_an-object */ 1);
 var toMetaKey = metadata.key;
 var ordinaryDefineOwnMetadata = metadata.set;
@@ -24659,7 +24659,7 @@ metadata.exp({ defineMetadata: function defineMetadata(metadataKey, metadataValu
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(/*! ./_metadata */ 37);
+var metadata = __webpack_require__(/*! ./_metadata */ 38);
 var anObject = __webpack_require__(/*! ./_an-object */ 1);
 var toMetaKey = metadata.key;
 var getOrCreateMetadataMap = metadata.map;
@@ -24685,7 +24685,7 @@ metadata.exp({ deleteMetadata: function deleteMetadata(metadataKey, target /* , 
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(/*! ./_metadata */ 37);
+var metadata = __webpack_require__(/*! ./_metadata */ 38);
 var anObject = __webpack_require__(/*! ./_an-object */ 1);
 var getPrototypeOf = __webpack_require__(/*! ./_object-gpo */ 23);
 var ordinaryHasOwnMetadata = metadata.has;
@@ -24715,7 +24715,7 @@ metadata.exp({ getMetadata: function getMetadata(metadataKey, target /* , target
 
 var Set = __webpack_require__(/*! ./es6.set */ 160);
 var from = __webpack_require__(/*! ./_array-from-iterable */ 169);
-var metadata = __webpack_require__(/*! ./_metadata */ 37);
+var metadata = __webpack_require__(/*! ./_metadata */ 38);
 var anObject = __webpack_require__(/*! ./_an-object */ 1);
 var getPrototypeOf = __webpack_require__(/*! ./_object-gpo */ 23);
 var ordinaryOwnMetadataKeys = metadata.keys;
@@ -24743,7 +24743,7 @@ metadata.exp({ getMetadataKeys: function getMetadataKeys(target /* , targetKey *
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(/*! ./_metadata */ 37);
+var metadata = __webpack_require__(/*! ./_metadata */ 38);
 var anObject = __webpack_require__(/*! ./_an-object */ 1);
 var ordinaryGetOwnMetadata = metadata.get;
 var toMetaKey = metadata.key;
@@ -24763,7 +24763,7 @@ metadata.exp({ getOwnMetadata: function getOwnMetadata(metadataKey, target /* , 
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(/*! ./_metadata */ 37);
+var metadata = __webpack_require__(/*! ./_metadata */ 38);
 var anObject = __webpack_require__(/*! ./_an-object */ 1);
 var ordinaryOwnMetadataKeys = metadata.keys;
 var toMetaKey = metadata.key;
@@ -24782,7 +24782,7 @@ metadata.exp({ getOwnMetadataKeys: function getOwnMetadataKeys(target /* , targe
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(/*! ./_metadata */ 37);
+var metadata = __webpack_require__(/*! ./_metadata */ 38);
 var anObject = __webpack_require__(/*! ./_an-object */ 1);
 var getPrototypeOf = __webpack_require__(/*! ./_object-gpo */ 23);
 var ordinaryHasOwnMetadata = metadata.has;
@@ -24809,7 +24809,7 @@ metadata.exp({ hasMetadata: function hasMetadata(metadataKey, target /* , target
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-var metadata = __webpack_require__(/*! ./_metadata */ 37);
+var metadata = __webpack_require__(/*! ./_metadata */ 38);
 var anObject = __webpack_require__(/*! ./_an-object */ 1);
 var ordinaryHasOwnMetadata = metadata.has;
 var toMetaKey = metadata.key;
@@ -24829,7 +24829,7 @@ metadata.exp({ hasOwnMetadata: function hasOwnMetadata(metadataKey, target /* , 
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
 
-var $metadata = __webpack_require__(/*! ./_metadata */ 37);
+var $metadata = __webpack_require__(/*! ./_metadata */ 38);
 var anObject = __webpack_require__(/*! ./_an-object */ 1);
 var aFunction = __webpack_require__(/*! ./_a-function */ 14);
 var toMetaKey = $metadata.key;
@@ -26009,7 +26009,7 @@ __webpack_require__(/*! pixi */ 171);
 
 __webpack_require__(/*! p2 */ 172);
 
-var _phaser = __webpack_require__(/*! phaser */ 38);
+var _phaser = __webpack_require__(/*! phaser */ 35);
 
 var _phaser2 = _interopRequireDefault(_phaser);
 
@@ -26029,19 +26029,19 @@ var _Game = __webpack_require__(/*! ./states/Game */ 424);
 
 var _Game2 = _interopRequireDefault(_Game);
 
-var _SingleLobby = __webpack_require__(/*! ./states/SingleLobby */ 507);
+var _SingleLobby = __webpack_require__(/*! ./states/SingleLobby */ 433);
 
 var _SingleLobby2 = _interopRequireDefault(_SingleLobby);
 
-var _All_Lobbies = __webpack_require__(/*! ./states/All_Lobbies */ 508);
+var _All_Lobbies = __webpack_require__(/*! ./states/All_Lobbies */ 434);
 
 var _All_Lobbies2 = _interopRequireDefault(_All_Lobbies);
 
-var _EndGame = __webpack_require__(/*! ./states/EndGame */ 504);
+var _EndGame = __webpack_require__(/*! ./states/EndGame */ 435);
 
 var _EndGame2 = _interopRequireDefault(_EndGame);
 
-var _config = __webpack_require__(/*! ./config */ 505);
+var _config = __webpack_require__(/*! ./config */ 436);
 
 var _config2 = _interopRequireDefault(_config);
 
@@ -26053,8 +26053,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var firebase = __webpack_require__(/*! firebase */ 434);
-var FIREBASE_CONFIG = __webpack_require__(/*! ../server/config */ 503).FIREBASE_CONFIG;
+var firebase = __webpack_require__(/*! firebase */ 437);
+var FIREBASE_CONFIG = __webpack_require__(/*! ../server/config */ 506).FIREBASE_CONFIG;
 firebase.initializeApp(FIREBASE_CONFIG);
 
 (0, _processMap2.default)();
@@ -26119,7 +26119,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _phaser = __webpack_require__(/*! phaser */ 38);
+var _phaser = __webpack_require__(/*! phaser */ 35);
 
 var _phaser2 = _interopRequireDefault(_phaser);
 
@@ -26204,7 +26204,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _phaser = __webpack_require__(/*! phaser */ 38);
+var _phaser = __webpack_require__(/*! phaser */ 35);
 
 var _phaser2 = _interopRequireDefault(_phaser);
 
@@ -26282,7 +26282,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _phaser = __webpack_require__(/*! phaser */ 38);
+var _phaser = __webpack_require__(/*! phaser */ 35);
 
 var _phaser2 = _interopRequireDefault(_phaser);
 
@@ -27161,7 +27161,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _phaser = __webpack_require__(/*! phaser */ 38);
+var _phaser = __webpack_require__(/*! phaser */ 35);
 
 var _phaser2 = _interopRequireDefault(_phaser);
 
@@ -27289,7 +27289,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _phaser = __webpack_require__(/*! phaser */ 38);
+var _phaser = __webpack_require__(/*! phaser */ 35);
 
 var _phaser2 = _interopRequireDefault(_phaser);
 
@@ -27345,8 +27345,299 @@ var _class = function (_Phaser$Sprite) {
 exports.default = _class;
 
 /***/ }),
-/* 433 */,
+/* 433 */
+/*!***********************************!*\
+  !*** ./src/states/SingleLobby.js ***!
+  \***********************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _phaser = __webpack_require__(/*! phaser */ 35);
+
+var _phaser2 = _interopRequireDefault(_phaser);
+
+var _utils = __webpack_require__(/*! ../utils */ 174);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _class = function (_Phaser$State) {
+  _inherits(_class, _Phaser$State);
+
+  function _class() {
+    _classCallCheck(this, _class);
+
+    return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+  }
+
+  _createClass(_class, [{
+    key: 'init',
+    value: function init() {}
+  }, {
+    key: 'preload',
+    value: function preload() {
+      // this.load.image('bg', 'assets/skies/deepblue.png')
+    }
+  }, {
+    key: 'create',
+    value: function create() {
+      var _this2 = this;
+
+      // this.state.start('Game')
+      var firebase = this.game.firebase;
+      // console.log('*User', firebase.User())
+      console.log('*database', firebase.database());
+      console.log('this.game.lobby', this.game.lobby);
+      console.log('this.lobby', this.lobby);
+      var style = { font: '16px Courier', fill: '#fff', tabs: [164, 120, 80] };
+      firebase.database().ref('lobbies/' + this.game.lobby).on('value', function (snapshot) {
+        console.log('****firebase***', snapshot.toJSON());
+        var lobbies = snapshot.toJSON().players;
+        var lobbylist = Object.keys(lobbies).map(function (key) {
+          return [lobbies[key].username, lobbies[key].readyState];
+        });
+
+        var headings = ['Username', 'Ready?'];
+
+        var text = _this2.game.add.text(32, 64, '', style);
+        text.parseList(headings);
+
+        // var text1 = 
+        _this2.game.add.text(22, 30, 'Current user: ' + _this2.game.userId, style);
+        var text2 = _this2.game.add.text(32, 120, '', style);
+        text2.parseList(lobbylist);
+      });
+      // this.game.add.image(0, 0, 'bg')
+
+      var buton = this.game.add.text(300, 300, 'START THE GAME', style);
+      buton.inputEnabled = true;
+      buton.events.onInputDown.add(function () {
+        return _this2.state.start('Game');
+      }, this);
+    }
+  }]);
+
+  return _class;
+}(_phaser2.default.State);
+
+exports.default = _class;
+
+/***/ }),
 /* 434 */
+/*!***********************************!*\
+  !*** ./src/states/All_Lobbies.js ***!
+  \***********************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _phaser = __webpack_require__(/*! phaser */ 35);
+
+var _phaser2 = _interopRequireDefault(_phaser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// import { centerGameObjects } from '../utils'
+
+var _class = function (_Phaser$State) {
+  _inherits(_class, _Phaser$State);
+
+  function _class() {
+    _classCallCheck(this, _class);
+
+    return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+  }
+
+  _createClass(_class, [{
+    key: 'init',
+    value: function init() {}
+  }, {
+    key: 'preload',
+    value: function preload() {
+      // this.load.image('bg', 'assets/skies/deepblue.png')
+    }
+  }, {
+    key: 'create',
+    value: function create() {
+      var _this2 = this;
+
+      var firebase = this.game.firebase;
+      var myId = window.prompt('What is your gameid?');
+      this.game.userId = myId;
+      firebase.database().ref('lobbies').on('value', function (snapshot) {
+        console.log('****firebase***', snapshot.toJSON());
+        var lobbies = snapshot.toJSON();
+        var lobbylist = Object.keys(lobbies).map(function (key) {
+          return [key, Object.keys(lobbies[key].players).length];
+        });
+
+        var style = { font: '16px Courier', fill: '#fff', tabs: [164, 120, 80] };
+
+        var headings = ['Lobby', 'Players'];
+
+        var text = _this2.game.add.text(32, 64, '', style);
+        text.parseList(headings);
+
+        _this2.game.add.text(22, 30, 'Pick a lobby to join. Current user: ' + myId, style);
+        var textArray = [];
+        var makelobby = function makelobby(lobby, i) {
+          textArray[i] = _this2.game.add.text(32, 120 + i * 20, '', style);
+          textArray[i].parseList(lobby);
+          textArray[i].lobby = lobby;
+          textArray[i].inputEnabled = true;
+          var handleClick = function handleClick(text, pointer) {
+            if (text.lobby[1] > 1) return alert('too many people');
+            if (text.lobby[0] === 'New Lobby') {
+              var newLobbyName = window.prompt('Name the new lobby!!!!');
+              firebase.database().ref('lobbies/' + newLobbyName).set({
+                players: {
+                  1: {
+                    username: myId,
+                    readyState: false
+                  }
+                }
+              }); // created new lobby
+              _this2.game.lobby = newLobbyName;
+            } else {
+              // join existing lobby
+              firebase.database().ref('lobbies/' + text.lobby[0] + '/players').push().set({
+                username: myId,
+                readyState: false
+              });
+              _this2.game.lobby = text.lobby[0];
+            }
+            _this2.state.start('SingleLobby');
+          };
+          textArray[i].events.onInputDown.add(handleClick, _this2);
+        };
+        lobbylist.forEach(makelobby);
+        makelobby(['New Lobby', 0], lobbylist.length);
+      });
+      // this.game.add.image(0, 0, 'bg')
+    }
+  }]);
+
+  return _class;
+}(_phaser2.default.State);
+
+exports.default = _class;
+
+/***/ }),
+/* 435 */
+/*!*************************************!*\
+  !*** ./src/states/EndGame/index.js ***!
+  \*************************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _phaser = __webpack_require__(/*! phaser */ 35);
+
+var _phaser2 = _interopRequireDefault(_phaser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// import { centerGameObjects } from '../../utils'
+
+var _class = function (_Phaser$State) {
+  _inherits(_class, _Phaser$State);
+
+  function _class() {
+    _classCallCheck(this, _class);
+
+    return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
+  }
+
+  _createClass(_class, [{
+    key: 'init',
+    value: function init() {}
+  }, {
+    key: 'preload',
+    value: function preload() {
+      // this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg')
+      // this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar')
+      // centerGameObjects([this.loaderBg, this.loaderBar])
+    }
+  }, {
+    key: 'create',
+    value: function create() {
+      console.log('**** game ended*****');
+    }
+  }]);
+
+  return _class;
+}(_phaser2.default.State);
+
+exports.default = _class;
+
+/***/ }),
+/* 436 */
+/*!***********************!*\
+  !*** ./src/config.js ***!
+  \***********************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = {
+  gameWidth: 960,
+  gameHeight: 800,
+  localStorageName: 'phaseres6webpack'
+};
+
+/***/ }),
+/* 437 */
 /*!***************************************************!*\
   !*** ./node_modules/firebase/firebase-browser.js ***!
   \***************************************************/
@@ -27369,13 +27660,13 @@ var _app = __webpack_require__(/*! ./app */ 43);
 
 var _app2 = _interopRequireDefault(_app);
 
-__webpack_require__(/*! ./auth */ 440);
+__webpack_require__(/*! ./auth */ 443);
 
-__webpack_require__(/*! ./database */ 441);
+__webpack_require__(/*! ./database */ 444);
 
-__webpack_require__(/*! ./storage */ 481);
+__webpack_require__(/*! ./storage */ 484);
 
-__webpack_require__(/*! ./messaging */ 497);
+__webpack_require__(/*! ./messaging */ 500);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -27401,7 +27692,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 435 */
+/* 438 */
 /*!**********************************************!*\
   !*** ./node_modules/firebase/utils/shims.js ***!
   \**********************************************/
@@ -27517,7 +27808,7 @@ if (!Array.prototype.find) {
 
 
 /***/ }),
-/* 436 */
+/* 439 */
 /*!***************************************************!*\
   !*** ./node_modules/firebase/app/firebase_app.js ***!
   \***************************************************/
@@ -27907,7 +28198,7 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 
 /***/ }),
-/* 437 */
+/* 440 */
 /*!************************************************************************!*\
   !*** ./node_modules/firebase/node_modules/promise-polyfill/promise.js ***!
   \************************************************************************/
@@ -28149,10 +28440,10 @@ var appErrors = new _errors.ErrorFactory('app', 'Firebase', errors);
 
 })(this);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../timers-browserify/main.js */ 438).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../../../timers-browserify/main.js */ 441).setImmediate))
 
 /***/ }),
-/* 438 */
+/* 441 */
 /*!************************************************!*\
   !*** ./node_modules/timers-browserify/main.js ***!
   \************************************************/
@@ -28210,13 +28501,13 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(/*! setimmediate */ 439);
+__webpack_require__(/*! setimmediate */ 442);
 exports.setImmediate = setImmediate;
 exports.clearImmediate = clearImmediate;
 
 
 /***/ }),
-/* 439 */
+/* 442 */
 /*!***************************************************!*\
   !*** ./node_modules/setimmediate/setImmediate.js ***!
   \***************************************************/
@@ -28414,7 +28705,7 @@ exports.clearImmediate = clearImmediate;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/global.js */ 40), __webpack_require__(/*! ./../process/browser.js */ 122)))
 
 /***/ }),
-/* 440 */
+/* 443 */
 /*!***************************************!*\
   !*** ./node_modules/firebase/auth.js ***!
   \***************************************/
@@ -28729,7 +29020,7 @@ c){a=new T(a);c({INTERNAL:{getUid:r(a.getUid,a),getToken:r(a.Ff,a),addAuthTokenL
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(/*! ./../webpack/buildin/global.js */ 40)))
 
 /***/ }),
-/* 441 */
+/* 444 */
 /*!*******************************************!*\
   !*** ./node_modules/firebase/database.js ***!
   \*******************************************/
@@ -28786,11 +29077,11 @@ var _util = __webpack_require__(/*! ./database/core/util/util */ 3);
 
 var _RepoManager = __webpack_require__(/*! ./database/core/RepoManager */ 131);
 
-var _internal = __webpack_require__(/*! ./database/api/internal */ 479);
+var _internal = __webpack_require__(/*! ./database/api/internal */ 482);
 
 var INTERNAL = _interopRequireWildcard(_internal);
 
-var _test_access = __webpack_require__(/*! ./database/api/test_access */ 480);
+var _test_access = __webpack_require__(/*! ./database/api/test_access */ 483);
 
 var TEST_ACCESS = _interopRequireWildcard(_test_access);
 
@@ -28839,7 +29130,7 @@ registerDatabase(_app2.default);
 
 
 /***/ }),
-/* 442 */
+/* 445 */
 /*!**********************************************!*\
   !*** ./node_modules/firebase/utils/crypt.js ***!
   \**********************************************/
@@ -29110,7 +29401,7 @@ var base64 = exports.base64 = {
 
 
 /***/ }),
-/* 443 */
+/* 446 */
 /*!*********************************************!*\
   !*** ./node_modules/firebase/utils/Sha1.js ***!
   \*********************************************/
@@ -29130,7 +29421,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Sha1 = undefined;
 
-var _hash = __webpack_require__(/*! ./hash */ 444);
+var _hash = __webpack_require__(/*! ./hash */ 447);
 
 /**
  * Copyright 2017 Google Inc.
@@ -29403,7 +29694,7 @@ exports.Sha1 = Sha1;
 
 
 /***/ }),
-/* 444 */
+/* 447 */
 /*!*********************************************!*\
   !*** ./node_modules/firebase/utils/hash.js ***!
   \*********************************************/
@@ -29476,7 +29767,7 @@ exports.Hash = Hash;
 
 
 /***/ }),
-/* 445 */
+/* 448 */
 /*!**************************************************************************!*\
   !*** ./node_modules/firebase/database/core/storage/DOMStorageWrapper.js ***!
   \**************************************************************************/
@@ -29496,7 +29787,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DOMStorageWrapper = undefined;
 
-var _json = __webpack_require__(/*! ../../../utils/json */ 35);
+var _json = __webpack_require__(/*! ../../../utils/json */ 36);
 
 /**
  * Wraps a DOM Storage object and:
@@ -29577,7 +29868,7 @@ exports.DOMStorageWrapper = DOMStorageWrapper;
 
 
 /***/ }),
-/* 446 */
+/* 449 */
 /*!**********************************************************************!*\
   !*** ./node_modules/firebase/database/core/storage/MemoryStorage.js ***!
   \**********************************************************************/
@@ -29647,7 +29938,7 @@ exports.MemoryStorage = MemoryStorage;
 
 
 /***/ }),
-/* 447 */
+/* 450 */
 /*!************************************************************!*\
   !*** ./node_modules/firebase/database/api/onDisconnect.js ***!
   \************************************************************/
@@ -29784,7 +30075,7 @@ exports.OnDisconnect = OnDisconnect;
 
 
 /***/ }),
-/* 448 */
+/* 451 */
 /*!*****************************************************************!*\
   !*** ./node_modules/firebase/database/api/TransactionResult.js ***!
   \*****************************************************************/
@@ -29845,7 +30136,7 @@ exports.TransactionResult = TransactionResult;
 
 
 /***/ }),
-/* 449 */
+/* 452 */
 /*!****************************************************************!*\
   !*** ./node_modules/firebase/database/core/util/NextPushId.js ***!
   \****************************************************************/
@@ -29942,7 +30233,7 @@ var nextPushId = exports.nextPushId = function () {
 
 
 /***/ }),
-/* 450 */
+/* 453 */
 /*!***********************************************************************!*\
   !*** ./node_modules/firebase/database/core/view/EventRegistration.js ***!
   \***********************************************************************/
@@ -29964,7 +30255,7 @@ exports.ChildEventRegistration = exports.ValueEventRegistration = undefined;
 
 var _DataSnapshot = __webpack_require__(/*! ../../api/DataSnapshot */ 189);
 
-var _Event = __webpack_require__(/*! ./Event */ 451);
+var _Event = __webpack_require__(/*! ./Event */ 454);
 
 var _obj = __webpack_require__(/*! ../../../utils/obj */ 8);
 
@@ -30172,7 +30463,7 @@ exports.ChildEventRegistration = ChildEventRegistration;
 
 
 /***/ }),
-/* 451 */
+/* 454 */
 /*!***********************************************************!*\
   !*** ./node_modules/firebase/database/core/view/Event.js ***!
   \***********************************************************/
@@ -30192,7 +30483,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.CancelEvent = exports.DataEvent = undefined;
 
-var _json = __webpack_require__(/*! ../../../utils/json */ 35);
+var _json = __webpack_require__(/*! ../../../utils/json */ 36);
 
 /**
  * Encapsulates the data needed to raise an event
@@ -30300,7 +30591,7 @@ exports.CancelEvent = CancelEvent;
 
 
 /***/ }),
-/* 452 */
+/* 455 */
 /*!*********************************************************!*\
   !*** ./node_modules/firebase/database/core/SyncTree.js ***!
   \*********************************************************/
@@ -30324,7 +30615,7 @@ var _assert = __webpack_require__(/*! ../../utils/assert */ 2);
 
 var _util = __webpack_require__(/*! ./util/util */ 3);
 
-var _AckUserWrite = __webpack_require__(/*! ./operation/AckUserWrite */ 453);
+var _AckUserWrite = __webpack_require__(/*! ./operation/AckUserWrite */ 456);
 
 var _ChildrenNode = __webpack_require__(/*! ./snap/ChildrenNode */ 20);
 
@@ -30332,9 +30623,9 @@ var _obj = __webpack_require__(/*! ../../utils/obj */ 8);
 
 var _ImmutableTree = __webpack_require__(/*! ./util/ImmutableTree */ 128);
 
-var _ListenComplete = __webpack_require__(/*! ./operation/ListenComplete */ 454);
+var _ListenComplete = __webpack_require__(/*! ./operation/ListenComplete */ 457);
 
-var _Merge = __webpack_require__(/*! ./operation/Merge */ 455);
+var _Merge = __webpack_require__(/*! ./operation/Merge */ 458);
 
 var _Operation = __webpack_require__(/*! ./operation/Operation */ 58);
 
@@ -30344,7 +30635,7 @@ var _Path = __webpack_require__(/*! ./util/Path */ 12);
 
 var _SyncPoint = __webpack_require__(/*! ./SyncPoint */ 194);
 
-var _WriteTree = __webpack_require__(/*! ./WriteTree */ 461);
+var _WriteTree = __webpack_require__(/*! ./WriteTree */ 464);
 
 /**
  * SyncTree is the central class for managing event callback registration, data caching, views
@@ -31020,7 +31311,7 @@ exports.SyncTree = SyncTree;
 
 
 /***/ }),
-/* 453 */
+/* 456 */
 /*!***********************************************************************!*\
   !*** ./node_modules/firebase/database/core/operation/AckUserWrite.js ***!
   \***********************************************************************/
@@ -31102,7 +31393,7 @@ exports.AckUserWrite = AckUserWrite;
 
 
 /***/ }),
-/* 454 */
+/* 457 */
 /*!*************************************************************************!*\
   !*** ./node_modules/firebase/database/core/operation/ListenComplete.js ***!
   \*************************************************************************/
@@ -31168,7 +31459,7 @@ exports.ListenComplete = ListenComplete;
 
 
 /***/ }),
-/* 455 */
+/* 458 */
 /*!****************************************************************!*\
   !*** ./node_modules/firebase/database/core/operation/Merge.js ***!
   \****************************************************************/
@@ -31263,7 +31554,7 @@ exports.Merge = Merge;
 
 
 /***/ }),
-/* 456 */
+/* 459 */
 /*!**********************************************************!*\
   !*** ./node_modules/firebase/database/core/view/View.js ***!
   \**********************************************************/
@@ -31285,7 +31576,7 @@ exports.View = undefined;
 
 var _IndexedFilter = __webpack_require__(/*! ./filter/IndexedFilter */ 129);
 
-var _ViewProcessor = __webpack_require__(/*! ./ViewProcessor */ 457);
+var _ViewProcessor = __webpack_require__(/*! ./ViewProcessor */ 460);
 
 var _ChildrenNode = __webpack_require__(/*! ../snap/ChildrenNode */ 20);
 
@@ -31293,7 +31584,7 @@ var _CacheNode = __webpack_require__(/*! ./CacheNode */ 92);
 
 var _ViewCache = __webpack_require__(/*! ./ViewCache */ 195);
 
-var _EventGenerator = __webpack_require__(/*! ./EventGenerator */ 460);
+var _EventGenerator = __webpack_require__(/*! ./EventGenerator */ 463);
 
 var _assert = __webpack_require__(/*! ../../../utils/assert */ 2);
 
@@ -31494,7 +31785,7 @@ exports.View = View;
 
 
 /***/ }),
-/* 457 */
+/* 460 */
 /*!*******************************************************************!*\
   !*** ./node_modules/firebase/database/core/view/ViewProcessor.js ***!
   \*******************************************************************/
@@ -31518,7 +31809,7 @@ var _Operation = __webpack_require__(/*! ../operation/Operation */ 58);
 
 var _assert = __webpack_require__(/*! ../../../utils/assert */ 2);
 
-var _ChildChangeAccumulator = __webpack_require__(/*! ./ChildChangeAccumulator */ 458);
+var _ChildChangeAccumulator = __webpack_require__(/*! ./ChildChangeAccumulator */ 461);
 
 var _Change = __webpack_require__(/*! ./Change */ 65);
 
@@ -31530,7 +31821,7 @@ var _ImmutableTree = __webpack_require__(/*! ../util/ImmutableTree */ 128);
 
 var _Path = __webpack_require__(/*! ../util/Path */ 12);
 
-var _CompleteChildSource = __webpack_require__(/*! ./CompleteChildSource */ 459);
+var _CompleteChildSource = __webpack_require__(/*! ./CompleteChildSource */ 462);
 
 /**
  * @constructor
@@ -32035,7 +32326,7 @@ exports.ViewProcessor = ViewProcessor;
 
 
 /***/ }),
-/* 458 */
+/* 461 */
 /*!****************************************************************************!*\
   !*** ./node_modules/firebase/database/core/view/ChildChangeAccumulator.js ***!
   \****************************************************************************/
@@ -32123,7 +32414,7 @@ exports.ChildChangeAccumulator = ChildChangeAccumulator;
 
 
 /***/ }),
-/* 459 */
+/* 462 */
 /*!*************************************************************************!*\
   !*** ./node_modules/firebase/database/core/view/CompleteChildSource.js ***!
   \*************************************************************************/
@@ -32242,7 +32533,7 @@ exports.WriteTreeCompleteChildSource = WriteTreeCompleteChildSource;
 
 
 /***/ }),
-/* 460 */
+/* 463 */
 /*!********************************************************************!*\
   !*** ./node_modules/firebase/database/core/view/EventGenerator.js ***!
   \********************************************************************/
@@ -32394,7 +32685,7 @@ exports.EventGenerator = EventGenerator;
 
 
 /***/ }),
-/* 461 */
+/* 464 */
 /*!**********************************************************!*\
   !*** ./node_modules/firebase/database/core/WriteTree.js ***!
   \**********************************************************/
@@ -32420,7 +32711,7 @@ var _assert = __webpack_require__(/*! ../../utils/assert */ 2);
 
 var _Path = __webpack_require__(/*! ./util/Path */ 12);
 
-var _CompoundWrite = __webpack_require__(/*! ./CompoundWrite */ 462);
+var _CompoundWrite = __webpack_require__(/*! ./CompoundWrite */ 465);
 
 var _PriorityIndex = __webpack_require__(/*! ./snap/indexes/PriorityIndex */ 15);
 
@@ -33015,7 +33306,7 @@ exports.WriteTreeRef = WriteTreeRef;
 
 
 /***/ }),
-/* 462 */
+/* 465 */
 /*!**************************************************************!*\
   !*** ./node_modules/firebase/database/core/CompoundWrite.js ***!
   \**************************************************************/
@@ -33247,7 +33538,7 @@ exports.CompoundWrite = CompoundWrite;
 
 
 /***/ }),
-/* 463 */
+/* 466 */
 /*!***************************************************************!*\
   !*** ./node_modules/firebase/database/core/SnapshotHolder.js ***!
   \***************************************************************/
@@ -33305,7 +33596,7 @@ exports.SnapshotHolder = SnapshotHolder;
 
 
 /***/ }),
-/* 464 */
+/* 467 */
 /*!******************************************************************!*\
   !*** ./node_modules/firebase/database/core/AuthTokenProvider.js ***!
   \******************************************************************/
@@ -33395,7 +33686,7 @@ exports.AuthTokenProvider = AuthTokenProvider;
 
 
 /***/ }),
-/* 465 */
+/* 468 */
 /*!**********************************************************************!*\
   !*** ./node_modules/firebase/database/core/stats/StatsCollection.js ***!
   \**********************************************************************/
@@ -33460,7 +33751,7 @@ exports.StatsCollection = StatsCollection;
 
 
 /***/ }),
-/* 466 */
+/* 469 */
 /*!********************************************************************!*\
   !*** ./node_modules/firebase/database/core/stats/StatsReporter.js ***!
   \********************************************************************/
@@ -33550,7 +33841,7 @@ exports.StatsReporter = StatsReporter;
 
 
 /***/ }),
-/* 467 */
+/* 470 */
 /*!****************************************************************!*\
   !*** ./node_modules/firebase/database/core/view/EventQueue.js ***!
   \****************************************************************/
@@ -33742,7 +34033,7 @@ exports.EventList = EventList;
 
 
 /***/ }),
-/* 468 */
+/* 471 */
 /*!***********************************************************************!*\
   !*** ./node_modules/firebase/database/core/util/VisibilityMonitor.js ***!
   \***********************************************************************/
@@ -33857,7 +34148,7 @@ exports.VisibilityMonitor = VisibilityMonitor;
 
 
 /***/ }),
-/* 469 */
+/* 472 */
 /*!*******************************************************************!*\
   !*** ./node_modules/firebase/database/core/util/OnlineMonitor.js ***!
   \*******************************************************************/
@@ -33973,7 +34264,7 @@ exports.OnlineMonitor = OnlineMonitor;
 
 
 /***/ }),
-/* 470 */
+/* 473 */
 /*!********************************************!*\
   !*** ./node_modules/firebase/utils/jwt.js ***!
   \********************************************/
@@ -34012,7 +34303,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _util = __webpack_require__(/*! ../database/core/util/util */ 3);
 
-var _json = __webpack_require__(/*! ./json */ 35);
+var _json = __webpack_require__(/*! ./json */ 36);
 
 /**
  * Decodes a Firebase auth. token into constituent parts.
@@ -34126,7 +34417,7 @@ var isAdmin = exports.isAdmin = function isAdmin(token) {
 
 
 /***/ }),
-/* 471 */
+/* 474 */
 /*!*********************************************************************!*\
   !*** ./node_modules/firebase/database/realtime/TransportManager.js ***!
   \*********************************************************************/
@@ -34243,7 +34534,7 @@ exports.TransportManager = TransportManager;
 
 
 /***/ }),
-/* 472 */
+/* 475 */
 /*!***************************************************************************!*\
   !*** ./node_modules/firebase/database/realtime/polling/PacketReceiver.js ***!
   \***************************************************************************/
@@ -34348,7 +34639,7 @@ exports.PacketReceiver = PacketReceiver;
 
 
 /***/ }),
-/* 473 */
+/* 476 */
 /*!*******************************************************************!*\
   !*** ./node_modules/firebase/database/core/ReadonlyRestClient.js ***!
   \*******************************************************************/
@@ -34372,11 +34663,11 @@ var _assert = __webpack_require__(/*! ../../utils/assert */ 2);
 
 var _util = __webpack_require__(/*! ./util/util */ 3);
 
-var _json = __webpack_require__(/*! ../../utils/json */ 35);
+var _json = __webpack_require__(/*! ../../utils/json */ 36);
 
 var _obj = __webpack_require__(/*! ../../utils/obj */ 8);
 
-var _util2 = __webpack_require__(/*! ../../utils/util */ 474);
+var _util2 = __webpack_require__(/*! ../../utils/util */ 477);
 
 var _ServerActions = __webpack_require__(/*! ./ServerActions */ 202);
 
@@ -34554,7 +34845,7 @@ exports.ReadonlyRestClient = ReadonlyRestClient;
 
 
 /***/ }),
-/* 474 */
+/* 477 */
 /*!*********************************************!*\
   !*** ./node_modules/firebase/utils/util.js ***!
   \*********************************************/
@@ -34633,7 +34924,7 @@ var querystringDecode = exports.querystringDecode = function querystringDecode(q
 
 
 /***/ }),
-/* 475 */
+/* 478 */
 /*!*****************************************************************!*\
   !*** ./node_modules/firebase/database/core/view/QueryParams.js ***!
   \*****************************************************************/
@@ -34667,11 +34958,11 @@ var _PathIndex = __webpack_require__(/*! ../snap/indexes/PathIndex */ 188);
 
 var _IndexedFilter = __webpack_require__(/*! ./filter/IndexedFilter */ 129);
 
-var _LimitedFilter = __webpack_require__(/*! ./filter/LimitedFilter */ 476);
+var _LimitedFilter = __webpack_require__(/*! ./filter/LimitedFilter */ 479);
 
 var _RangedFilter = __webpack_require__(/*! ./filter/RangedFilter */ 203);
 
-var _json = __webpack_require__(/*! ../../../utils/json */ 35);
+var _json = __webpack_require__(/*! ../../../utils/json */ 36);
 
 /**
  * This class is an immutable-from-the-public-api struct containing a set of query parameters defining a
@@ -35057,7 +35348,7 @@ exports.QueryParams = QueryParams;
 
 
 /***/ }),
-/* 476 */
+/* 479 */
 /*!**************************************************************************!*\
   !*** ./node_modules/firebase/database/core/view/filter/LimitedFilter.js ***!
   \**************************************************************************/
@@ -35316,7 +35607,7 @@ exports.LimitedFilter = LimitedFilter;
 
 
 /***/ }),
-/* 477 */
+/* 480 */
 /*!*****************************************************************!*\
   !*** ./node_modules/firebase/database/core/Repo_transaction.js ***!
   \*****************************************************************/
@@ -35361,7 +35652,7 @@ var _DataSnapshot = __webpack_require__(/*! ../api/DataSnapshot */ 189);
 
 var _Path = __webpack_require__(/*! ./util/Path */ 12);
 
-var _Tree = __webpack_require__(/*! ./util/Tree */ 478);
+var _Tree = __webpack_require__(/*! ./util/Tree */ 481);
 
 var _PriorityIndex = __webpack_require__(/*! ./snap/indexes/PriorityIndex */ 15);
 
@@ -35898,7 +36189,7 @@ _Repo.Repo.prototype.abortTransactionsOnNode_ = function (node) {
 
 
 /***/ }),
-/* 478 */
+/* 481 */
 /*!**********************************************************!*\
   !*** ./node_modules/firebase/database/core/util/Tree.js ***!
   \**********************************************************/
@@ -36146,7 +36437,7 @@ exports.Tree = Tree;
 
 
 /***/ }),
-/* 479 */
+/* 482 */
 /*!********************************************************!*\
   !*** ./node_modules/firebase/database/api/internal.js ***!
   \********************************************************/
@@ -36222,7 +36513,7 @@ var interceptServerData = exports.interceptServerData = function interceptServer
 
 
 /***/ }),
-/* 480 */
+/* 483 */
 /*!***********************************************************!*\
   !*** ./node_modules/firebase/database/api/test_access.js ***!
   \***********************************************************/
@@ -36328,7 +36619,7 @@ var forceRestClient = exports.forceRestClient = function forceRestClient(_forceR
 
 
 /***/ }),
-/* 481 */
+/* 484 */
 /*!******************************************!*\
   !*** ./node_modules/firebase/storage.js ***!
   \******************************************/
@@ -36352,11 +36643,11 @@ var _string = __webpack_require__(/*! ./storage/implementation/string */ 132);
 
 var _taskenums = __webpack_require__(/*! ./storage/implementation/taskenums */ 204);
 
-var _xhriopool = __webpack_require__(/*! ./storage/implementation/xhriopool */ 482);
+var _xhriopool = __webpack_require__(/*! ./storage/implementation/xhriopool */ 485);
 
 var _reference = __webpack_require__(/*! ./storage/reference */ 206);
 
-var _service = __webpack_require__(/*! ./storage/service */ 491);
+var _service = __webpack_require__(/*! ./storage/service */ 494);
 
 var _app = __webpack_require__(/*! ./app */ 43);
 
@@ -36404,7 +36695,7 @@ registerStorage(_app2.default);
 
 
 /***/ }),
-/* 482 */
+/* 485 */
 /*!*******************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/xhriopool.js ***!
   \*******************************************************************/
@@ -36424,7 +36715,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.XhrIoPool = undefined;
 
-var _xhrio_network = __webpack_require__(/*! ./xhrio_network */ 483);
+var _xhrio_network = __webpack_require__(/*! ./xhrio_network */ 486);
 
 /**
  * Factory-like class for creating XhrIo instances.
@@ -36455,7 +36746,7 @@ exports.XhrIoPool = XhrIoPool;
 
 
 /***/ }),
-/* 483 */
+/* 486 */
 /*!***********************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/xhrio_network.js ***!
   \***********************************************************************/
@@ -36625,7 +36916,7 @@ exports.NetworkXhrIo = NetworkXhrIo;
 
 
 /***/ }),
-/* 484 */
+/* 487 */
 /*!**************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/json.js ***!
   \**************************************************************/
@@ -36686,7 +36977,7 @@ function jsonObjectOrNull(s) {
 
 
 /***/ }),
-/* 485 */
+/* 488 */
 /*!************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/fs.js ***!
   \************************************************************/
@@ -36771,7 +37062,7 @@ function sliceBlob(blob, start, end) {
 
 
 /***/ }),
-/* 486 */
+/* 489 */
 /*!*********************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/requestinfo.js ***!
   \*********************************************************************/
@@ -36822,7 +37113,7 @@ exports.RequestInfo = RequestInfo;
 
 
 /***/ }),
-/* 487 */
+/* 490 */
 /*!***********************************************!*\
   !*** ./node_modules/firebase/storage/task.js ***!
   \***********************************************/
@@ -36846,9 +37137,9 @@ var _taskenums = __webpack_require__(/*! ./implementation/taskenums */ 204);
 
 var fbsTaskEnums = _interopRequireWildcard(_taskenums);
 
-var _observer = __webpack_require__(/*! ./implementation/observer */ 488);
+var _observer = __webpack_require__(/*! ./implementation/observer */ 491);
 
-var _tasksnapshot = __webpack_require__(/*! ./tasksnapshot */ 489);
+var _tasksnapshot = __webpack_require__(/*! ./tasksnapshot */ 492);
 
 var _args = __webpack_require__(/*! ./implementation/args */ 133);
 
@@ -36858,7 +37149,7 @@ var _array = __webpack_require__(/*! ./implementation/array */ 136);
 
 var fbsArray = _interopRequireWildcard(_array);
 
-var _async = __webpack_require__(/*! ./implementation/async */ 490);
+var _async = __webpack_require__(/*! ./implementation/async */ 493);
 
 var _error = __webpack_require__(/*! ./implementation/error */ 39);
 
@@ -37409,7 +37700,7 @@ exports.UploadTask = UploadTask;
 
 
 /***/ }),
-/* 488 */
+/* 491 */
 /*!******************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/observer.js ***!
   \******************************************************************/
@@ -37473,7 +37764,7 @@ exports.Observer = Observer;
 
 
 /***/ }),
-/* 489 */
+/* 492 */
 /*!*******************************************************!*\
   !*** ./node_modules/firebase/storage/tasksnapshot.js ***!
   \*******************************************************/
@@ -37523,7 +37814,7 @@ exports.UploadTaskSnapshot = UploadTaskSnapshot;
 
 
 /***/ }),
-/* 490 */
+/* 493 */
 /*!***************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/async.js ***!
   \***************************************************************/
@@ -37586,7 +37877,7 @@ function async(f) {
 
 
 /***/ }),
-/* 491 */
+/* 494 */
 /*!**************************************************!*\
   !*** ./node_modules/firebase/storage/service.js ***!
   \**************************************************/
@@ -37610,7 +37901,7 @@ var _args = __webpack_require__(/*! ./implementation/args */ 133);
 
 var args = _interopRequireWildcard(_args);
 
-var _authwrapper = __webpack_require__(/*! ./implementation/authwrapper */ 492);
+var _authwrapper = __webpack_require__(/*! ./implementation/authwrapper */ 495);
 
 var _location = __webpack_require__(/*! ./implementation/location */ 94);
 
@@ -37618,7 +37909,7 @@ var _promise_external = __webpack_require__(/*! ./implementation/promise_externa
 
 var fbsPromiseImpl = _interopRequireWildcard(_promise_external);
 
-var _request = __webpack_require__(/*! ./implementation/request */ 495);
+var _request = __webpack_require__(/*! ./implementation/request */ 498);
 
 var RequestExports = _interopRequireWildcard(_request);
 
@@ -37766,7 +38057,7 @@ exports.ServiceInternals = ServiceInternals;
 
 
 /***/ }),
-/* 492 */
+/* 495 */
 /*!*********************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/authwrapper.js ***!
   \*********************************************************************/
@@ -37794,7 +38085,7 @@ var _error2 = __webpack_require__(/*! ./error */ 39);
 
 var errorsExports = _interopRequireWildcard(_error2);
 
-var _failrequest = __webpack_require__(/*! ./failrequest */ 493);
+var _failrequest = __webpack_require__(/*! ./failrequest */ 496);
 
 var _location = __webpack_require__(/*! ./location */ 94);
 
@@ -37802,7 +38093,7 @@ var _promise_external = __webpack_require__(/*! ./promise_external */ 59);
 
 var promiseimpl = _interopRequireWildcard(_promise_external);
 
-var _requestmap = __webpack_require__(/*! ./requestmap */ 494);
+var _requestmap = __webpack_require__(/*! ./requestmap */ 497);
 
 var _type = __webpack_require__(/*! ./type */ 25);
 
@@ -37920,7 +38211,7 @@ exports.AuthWrapper = AuthWrapper;
 
 
 /***/ }),
-/* 493 */
+/* 496 */
 /*!*********************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/failrequest.js ***!
   \*********************************************************************/
@@ -37972,7 +38263,7 @@ exports.FailRequest = FailRequest;
 
 
 /***/ }),
-/* 494 */
+/* 497 */
 /*!********************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/requestmap.js ***!
   \********************************************************************/
@@ -38058,7 +38349,7 @@ exports.RequestMap = RequestMap;
 
 
 /***/ }),
-/* 495 */
+/* 498 */
 /*!*****************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/request.js ***!
   \*****************************************************************/
@@ -38085,7 +38376,7 @@ var _array = __webpack_require__(/*! ./array */ 136);
 
 var array = _interopRequireWildcard(_array);
 
-var _backoff = __webpack_require__(/*! ./backoff */ 496);
+var _backoff = __webpack_require__(/*! ./backoff */ 499);
 
 var backoff = _interopRequireWildcard(_backoff);
 
@@ -38322,7 +38613,7 @@ function makeRequest(requestInfo, authToken, pool) {
 
 
 /***/ }),
-/* 496 */
+/* 499 */
 /*!*****************************************************************!*\
   !*** ./node_modules/firebase/storage/implementation/backoff.js ***!
   \*****************************************************************/
@@ -38459,7 +38750,7 @@ function stop(id) {
 
 
 /***/ }),
-/* 497 */
+/* 500 */
 /*!********************************************!*\
   !*** ./node_modules/firebase/messaging.js ***!
   \********************************************/
@@ -38494,11 +38785,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.registerMessaging = registerMessaging;
 
-var _windowController = __webpack_require__(/*! ./messaging/controllers/window-controller */ 498);
+var _windowController = __webpack_require__(/*! ./messaging/controllers/window-controller */ 501);
 
 var _windowController2 = _interopRequireDefault(_windowController);
 
-var _swController = __webpack_require__(/*! ./messaging/controllers/sw-controller */ 502);
+var _swController = __webpack_require__(/*! ./messaging/controllers/sw-controller */ 505);
 
 var _swController2 = _interopRequireDefault(_swController);
 
@@ -38528,7 +38819,7 @@ registerMessaging(_app2.default);
 
 
 /***/ }),
-/* 498 */
+/* 501 */
 /*!**************************************************************************!*\
   !*** ./node_modules/firebase/messaging/controllers/window-controller.js ***!
   \**************************************************************************/
@@ -38574,7 +38865,7 @@ var _workerPageMessage = __webpack_require__(/*! ../models/worker-page-message *
 
 var _workerPageMessage2 = _interopRequireDefault(_workerPageMessage);
 
-var _defaultSw = __webpack_require__(/*! ../models/default-sw */ 501);
+var _defaultSw = __webpack_require__(/*! ../models/default-sw */ 504);
 
 var _defaultSw2 = _interopRequireDefault(_defaultSw);
 
@@ -38897,7 +39188,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 499 */
+/* 502 */
 /*!*****************************************************************!*\
   !*** ./node_modules/firebase/messaging/models/token-manager.js ***!
   \*****************************************************************/
@@ -38937,7 +39228,7 @@ var _errors2 = __webpack_require__(/*! ./errors */ 95);
 
 var _errors3 = _interopRequireDefault(_errors2);
 
-var _arrayBufferToBase = __webpack_require__(/*! ../helpers/array-buffer-to-base64 */ 500);
+var _arrayBufferToBase = __webpack_require__(/*! ../helpers/array-buffer-to-base64 */ 503);
 
 var _arrayBufferToBase2 = _interopRequireDefault(_arrayBufferToBase);
 
@@ -39279,7 +39570,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 500 */
+/* 503 */
 /*!***************************************************************************!*\
   !*** ./node_modules/firebase/messaging/helpers/array-buffer-to-base64.js ***!
   \***************************************************************************/
@@ -39328,7 +39619,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 501 */
+/* 504 */
 /*!**************************************************************!*\
   !*** ./node_modules/firebase/messaging/models/default-sw.js ***!
   \**************************************************************/
@@ -39370,7 +39661,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 502 */
+/* 505 */
 /*!**********************************************************************!*\
   !*** ./node_modules/firebase/messaging/controllers/sw-controller.js ***!
   \**********************************************************************/
@@ -39716,7 +40007,7 @@ module.exports = exports['default'];
 
 
 /***/ }),
-/* 503 */
+/* 506 */
 /*!**************************!*\
   !*** ./server/config.js ***!
   \**************************/
@@ -39734,294 +40025,6 @@ module.exports = {
     	messagingSenderId: "192621484414"
     }
 };
-
-/***/ }),
-/* 504 */
-/*!*************************************!*\
-  !*** ./src/states/EndGame/index.js ***!
-  \*************************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _phaser = __webpack_require__(/*! phaser */ 38);
-
-var _phaser2 = _interopRequireDefault(_phaser);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// import { centerGameObjects } from '../../utils'
-
-var _class = function (_Phaser$State) {
-  _inherits(_class, _Phaser$State);
-
-  function _class() {
-    _classCallCheck(this, _class);
-
-    return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
-  }
-
-  _createClass(_class, [{
-    key: 'init',
-    value: function init() {}
-  }, {
-    key: 'preload',
-    value: function preload() {
-      // this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg')
-      // this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar')
-      // centerGameObjects([this.loaderBg, this.loaderBar])
-    }
-  }, {
-    key: 'create',
-    value: function create() {
-      console.log('**** game ended*****');
-    }
-  }]);
-
-  return _class;
-}(_phaser2.default.State);
-
-exports.default = _class;
-
-/***/ }),
-/* 505 */
-/*!***********************!*\
-  !*** ./src/config.js ***!
-  \***********************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = {
-  gameWidth: 960,
-  gameHeight: 800,
-  localStorageName: 'phaseres6webpack'
-};
-
-/***/ }),
-/* 506 */,
-/* 507 */
-/*!***********************************!*\
-  !*** ./src/states/SingleLobby.js ***!
-  \***********************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _phaser = __webpack_require__(/*! phaser */ 38);
-
-var _phaser2 = _interopRequireDefault(_phaser);
-
-var _utils = __webpack_require__(/*! ../utils */ 174);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var _class = function (_Phaser$State) {
-  _inherits(_class, _Phaser$State);
-
-  function _class() {
-    _classCallCheck(this, _class);
-
-    return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
-  }
-
-  _createClass(_class, [{
-    key: 'init',
-    value: function init() {}
-  }, {
-    key: 'preload',
-    value: function preload() {
-      // this.load.image('bg', 'assets/skies/deepblue.png')
-    }
-  }, {
-    key: 'create',
-    value: function create() {
-      var _this2 = this;
-
-      // this.state.start('Game')
-      var firebase = this.game.firebase;
-      // console.log('*User', firebase.User())
-      console.log('*database', firebase.database());
-      console.log('this.game.lobby', this.game.lobby);
-      console.log('this.lobby', this.lobby);
-      firebase.database().ref('lobbies/' + this.game.lobby).on('value', function (snapshot) {
-        console.log('****firebase***', snapshot.toJSON());
-        var lobbies = snapshot.toJSON().players;
-        var lobbylist = Object.keys(lobbies).map(function (key) {
-          return [lobbies[key].username, lobbies[key].readyState];
-        });
-
-        var style = { font: '16px Courier', fill: '#fff', tabs: [164, 120, 80] };
-
-        var headings = ['Username', 'Ready?'];
-
-        var text = _this2.game.add.text(32, 64, '', style);
-        text.parseList(headings);
-
-        // var text1 = 
-        _this2.game.add.text(22, 30, 'Current user: ' + _this2.game.userId, style);
-        var text2 = _this2.game.add.text(32, 120, '', style);
-        text2.parseList(lobbylist);
-      });
-      // this.game.add.image(0, 0, 'bg')
-    }
-  }]);
-
-  return _class;
-}(_phaser2.default.State);
-
-exports.default = _class;
-
-/***/ }),
-/* 508 */
-/*!***********************************!*\
-  !*** ./src/states/All_Lobbies.js ***!
-  \***********************************/
-/*! no static exports found */
-/*! all exports used */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _phaser = __webpack_require__(/*! phaser */ 38);
-
-var _phaser2 = _interopRequireDefault(_phaser);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// import { centerGameObjects } from '../utils'
-
-var _class = function (_Phaser$State) {
-  _inherits(_class, _Phaser$State);
-
-  function _class() {
-    _classCallCheck(this, _class);
-
-    return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));
-  }
-
-  _createClass(_class, [{
-    key: 'init',
-    value: function init() {}
-  }, {
-    key: 'preload',
-    value: function preload() {
-      // this.load.image('bg', 'assets/skies/deepblue.png')
-    }
-  }, {
-    key: 'create',
-    value: function create() {
-      var _this2 = this;
-
-      var firebase = this.game.firebase;
-      var myId = window.prompt('What is your gameid?');
-      this.game.userId = myId;
-      firebase.database().ref('lobbies').on('value', function (snapshot) {
-        console.log('****firebase***', snapshot.toJSON());
-        var lobbies = snapshot.toJSON();
-        var lobbylist = Object.keys(lobbies).map(function (key) {
-          return [key, Object.keys(lobbies[key].players).length];
-        });
-
-        var style = { font: '16px Courier', fill: '#fff', tabs: [164, 120, 80] };
-
-        var headings = ['Lobby', 'Players'];
-
-        var text = _this2.game.add.text(32, 64, '', style);
-        text.parseList(headings);
-
-        _this2.game.add.text(22, 30, 'Pick a lobby to join. Current user: ' + myId, style);
-        var textArray = [];
-        var makelobby = function makelobby(lobby, i) {
-          textArray[i] = _this2.game.add.text(32, 120 + i * 20, '', style);
-          textArray[i].parseList(lobby);
-          textArray[i].lobby = lobby;
-          textArray[i].inputEnabled = true;
-          var handleClick = function handleClick(text, pointer) {
-            if (text.lobby[1] > 1) return alert('too many people');
-            if (text.lobby[0] === 'New Lobby') {
-              var newLobbyName = window.prompt('Name the new lobby!!!!');
-              firebase.database().ref('lobbies/' + newLobbyName).set({
-                players: {
-                  1: {
-                    username: myId,
-                    readyState: false
-                  }
-                }
-              }); // created new lobby
-              _this2.game.lobby = newLobbyName;
-            } else {
-              // join existing lobby
-              firebase.database().ref('lobbies/' + text.lobby[0] + '/players').push().set({
-                username: myId,
-                readyState: false
-              });
-              _this2.game.lobby = text.lobby[0];
-            }
-            _this2.state.start('SingleLobby');
-          };
-          textArray[i].events.onInputDown.add(handleClick, _this2);
-        };
-        lobbylist.forEach(makelobby);
-        makelobby(['New Lobby', 0], lobbylist.length);
-      });
-      // this.game.add.image(0, 0, 'bg')
-    }
-  }]);
-
-  return _class;
-}(_phaser2.default.State);
-
-exports.default = _class;
 
 /***/ })
 ],[214]);

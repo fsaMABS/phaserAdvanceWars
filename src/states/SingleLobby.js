@@ -15,12 +15,12 @@ export default class extends Phaser.State {
     console.log('*database', firebase.database())
     console.log('this.game.lobby', this.game.lobby)
     console.log('this.lobby', this.lobby)
+    var style = { font: '16px Courier', fill: '#fff', tabs: [ 164, 120, 80 ] }
     firebase.database().ref('lobbies/' + this.game.lobby).on('value', snapshot => {
       console.log('****firebase***', snapshot.toJSON())
       const lobbies = snapshot.toJSON().players
       var lobbylist = Object.keys(lobbies).map(key => [lobbies[key].username, lobbies[key].readyState])
 
-      var style = { font: '16px Courier', fill: '#fff', tabs: [ 164, 120, 80 ] }
 
       var headings = [ 'Username', 'Ready?' ]
 
@@ -33,5 +33,9 @@ export default class extends Phaser.State {
       text2.parseList(lobbylist)
     })
     // this.game.add.image(0, 0, 'bg')
+
+    const buton = this.game.add.text(300, 300, 'START THE GAME', style)
+    buton.inputEnabled = true
+    buton.events.onInputDown.add(() => this.state.start('Game'), this)
   }
 }
