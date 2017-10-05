@@ -3,10 +3,8 @@ import Phaser from 'phaser'
 import easystarjs from 'easystarjs'
 import {loadLevel} from './initialize'
 import newGrid from '../../processMap'
-console.log('grid in iintilize ', newGrid())
 // var easystarjs = require('easystarjs')
 var easystar = new easystarjs.js()
-
 
 export default class extends Phaser.State {
   init () {
@@ -23,16 +21,11 @@ export default class extends Phaser.State {
   togglePlayer () {
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
     // ENABLE PIECES
-    console.log('this current player in togle', this.currentPlayer)
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0;
-      console.log('currplay', this.currentPlayer)
-      console.log('actualplayer', this.pieces[key].player )
       if (this.pieces[key].team === this.currentPlayer) {
-        console.log('im setting ', this.pieces[key].id, 'to true')        
         this.pieces[key].inputEnabled = true
       } else {
-        console.log('im setting ', this.pieces[key].id, 'to false')
         this.pieces[key].inputEnabled = false
       }
     }
@@ -49,11 +42,9 @@ export default class extends Phaser.State {
       ele.alpha = 0
       ele.inputEnabled = false
     }, this)
-    console.log('pieceteam',this.selectedPiece.team)
     
     if (this.selectedPiece.team === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece)
     easystar.findPath(this.selectedPiece.x/32, this.selectedPiece.y/32, sprite.x/32, sprite.y/32, ( path ) => {
-      console.log('pathhhh', path)
       this.changePosition = this.game.add.tween(this.selectedPiece)          
       for (var i = 0 ; i < path.length; i++) {
         var currCoords = path[i]
@@ -67,25 +58,31 @@ export default class extends Phaser.State {
       }, this)
     
     });
-    easystar.calculate() 
+    easystar.calculate()
   }
 
-  checkForPieceOptions() {
-    for(var key in this.pieces) {
-      if(this.pieces[key] !== this.selectedPiece) {
+  checkForPieceOptions () {
+    for (var key in this.pieces) {
+      console.log(this.pieces[key])
+      if (this.pieces[key] !== this.selectedPiece) {
         let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
         let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
-        if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
+        if (((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32)) && (this.pieces[key].team !== this.selectedPiece.team)) {
           let defender = this.pieces[key]
-          if(!this.attackButton || !this.attackButton.alive) {
-            this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+99, 'fireSprite', 
+          if (!this.attackButton || !this.attackButton.alive) {
+            this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 99, 'fireSprite',
               () => this.attackPiece(defender), this, 2, 1, 0);
           }
         }
       }
     }
-    if(!this.waitButton || !this.waitButton.alive) {
-      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+64, 'waitSprite', this.wait, this, 2, 1, 0);
+    if (!this.waitButton || !this.waitButton.alive) {
+      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'waitSprite', this.wait, this, 2, 1, 0);
+    }
+
+    if (!this.captButton || !this.captButton.alive) {
+      this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'captSprite',
+        () => this.captureCity(city), this, 2, 1, 0);
     }
   }
 
@@ -94,30 +91,48 @@ export default class extends Phaser.State {
     this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2)
     defendingPiece.HP -= this.selectedPiece.AP
 
-    for (var key in this.pieces) {
-      console.log('HP of ' + key, this.pieces[key].HP)
-    }
     this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
   }
 
-  disablePieceMovement(piece) {
+  captureCity (campedCity) {
+    this.selectedPiece
+    campedCity.Cap -= this.selectedPiece.HP
+
+    this.selectedPiece.alpha = 0.7;
+    this.disablePieceOptions();
+  }
+
+  disablePieceMovement (piece) {
     piece.inputEnabled = false;
   }
 
-  disablePieceOptions() {
+  disablePieceOptions () {
+    if(this.captButton) this.captButton.destroy();
     if(this.waitButton) this.waitButton.destroy();
     if(this.attackButton) this.attackButton.destroy();
   }
 
-  wait() {
+  wait () {
     this.waitButton.pendingDestroy = true;
     this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
   }
 
-  endTurn() {
-    console.log('Turn ended!');
+  endTurn () {
+    // for(var i in this.pieces) {
+    //   console.log(this.pieces[i])
+    //   if(this.pieces[i].key.indexOf('city') !== -1) {
+    //     let current_city = this.pieces[i];
+    //     for(var j in this.pieces) {
+    //       if(this.pieces[j].key.indexOf('infantry') !== -1) {
+    //         if(this.pieces[j].position.x === current_city.position.x && this.pieces[j].position.y === current_city.position.y) {
+    //           // console.log('here')
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
     this.disablePieceOptions();
     var style = { font: '20px Arial', fill: '#fff' }
     // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
@@ -126,7 +141,6 @@ export default class extends Phaser.State {
       this.togglePlayer()
     // }, this.turnEnded);
   }
-
 
   update () {
     this.enterKey.onDown.add(this.endTurn, this);
@@ -140,7 +154,7 @@ export default class extends Phaser.State {
       }
       //Else: Update Health by Destroying Old Health and Rendering New
       else {
-        this.pieces[piece].children[0].destroy() 
+        this.pieces[piece].children[0].destroy()
         let newHealth = this.game.add.text(40, 40, this.pieces[piece].HP, this.healthStyle)
         this.pieces[piece].addChild(newHealth);
       }

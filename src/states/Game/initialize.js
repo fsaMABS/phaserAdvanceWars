@@ -1,4 +1,5 @@
 import Infantry from '../../sprites/Infantry'
+import City from '../../sprites/City'
 import {checkType} from '../../levels/level1'
 import Block from '../../sprites/Block'
 import newGrid from '../../processMap'
@@ -30,8 +31,8 @@ export const startingPieces = that => ({
     height: 32,
     HP: 10,
     AP: 5,
-    player: 2,
-    id: 2,
+    player: 1,
+    id: 1,
     mobility: 5,
     team: 'blue'
   }),
@@ -63,6 +64,19 @@ export const startingPieces = that => ({
     mobility: 5,
     team: 'red'
   }),
+  5: new City({
+    game: that.game,
+    x: 96,
+    y: 96,
+    asset: 'city_grey',
+    width: 30,
+    height: 40,
+    Def: 3,
+    Cap: 20,
+    player: 1,
+    id: 1,
+    team: 'red'
+  })
 })
 
 export const loadLevel = (that) => {

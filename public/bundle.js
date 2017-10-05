@@ -8769,28 +8769,6 @@ $export($export.S, 'Reflect', {
 });
 
 
-<<<<<<< HEAD
-      this.load.setPreloadSprite(this.loaderBar);
-      //
-      // load your assets
-      //
-      this.load.image('infantry', 'assets/images/infantry.png');
-      this.load.image('waitSprite', 'assets/images/wait.png');
-      this.load.image('fireSprite', 'assets/images/fireSprite.png');
-      this.load.tilemap('map', 'assets/js/secondMap.json', null, _phaser2.default.Tilemap.TILED_JSON);
-      this.load.image('basicMap', 'assets/images/basicMap.png');
-      this.load.image('greenSquare', 'assets/images/greenSquare.jpeg');
-      this.load.image('blueSquare', 'assets/images/blueSquare.jpg');
-      this.load.image('aw1Map', 'assets/images/aw1.bmp');
-      // this.load.image('infantry')
-    }
-  }, {
-    key: 'create',
-    value: function create() {
-      this.state.start('Game');
-    }
-  }]);
-=======
 /***/ }),
 /* 266 */
 /*!**************************************************************!*\
@@ -8799,7 +8777,6 @@ $export($export.S, 'Reflect', {
 /*! no static exports found */
 /*! all exports used */
 /***/ (function(module, exports, __webpack_require__) {
->>>>>>> master
 
 // 26.1.11 Reflect.ownKeys(target)
 var $export = __webpack_require__(/*! ./_export */ 0);
@@ -8990,103 +8967,7 @@ $export($export.P, 'Array', {
   }
 });
 
-<<<<<<< HEAD
-  _createClass(_class, [{
-    key: 'init',
-    value: function init() {
-      this.showingBlue = false;
-      this.selectedPiece = undefined;
-    }
-  }, {
-    key: 'create',
-    value: function create() {
-      easystar.setGrid((0, _processMap2.default)());
-      easystar.setAcceptableTiles([2]);
-      (0, _initialize.loadLevel)(this);
-    }
-  }, {
-    key: 'togglePlayer',
-    value: function togglePlayer() {
-      this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
-      // ENABLE PIECES
-      for (var key in this.pieces) {
-        this.pieces[key].alpha = 1.0;
-        if (this.pieces[key].player === this.currentPlayer) this.pieces[key].inputEnabled = true;else this.pieces[key].inputEnabled = false;
-      }
-      this.playerText.text = this.currentPlayer;
-    }
-  }, {
-    key: 'sendMoveMessage',
-    value: function sendMoveMessage(sprite) {
-      if (this.showingBlue) {
-        socket.emit('moveFromClient', {
-          currentPlayer: this.currentPlayer,
-          sprite: { x: sprite.x, y: sprite.y },
-          selectedPieceId: sprite.id
-        });
-        this.showingBlue = false;
-      }
-    }
-  }, {
-    key: 'moveHere',
-    value: function moveHere(sprite) {
-      var _this2 = this;
-
-      this.blocks.children.forEach(function (ele) {
-        ele.alpha = 0;
-        ele.inputEnabled = false;
-      }, this);
-
-      if (this.selectedPiece.player === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece);
-      easystar.findPath(this.selectedPiece.x / 32, this.selectedPiece.y / 32, sprite.x / 32, sprite.y / 32, function (path) {
-        _this2.changePosition = _this2.game.add.tween(_this2.selectedPiece);
-        for (var i = 0; i < path.length; i++) {
-          var currCoords = path[i];
-          _this2.changePosition.to({ x: currCoords.x * 32, y: currCoords.y * 32 }, 150);
-        }
-        _this2.changePosition.start();
-        _this2.changePosition.onComplete.add(function () {
-          this.sendMoveMessage(this.selectedPiece);
-          this.checkForPieceOptions();
-          this.disablePieceMovement(this.selectedPiece);
-        }, _this2);
-      });
-      easystar.calculate();
-    }
-  }, {
-    key: 'checkForPieceOptions',
-    value: function checkForPieceOptions() {
-      var _this3 = this;
-
-      for (var key in this.pieces) {
-        if (this.pieces[key] !== this.selectedPiece) {
-          var diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x);
-          var diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y);
-          if (diffX === 32 && diffY === 0 || diffX === 0 && diffY === 32) {
-            (function () {
-              var defender = _this3.pieces[key];
-              if (!_this3.attackButton || !_this3.attackButton.alive) {
-                _this3.attackButton = _this3.game.add.button(_this3.selectedPiece.x, _this3.selectedPiece.y + 99, 'fireSprite', function () {
-                  return _this3.attackPiece(defender);
-                }, _this3, 2, 1, 0);
-              }
-            })();
-          }
-        }
-      }
-      if (!this.waitButton || !this.waitButton.alive) {
-        this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'waitSprite', this.wait, this, 2, 1, 0);
-      }
-    }
-  }, {
-    key: 'attackPiece',
-    value: function attackPiece(defendingPiece) {
-      this.selectedPiece;
-      this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2);
-      defendingPiece.HP -= this.selectedPiece.AP;
-=======
 __webpack_require__(/*! ./_add-to-unscopables */ 30)('flatten');
->>>>>>> master
 
 
 /***/ }),
@@ -11514,6 +11395,10 @@ var _class = function (_Phaser$State) {
       //
       this.load.image('infantry', 'assets/images/infantry.png');
       this.load.image('infantry_blue', 'assets/images/infantry_blue.png');
+      this.load.image('city_grey', 'assets/images/city_grey.png');
+      this.load.image('captSprite', 'assets/images/mushroom2.png');
+      this.load.image('waitSprite', 'assets/images/wait.png');
+      this.load.image('fireSprite', 'assets/images/fireSprite.png');
       this.load.tilemap('map', 'assets/js/secondMap.json', null, _phaser2.default.Tilemap.TILED_JSON);
       this.load.image('basicMap', 'assets/images/basicMap.png');
       this.load.image('greenSquare', 'assets/images/greenSquare.jpeg');
@@ -11595,7 +11480,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /* globals __DEV__ */
 
 
-console.log('grid in iintilize ', (0, _processMap2.default)());
 // var easystarjs = require('easystarjs')
 var easystar = new _easystarjs2.default.js();
 
@@ -11626,16 +11510,11 @@ var _class = function (_Phaser$State) {
     value: function togglePlayer() {
       this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red';
       // ENABLE PIECES
-      console.log('this current player in togle', this.currentPlayer);
       for (var key in this.pieces) {
         this.pieces[key].alpha = 1.0;
-        console.log('currplay', this.currentPlayer);
-        console.log('actualplayer', this.pieces[key].player);
         if (this.pieces[key].team === this.currentPlayer) {
-          console.log('im setting ', this.pieces[key].id, 'to true');
           this.pieces[key].inputEnabled = true;
         } else {
-          console.log('im setting ', this.pieces[key].id, 'to false');
           this.pieces[key].inputEnabled = false;
         }
       }
@@ -11657,11 +11536,9 @@ var _class = function (_Phaser$State) {
         ele.alpha = 0;
         ele.inputEnabled = false;
       }, this);
-      console.log('pieceteam', this.selectedPiece.team);
 
       if (this.selectedPiece.team === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece);
       easystar.findPath(this.selectedPiece.x / 32, this.selectedPiece.y / 32, sprite.x / 32, sprite.y / 32, function (path) {
-        console.log('pathhhh', path);
         _this2.changePosition = _this2.game.add.tween(_this2.selectedPiece);
         for (var i = 0; i < path.length; i++) {
           var currCoords = path[i];
@@ -11682,14 +11559,15 @@ var _class = function (_Phaser$State) {
       var _this3 = this;
 
       for (var key in this.pieces) {
+        console.log(this.pieces[key]);
         if (this.pieces[key] !== this.selectedPiece) {
           var diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x);
           var diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y);
-          if (diffX === 32 && diffY === 0 || diffX === 0 && diffY === 32) {
+          if ((diffX === 32 && diffY === 0 || diffX === 0 && diffY === 32) && this.pieces[key].team !== this.selectedPiece.team) {
             (function () {
               var defender = _this3.pieces[key];
               if (!_this3.attackButton || !_this3.attackButton.alive) {
-                _this3.attackButton = _this3.game.add.button(_this3.game.world.centerX - 64, _this3.game.world.centerY, 'mushroom', function () {
+                _this3.attackButton = _this3.game.add.button(_this3.selectedPiece.x, _this3.selectedPiece.y + 99, 'fireSprite', function () {
                   return _this3.attackPiece(defender);
                 }, _this3, 2, 1, 0);
               }
@@ -11698,7 +11576,13 @@ var _class = function (_Phaser$State) {
         }
       }
       if (!this.waitButton || !this.waitButton.alive) {
-        this.waitButton = this.game.add.button(this.game.world.centerX, this.game.world.centerY, 'mushroom', this.wait, this, 2, 1, 0);
+        this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'waitSprite', this.wait, this, 2, 1, 0);
+      }
+
+      if (!this.captButton || !this.captButton.alive) {
+        this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'captSprite', function () {
+          return _this3.captureCity(city);
+        }, this, 2, 1, 0);
       }
     }
   }, {
@@ -11708,9 +11592,15 @@ var _class = function (_Phaser$State) {
       this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2);
       defendingPiece.HP -= this.selectedPiece.AP;
 
-      for (var key in this.pieces) {
-        console.log('HP of ' + key, this.pieces[key].HP);
-      }
+      this.selectedPiece.alpha = 0.7;
+      this.disablePieceOptions();
+    }
+  }, {
+    key: 'captureCity',
+    value: function captureCity(campedCity) {
+      this.selectedPiece;
+      campedCity.Cap -= this.selectedPiece.HP;
+
       this.selectedPiece.alpha = 0.7;
       this.disablePieceOptions();
     }
@@ -11722,6 +11612,7 @@ var _class = function (_Phaser$State) {
   }, {
     key: 'disablePieceOptions',
     value: function disablePieceOptions() {
+      if (this.captButton) this.captButton.destroy();
       if (this.waitButton) this.waitButton.destroy();
       if (this.attackButton) this.attackButton.destroy();
     }
@@ -11735,7 +11626,19 @@ var _class = function (_Phaser$State) {
   }, {
     key: 'endTurn',
     value: function endTurn() {
-      console.log('Turn ended!');
+      // for(var i in this.pieces) {
+      //   console.log(this.pieces[i])
+      //   if(this.pieces[i].key.indexOf('city') !== -1) {
+      //     let current_city = this.pieces[i];
+      //     for(var j in this.pieces) {
+      //       if(this.pieces[j].key.indexOf('infantry') !== -1) {
+      //         if(this.pieces[j].position.x === current_city.position.x && this.pieces[j].position.y === current_city.position.y) {
+      //           // console.log('here')
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
       this.disablePieceOptions();
       var style = { font: '20px Arial', fill: '#fff'
         // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
@@ -12259,6 +12162,10 @@ var _Infantry = __webpack_require__(/*! ../../sprites/Infantry */ 348);
 
 var _Infantry2 = _interopRequireDefault(_Infantry);
 
+var _City = __webpack_require__(/*! ../../sprites/City */ 353);
+
+var _City2 = _interopRequireDefault(_City);
+
 var _level = __webpack_require__(/*! ../../levels/level1 */ 349);
 
 var _Block = __webpack_require__(/*! ../../sprites/Block */ 350);
@@ -12303,8 +12210,8 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
       height: 32,
       HP: 10,
       AP: 5,
-      player: 2,
-      id: 2,
+      player: 1,
+      id: 1,
       mobility: 5,
       team: 'blue'
     }),
@@ -12334,6 +12241,19 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
       player: 2,
       id: 2,
       mobility: 5,
+      team: 'red'
+    }),
+    5: new _City2.default({
+      game: that.game,
+      x: 96,
+      y: 96,
+      asset: 'city_grey',
+      width: 30,
+      height: 40,
+      Def: 3,
+      Cap: 20,
+      player: 1,
+      id: 1,
       team: 'red'
     })
   };
@@ -12654,6 +12574,78 @@ exports.default = {
   gameHeight: 800,
   localStorageName: 'phaseres6webpack'
 };
+
+/***/ }),
+/* 352 */,
+/* 353 */
+/*!*****************************!*\
+  !*** ./src/sprites/City.js ***!
+  \*****************************/
+/*! no static exports found */
+/*! all exports used */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _phaser = __webpack_require__(/*! phaser */ 42);
+
+var _phaser2 = _interopRequireDefault(_phaser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var _class = function (_Phaser$Sprite) {
+  _inherits(_class, _Phaser$Sprite);
+
+  function _class(_ref) {
+    var game = _ref.game,
+        x = _ref.x,
+        y = _ref.y,
+        asset = _ref.asset,
+        width = _ref.width,
+        height = _ref.height,
+        Def = _ref.Def,
+        Cap = _ref.Cap,
+        player = _ref.player,
+        id = _ref.id,
+        team = _ref.team;
+
+    _classCallCheck(this, _class);
+
+    var _this = _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).call(this, game, x, y, asset));
+
+    _this.scale.setTo(0.9);
+    _this.width = width;
+    _this.height = height;
+    _this.Def = Def;
+    _this.Cap = Cap;
+    _this.player = player;
+    _this.id = id;
+    _this.team = team;
+    return _this;
+  }
+
+  _createClass(_class, [{
+    key: 'update',
+    value: function update() {}
+  }]);
+
+  return _class;
+}(_phaser2.default.Sprite);
+
+exports.default = _class;
 
 /***/ })
 ],[130]);
