@@ -11511,11 +11511,7 @@ var _class = function (_Phaser$State) {
       // ENABLE PIECES
       for (var key in this.pieces) {
         this.pieces[key].alpha = 1.0;
-        if (this.pieces[key].team === this.currentPlayer) {
-          this.pieces[key].inputEnabled = true;
-        } else {
-          this.pieces[key].inputEnabled = false;
-        }
+        this.pieces[key].inputEnabled = this.pieces[key].team == this.currentPlayer ? true : false;
       }
       this.playerText.text = this.currentPlayer;
     }
@@ -11559,7 +11555,7 @@ var _class = function (_Phaser$State) {
 
       var defenders = [];
       for (var key in this.pieces) {
-        if (this.pieces[key] !== this.selectedPiece) {
+        if (this.pieces[key] !== this.selectedPiece && this.pieces[key].team !== this.selectedPiece.team) {
           var diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x);
           var diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y);
           if (diffX === 32 && diffY === 0 || diffX === 0 && diffY === 32) {
@@ -11570,10 +11566,10 @@ var _class = function (_Phaser$State) {
       if (!this.attackButton || !this.attackButton.alive) {
         if (defenders.length === 1) {
           this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 99, 'fireSprite', function () {
-            return _this3.attackPiece(defenders[0]);
+            return _this3.attackPiece(_this3.selectedPiece, defenders[0], defenders);
           }, this, 2, 1, 0);
         } else if (defenders.length > 1) {
-          this.selectTargets(defenders);
+          this.selectTargets(this.selectedPiece, defenders);
         }
       }
 
@@ -11583,7 +11579,7 @@ var _class = function (_Phaser$State) {
     }
   }, {
     key: 'selectTargets',
-    value: function selectTargets(defenders) {
+    value: function selectTargets(attacker, defenders) {
       var _this4 = this;
 
       this.targets = [];
@@ -11592,24 +11588,23 @@ var _class = function (_Phaser$State) {
         _this4.targets.push(target);
         defender.inputEnabled = true;
         defender.events.onInputDown.add(function (defender) {
-          return _this4.attackPiece(defender);
+          return _this4.attackPiece(attacker, defender, defenders);
         }, _this4);
       });
     }
   }, {
     key: 'attackPiece',
-    value: function attackPiece(defendingPiece) {
+    value: function attackPiece(attacker, defender, defenders) {
+      defenders.forEach(function (defender) {
+        return defender.inputEnabled = false;
+      });
+      attacker.inputEnabled = false;
       if (this.targets) this.targets.forEach(function (target) {
         return target.destroy();
       });
-      console.log('hit here once', this.selectedPiece);
-      this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2);
-      defendingPiece.HP -= this.selectedPiece.AP;
-
-      for (var key in this.pieces) {
-        console.log('HP of ' + key, this.pieces[key].HP);
-      }
-      this.selectedPiece.alpha = 0.7;
+      attacker.HP -= Math.floor(defender.AP / 2);
+      defender.HP -= attacker.AP;
+      attacker.alpha = 0.7;
       this.disablePieceOptions();
     }
   }, {

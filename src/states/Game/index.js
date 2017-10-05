@@ -25,11 +25,9 @@ export default class extends Phaser.State {
     // ENABLE PIECES
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0;
-      if (this.pieces[key].team === this.currentPlayer) {    
-        this.pieces[key].inputEnabled = true
-      } else {
-        this.pieces[key].inputEnabled = false
-      }
+      this.pieces[key].inputEnabled = this.pieces[key].team == this.currentPlayer
+      ? true
+      : false
     }
     this.playerText.text = this.currentPlayer
   }
@@ -66,7 +64,7 @@ export default class extends Phaser.State {
   checkForPieceOptions() {
     let defenders = [];
     for(var key in this.pieces) {
-      if(this.pieces[key] !== this.selectedPiece) {
+      if(this.pieces[key] !== this.selectedPiece && this.pieces[key].team !== this.selectedPiece.team) {
         let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
         let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
         if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
@@ -77,10 +75,10 @@ export default class extends Phaser.State {
     if(!this.attackButton || !this.attackButton.alive) {
       if(defenders.length === 1) {
         this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+99, 'fireSprite', 
-          () => this.attackPiece(defenders[0]), this, 2, 1, 0);
+          () => this.attackPiece(this.selectedPiece, defenders[0], defenders), this, 2, 1, 0);
       }
       else if(defenders.length > 1) {
-        this.selectTargets(defenders)
+        this.selectTargets(this.selectedPiece, defenders)
       }
     }
 
@@ -89,26 +87,23 @@ export default class extends Phaser.State {
     }
   }
 
-  selectTargets(defenders) {
+  selectTargets(attacker, defenders) {
     this.targets = [];
     defenders.forEach((defender, index) => {
       let target = this.game.add.image(defender.x, defender.y, 'target')
       this.targets.push(target);
       defender.inputEnabled = true;
-      defender.events.onInputDown.add((defender) => this.attackPiece(defender), this)
+      defender.events.onInputDown.add((defender) => this.attackPiece(attacker, defender, defenders), this)
     })
   }
 
-  attackPiece (defendingPiece) {
+  attackPiece (attacker, defender, defenders) {
+    defenders.forEach(defender => defender.inputEnabled = false);
+    attacker.inputEnabled = false;
     if(this.targets) this.targets.forEach(target => target.destroy());
-    console.log('hit here once', this.selectedPiece)
-    this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2)
-    defendingPiece.HP -= this.selectedPiece.AP
-
-    for (var key in this.pieces) {
-      console.log('HP of ' + key, this.pieces[key].HP)
-    }
-    this.selectedPiece.alpha = 0.7;
+    attacker.HP -= Math.floor(defender.AP / 2)
+    defender.HP -= attacker.AP
+    attacker.alpha = 0.7;
     this.disablePieceOptions();
   }
 
