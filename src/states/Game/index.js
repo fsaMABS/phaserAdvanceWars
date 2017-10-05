@@ -21,14 +21,12 @@ export default class extends Phaser.State {
   }
 
   togglePlayer () {
+    console.log('this.pieces', this.pieces)
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
     // ENABLE PIECES
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0;
-      this.pieces[key].inputEnabled = this.pieces[key].team == this.currentPlayer
-      ? true
-      : false
-      console.log(this.pieces[key].id, this.pieces[key].events)
+      this.pieces[key].inputEnabled = this.pieces[key].team == this.currentPlayer ? true : false
     }
     this.playerText.text = this.currentPlayer
   }
@@ -78,12 +76,10 @@ export default class extends Phaser.State {
       if(defenders.length === 1) {
         this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+99, 'fireSprite', 
           () => this.attackPiece(this.selectedPiece, defenders[0], defenders), this, 2, 1, 0);
-      }
-      else if(defenders.length > 1) {
+      } else if(defenders.length > 1) {
         this.selectTargets(this.selectedPiece, defenders)
       }
     }
-
     if(!this.waitButton || !this.waitButton.alive) {
       this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+64, 'waitSprite', this.wait, this, 2, 1, 0);
     }
@@ -107,10 +103,13 @@ export default class extends Phaser.State {
         defender.events.onInputDown.remove(defender.data.targetAttack, this);
       })
     }
+    // else { defender.inputEnabled = false} ...may need this later haven't found a bug associated with it though
     attacker.inputEnabled = false;
     if(this.targets) this.targets.forEach(target => target.destroy());
-    attacker.HP -= Math.floor(defender.AP / 2)
     defender.HP -= attacker.AP
+    if(defender.HP >= 0) {
+      attacker.HP -= Math.floor(defender.AP / 2);
+    }
     attacker.alpha = 0.7;
     this.disablePieceOptions();
   }
@@ -133,7 +132,7 @@ export default class extends Phaser.State {
   endTurn() {
     console.log('Turn ended!');
     this.disablePieceOptions();
-    var style = { font: '20px Arial', fill: '#fff' }
+    //var style = { font: '18px Arial', fill: '#fff' }
     // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
     // this.time.events.add(1000, () => {
       // this.turnEnded.destroy()

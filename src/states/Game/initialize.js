@@ -1,4 +1,5 @@
 import Infantry from '../../sprites/Infantry'
+import SmallTank from '../../sprites/SmallTank'
 import {checkType} from '../../levels/level1'
 import Block from '../../sprites/Block'
 import newGrid from '../../processMap'
@@ -35,7 +36,22 @@ export const startingPieces = that => ({
     mobility: 5,
     team: 'blue'
   }),
-  3: new Infantry({
+  3: new SmallTank({
+    game: that.game,
+    x: 64,
+    y: 128,
+    asset: 'smallTank_blue',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 2,
+    id: 2,
+    mobility: 7,
+    team: 'blue'
+  }),
+
+  4: new Infantry({
     game: that.game,
     x: 0,
     y: 0,
@@ -49,7 +65,7 @@ export const startingPieces = that => ({
     mobility: 5,
     team: 'red'
   }),
-  4: new Infantry({
+  5: new Infantry({
     game: that.game,
     x: 0,
     y: 64,
@@ -72,7 +88,7 @@ export const loadLevel = (that) => {
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);  
   that.attackButton = undefined;
   that.waitButton = undefined;
-  that.healthStyle = { font: "15px Arial", fill: "black" };  
+  that.healthStyle = { font: "18px Arial", fill: "black" };  
 
   that.pieces = startingPieces(that)
   
@@ -83,7 +99,7 @@ export const loadLevel = (that) => {
     added.events.onInputDown.add(showMoves(that), this)
     that.pieces[key] = added
     
-    let pieceHealth = that.game.add.text(10, 10, that.pieces[key].HP, that.healthStyle);
+    let pieceHealth = that.game.add.text(20,20, that.pieces[key].HP, that.healthStyle);
     that.pieces[key].addChild(pieceHealth);
   }
 
@@ -105,7 +121,7 @@ export const loadLevel = (that) => {
 
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
-  
+
   if (that.currentPlayer === that.selectedPiece.team) {
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
