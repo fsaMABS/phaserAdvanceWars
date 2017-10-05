@@ -9,12 +9,8 @@ export default function createGrid(boolean) {
     finaldata = finaldata.map((datapoint, index) => {
         return Math.max(...layers.map(layer => layer.data[index]))
     })
-    // console.log('finaldata', finaldata)
-
     for (var i = 0; i < finaldata.length; i += gridWidth) {
         grid.push(finaldata.slice(i, i + gridWidth))
     }
-    
-    
     return grid
 }

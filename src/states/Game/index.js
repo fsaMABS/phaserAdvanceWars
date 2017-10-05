@@ -137,6 +137,7 @@ export default class extends Phaser.State {
       if (this.pieces[piece].HP <= 0) {
         this.pieces[piece].destroy()
         delete this.pieces[piece]
+        this.state.start('EndGame')
       }
       //Else: Update Health by Destroying Old Health and Rendering New
       else {

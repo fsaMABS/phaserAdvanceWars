@@ -8136,12 +8136,9 @@ function createGrid(boolean) {
             return layer.data[index];
         })));
     });
-    // console.log('finaldata', finaldata)
-
     for (var i = 0; i < finaldata.length; i += gridWidth) {
         grid.push(finaldata.slice(i, i + gridWidth));
     }
-
     return grid;
 }
 
@@ -26465,6 +26462,7 @@ var _class = function (_Phaser$State) {
         if (this.pieces[piece].HP <= 0) {
           this.pieces[piece].destroy();
           delete this.pieces[piece];
+          this.state.start('EndGame');
         }
         //Else: Update Health by Destroying Old Health and Rendering New
         else {
@@ -27492,7 +27490,7 @@ var _class = function (_Phaser$State) {
       var _this2 = this;
 
       var firebase = this.game.firebase;
-      var myId = window.prompt('What is your gameid?');
+      var myId = this.game.userId || window.prompt('What is your gameid?');
       this.game.userId = myId;
       firebase.database().ref('lobbies').on('value', function (snapshot) {
         console.log('****firebase***', snapshot.toJSON());
@@ -27595,19 +27593,35 @@ var _class = function (_Phaser$State) {
   }
 
   _createClass(_class, [{
-    key: 'init',
+    key: "init",
     value: function init() {}
   }, {
-    key: 'preload',
-    value: function preload() {
-      // this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg')
-      // this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar')
-      // centerGameObjects([this.loaderBg, this.loaderBar])
-    }
+    key: "preload",
+    value: function preload() {}
   }, {
-    key: 'create',
+    key: "create",
     value: function create() {
-      console.log('**** game ended*****');
+      var _this2 = this;
+
+      var style = { font: "15px Arial", fill: "white" };
+      var winner = 'player1';
+      var text = "The game has now ended. Player " + winner + " has won!";
+      this.winnerText = this.add.text(this.game.world.centerX, this.game.world.centerY, text, style);
+      var timeLeft = 5;
+      var otherText = "You will be redirected back to the lobby in " + timeLeft + " seconds";
+      this.endingGame = this.add.text(this.game.world.centerX, this.game.world.centerY - 50, otherText, style);
+      var clearId = setInterval(function () {
+        if (timeLeft <= 1) {
+          clearInterval(clearId);
+        }
+        _this2.endingGame.destroy();
+        timeLeft--;
+        _this2.endingGame = _this2.add.text(_this2.game.world.centerX, _this2.game.world.centerY - 50, "You will be redirected back to the lobby in " + timeLeft + " seconds", style);
+      }, 1000);
+      setTimeout(function () {
+        _this2.state.start('All_Lobbies');
+        console.log('1 second passed');
+      }, 5000);
     }
   }]);
 

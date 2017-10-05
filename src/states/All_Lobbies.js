@@ -10,7 +10,7 @@ export default class extends Phaser.State {
 
   create () {
     const firebase = this.game.firebase
-    const myId = window.prompt('What is your gameid?')
+    const myId = this.game.userId || window.prompt('What is your gameid?')
     this.game.userId = myId
     firebase.database().ref('lobbies').on('value', snapshot => {
       console.log('****firebase***', snapshot.toJSON())
