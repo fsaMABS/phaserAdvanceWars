@@ -28,6 +28,7 @@ export default class extends Phaser.State {
       this.pieces[key].inputEnabled = this.pieces[key].team == this.currentPlayer
       ? true
       : false
+      console.log(this.pieces[key].id, this.pieces[key].events)
     }
     this.playerText.text = this.currentPlayer
   }
@@ -38,6 +39,7 @@ export default class extends Phaser.State {
   }
 
   moveHere (sprite) {
+    this.selectedPiece.visible = true
     this.blocks.children.forEach((ele) => {
       ele.alpha = 0
       ele.inputEnabled = false
@@ -93,12 +95,18 @@ export default class extends Phaser.State {
       let target = this.game.add.image(defender.x, defender.y, 'target')
       this.targets.push(target);
       defender.inputEnabled = true;
-      defender.events.onInputDown.add((defender) => this.attackPiece(attacker, defender, defenders), this)
+      defender.data.targetAttack = (defender) => this.attackPiece(attacker, defender, defenders)
+      defender.events.onInputDown.add(defender.data.targetAttack, this)
     })
   }
 
   attackPiece (attacker, defender, defenders) {
-    defenders.forEach(defender => defender.inputEnabled = false);
+    if(defenders.length > 1) {
+      defenders.forEach(defender => {
+        defender.inputEnabled = false
+        defender.events.onInputDown.remove(defender.data.targetAttack, this);
+      })
+    }
     attacker.inputEnabled = false;
     if(this.targets) this.targets.forEach(target => target.destroy());
     attacker.HP -= Math.floor(defender.AP / 2)

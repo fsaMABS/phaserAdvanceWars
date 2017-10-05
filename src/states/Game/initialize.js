@@ -9,8 +9,8 @@ export const startingPieces = that => ({
   // NEED TO ADD TYPES TO THE NAME AT SOME POINT
   1: new Infantry({
     game: that.game,
-    x: 320,
-    y: 320,
+    x: 64,
+    y: 64,
     asset: 'infantry_blue',
     width: 32,
     height: 32,
@@ -23,8 +23,8 @@ export const startingPieces = that => ({
   }),
   2: new Infantry({
     game: that.game,
-    x: 320,
-    y: 320+32,
+    x: 64,
+    y: 0,
     asset: 'infantry_blue',
     width: 32,
     height: 32,
@@ -37,7 +37,7 @@ export const startingPieces = that => ({
   }),
   3: new Infantry({
     game: that.game,
-    x: 64,
+    x: 0,
     y: 0,
     asset: 'infantry',
     width: 32,
@@ -51,7 +51,7 @@ export const startingPieces = that => ({
   }),
   4: new Infantry({
     game: that.game,
-    x: 64,
+    x: 0,
     y: 64,
     asset: 'infantry',
     width: 32,
@@ -105,8 +105,7 @@ export const loadLevel = (that) => {
 
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
-  that.selectedPiece.moveAdded = false;
-  console.log('teamin showmoves', that.selectedPiece.team)
+  
   if (that.currentPlayer === that.selectedPiece.team) {
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
@@ -134,11 +133,7 @@ const showMoves = that => (sprite, event) => {
       .filter(x => !!x)
 
     Promise.all(childrenPromises).then(elements => {
-      if (that.showingBlue) {
-        var inputEnabled = true
-      } else {
-        var inputEnabled = false
-      }
+      let inputEnabled = that.showingBlue ? true : false
       elements.forEach((ele) => {
         if (ele !== null ) {
           ele.alpha = alpha;
@@ -149,9 +144,6 @@ const showMoves = that => (sprite, event) => {
           }
         }
       })
-
     })
-
-    that.selectedPiece.moveAdded = true;
   }
 }
