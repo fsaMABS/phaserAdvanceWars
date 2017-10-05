@@ -19671,7 +19671,7 @@ module.exports = exports['default'];
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(/*! babel-polyfill */215);
-module.exports = __webpack_require__(/*! /Users/swyx/Desktop/webdev/fullstacksr/phaserAdvanceWars/src/main.js */417);
+module.exports = __webpack_require__(/*! /Users/abrarsher/Desktop/Fullstack/Senior/Capstone/phaserAdvanceWars/src/main.js */417);
 
 
 /***/ }),
@@ -27537,6 +27537,7 @@ var _class = function (_Phaser$State) {
               _this2.game.lobby = text.lobby[0];
             }
             _this2.state.start('SingleLobby');
+            firebase.database().ref('lobbies').off();
           };
           textArray[i].events.onInputDown.add(handleClick, _this2);
         };
