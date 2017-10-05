@@ -9,9 +9,9 @@ export const startingPieces = that => ({
   // NEED TO ADD TYPES TO THE NAME AT SOME POINT
   1: new Infantry({
     game: that.game,
-    x: 0,
-    y: 0,
-    asset: 'infantry',
+    x: 320,
+    y: 320,
+    asset: 'infantry_blue',
     width: 32,
     height: 32,
     HP: 10,
@@ -23,9 +23,9 @@ export const startingPieces = that => ({
   }),
   2: new Infantry({
     game: that.game,
-    x: 0,
-    y: 64,
-    asset: 'infantry',
+    x: 320,
+    y: 320+32,
+    asset: 'infantry_blue',
     width: 32,
     height: 32,
     HP: 10,
