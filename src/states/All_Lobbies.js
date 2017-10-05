@@ -52,6 +52,8 @@ export default class extends Phaser.State {
             this.game.lobby = text.lobby[0]
           }
           this.state.start('SingleLobby')
+          firebase.database().ref('lobbies').off()
+
         }
         textArray[i].events.onInputDown.add(handleClick, this)
       }
