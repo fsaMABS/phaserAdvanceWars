@@ -11567,7 +11567,6 @@ var _class = function (_Phaser$State) {
           }
         }
       }
-      console.log('defenders', defenders.length);
       if (!this.attackButton || !this.attackButton.alive) {
         if (defenders.length === 1) {
           this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 99, 'fireSprite', function () {
@@ -11593,17 +11592,17 @@ var _class = function (_Phaser$State) {
         _this4.targets.push(target);
         defender.inputEnabled = true;
         defender.events.onInputDown.add(function (defender) {
-          _this4.attackPiece(defender);
+          return _this4.attackPiece(defender);
         }, _this4);
       });
     }
   }, {
     key: 'attackPiece',
     value: function attackPiece(defendingPiece) {
-      this.targets.forEach(function (target) {
-        target.destroy();
+      if (this.targets) this.targets.forEach(function (target) {
+        return target.destroy();
       });
-      this.selectedPiece;
+      console.log('hit here once', this.selectedPiece);
       this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2);
       defendingPiece.HP -= this.selectedPiece.AP;
 
@@ -12181,8 +12180,8 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
     // NEED TO ADD TYPES TO THE NAME AT SOME POINT
     1: new _Infantry2.default({
       game: that.game,
-      x: 64,
-      y: 64,
+      x: 0,
+      y: 0,
       asset: 'infantry',
       width: 32,
       height: 32,
@@ -12195,8 +12194,8 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
     }),
     2: new _Infantry2.default({
       game: that.game,
-      x: 64,
-      y: 0,
+      x: 0,
+      y: 64,
       asset: 'infantry',
       width: 32,
       height: 32,
@@ -12209,7 +12208,7 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
     }),
     3: new _Infantry2.default({
       game: that.game,
-      x: 0,
+      x: 64,
       y: 0,
       asset: 'infantry',
       width: 32,
@@ -12217,13 +12216,13 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
       HP: 10,
       AP: 5,
       player: 2,
-      id: 2,
+      id: 3,
       mobility: 5,
       team: 'red'
     }),
     4: new _Infantry2.default({
       game: that.game,
-      x: 0,
+      x: 64,
       y: 64,
       asset: 'infantry',
       width: 32,
@@ -12231,7 +12230,7 @@ var startingPieces = exports.startingPieces = function startingPieces(that) {
       HP: 10,
       AP: 5,
       player: 2,
-      id: 2,
+      id: 4,
       mobility: 5,
       team: 'red'
     })

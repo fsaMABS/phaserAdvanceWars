@@ -74,7 +74,6 @@ export default class extends Phaser.State {
         }
       }
     }
-    console.log('defenders', defenders.length)
     if(!this.attackButton || !this.attackButton.alive) {
       if(defenders.length === 1) {
         this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+99, 'fireSprite', 
@@ -96,17 +95,13 @@ export default class extends Phaser.State {
       let target = this.game.add.image(defender.x, defender.y, 'target')
       this.targets.push(target);
       defender.inputEnabled = true;
-      defender.events.onInputDown.add((defender) => {
-        this.attackPiece(defender)
-      }, this)
+      defender.events.onInputDown.add((defender) => this.attackPiece(defender), this)
     })
   }
 
   attackPiece (defendingPiece) {
-    this.targets.forEach(target => {
-      target.destroy();
-    })
-    this.selectedPiece
+    if(this.targets) this.targets.forEach(target => target.destroy());
+    console.log('hit here once', this.selectedPiece)
     this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2)
     defendingPiece.HP -= this.selectedPiece.AP
 
