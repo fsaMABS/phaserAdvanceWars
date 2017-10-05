@@ -80,6 +80,7 @@ export default class extends Phaser.State {
     }
     if(!this.waitButton || !this.waitButton.alive) {
       this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+64, 'waitSprite', this.wait, this, 2, 1, 0);
+    }
     
     if (!this.captButton || !this.captButton.alive) {
       this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'captSprite',
