@@ -16,8 +16,10 @@ export default class extends Phaser.State {
     this.load.image('infantry', 'assets/images/infantry.png')
     this.load.image('infantry_blue', 'assets/images/infantry_blue.png')
     this.load.image('smallTank_blue', 'assets/images/smallTank_blue.png')
+    this.load.image('city_blue', 'assets/images/city_blue.png')
+    this.load.image('city_red', 'assets/images/city_red.png')
     this.load.image('city_grey', 'assets/images/city_grey.png')
-    this.load.image('captSprite', 'assets/images/mushroom2.png')
+    this.load.image('captSprite', 'assets/images/captureSprite.png')
     this.load.image('waitSprite', 'assets/images/wait.png')
     this.load.image('fireSprite', 'assets/images/fireSprite.png')
     this.load.image('target', 'assets/images/defenderTarget.png')
@@ -26,7 +28,6 @@ export default class extends Phaser.State {
     this.load.image('greenSquare', 'assets/images/greenSquare.jpeg')
     this.load.image('blueSquare', 'assets/images/blueSquare.jpg')
     this.load.image('aw1Map', 'assets/images/aw1.bmp')
-    // this.load.image('infantry')
   }
 
   create () {

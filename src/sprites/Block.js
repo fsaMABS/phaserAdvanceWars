@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 
 export default class extends Phaser.Sprite {
-  constructor ( x, y, data, width, height, type) {
+  constructor (x, y, data, width, height, type) {
     super(game, x, y, data)
     this.grid = [];
     this.reserveGrid = [];
@@ -15,7 +15,7 @@ export default class extends Phaser.Sprite {
   update () {
     // this.angle += 1
   }
-  reset(x,y,data) {
+  reset (x, y, data) {
       this.loadTexture(data.asset);
       this.row = data.row
       this.col = data.col
