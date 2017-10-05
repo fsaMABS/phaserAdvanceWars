@@ -19,15 +19,12 @@ export default class extends Phaser.State {
   }
 
   togglePlayer () {
+    console.log('this.pieces', this.pieces)
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
     // ENABLE PIECES
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0;
-      if (this.pieces[key].team === this.currentPlayer) {
-        this.pieces[key].inputEnabled = true
-      } else {
-        this.pieces[key].inputEnabled = false
-      }
+      this.pieces[key].inputEnabled = this.pieces[key].team == this.currentPlayer ? true : false
     }
     this.playerText.text = this.currentPlayer
   }
@@ -38,6 +35,7 @@ export default class extends Phaser.State {
   }
 
   moveHere (sprite) {
+    this.selectedPiece.visible = true
     this.blocks.children.forEach((ele) => {
       ele.alpha = 0
       ele.inputEnabled = false
@@ -61,37 +59,61 @@ export default class extends Phaser.State {
     easystar.calculate()
   }
 
-  checkForPieceOptions () {
-    for (var key in this.pieces) {
-      console.log(this.pieces[key])
-      if (this.pieces[key] !== this.selectedPiece) {
+  checkForPieceOptions() {
+    let defenders = [];
+    for(var key in this.pieces) {
+      if(this.pieces[key] !== this.selectedPiece && this.pieces[key].team !== this.selectedPiece.team) {
         let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
         let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
-        if (((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32)) && (this.pieces[key].team !== this.selectedPiece.team)) {
-          let defender = this.pieces[key]
-          if (!this.attackButton || !this.attackButton.alive) {
-            this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 99, 'fireSprite',
-              () => this.attackPiece(defender), this, 2, 1, 0);
-          }
+        if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
+          defenders.push(this.pieces[key]);
         }
       }
     }
-    if (!this.waitButton || !this.waitButton.alive) {
-      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'waitSprite', this.wait, this, 2, 1, 0);
+    if(!this.attackButton || !this.attackButton.alive) {
+      if(defenders.length === 1) {
+        this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+99, 'fireSprite', 
+          () => this.attackPiece(this.selectedPiece, defenders[0], defenders), this, 2, 1, 0);
+      } else if(defenders.length > 1) {
+        this.selectTargets(this.selectedPiece, defenders)
+      }
     }
-
+    if(!this.waitButton || !this.waitButton.alive) {
+      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+64, 'waitSprite', this.wait, this, 2, 1, 0);
+    
     if (!this.captButton || !this.captButton.alive) {
       this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'captSprite',
         () => this.captureCity(city), this, 2, 1, 0);
     }
+  
+}
+
+  selectTargets(attacker, defenders) {
+    this.targets = [];
+    defenders.forEach((defender, index) => {
+      let target = this.game.add.image(defender.x, defender.y, 'target')
+      this.targets.push(target);
+      defender.inputEnabled = true;
+      defender.data.targetAttack = (defender) => this.attackPiece(attacker, defender, defenders)
+      defender.events.onInputDown.add(defender.data.targetAttack, this)
+    })
   }
 
-  attackPiece (defendingPiece) {
-    this.selectedPiece
-    this.selectedPiece.HP -= Math.floor(defendingPiece.AP / 2)
-    defendingPiece.HP -= this.selectedPiece.AP
-
-    this.selectedPiece.alpha = 0.7;
+  attackPiece (attacker, defender, defenders) {
+    if(defenders.length > 1) {
+      defenders.forEach(defender => {
+        defender.inputEnabled = false
+        defender.events.onInputDown.remove(defender.data.targetAttack, this);
+      })
+    }
+    // else { defender.inputEnabled = false} ...may need this later haven't found a bug associated with it though
+    attacker.inputEnabled = false;
+    if(this.targets) this.targets.forEach(target => target.destroy());
+    defender.HP -= attacker.AP
+    if(defender.HP >= 0) {
+      attacker.HP -= Math.floor(defender.AP / 2);
+    }
+    attacker.alpha = 0.7;
     this.disablePieceOptions();
   }
 
@@ -134,7 +156,7 @@ export default class extends Phaser.State {
     //   }
     // }
     this.disablePieceOptions();
-    var style = { font: '20px Arial', fill: '#fff' }
+    //var style = { font: '18px Arial', fill: '#fff' }
     // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
     // this.time.events.add(1000, () => {
       // this.turnEnded.destroy()

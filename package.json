@@ -31,7 +31,7 @@
     "easystarjs": "^0.4.1",
     "firebase": "^4.5.0",
     "phaser-ce": "^2.8.3",
-    "swyx": "^0.1.14",
+    "swyx": "^0.1.19",
     "webfontloader": "^1.6.28"
   }
 }

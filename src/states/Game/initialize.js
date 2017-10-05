@@ -1,5 +1,6 @@
 import Infantry from '../../sprites/Infantry'
 import City from '../../sprites/City'
+import SmallTank from '../../sprites/SmallTank'
 import {checkType} from '../../levels/level1'
 import Block from '../../sprites/Block'
 import newGrid from '../../processMap'
@@ -10,8 +11,8 @@ export const startingPieces = that => ({
   // NEED TO ADD TYPES TO THE NAME AT SOME POINT
   1: new Infantry({
     game: that.game,
-    x: 320,
-    y: 320,
+    x: 64,
+    y: 64,
     asset: 'infantry_blue',
     width: 32,
     height: 32,
@@ -24,8 +25,8 @@ export const startingPieces = that => ({
   }),
   2: new Infantry({
     game: that.game,
-    x: 320,
-    y: 320+32,
+    x: 64,
+    y: 0,
     asset: 'infantry_blue',
     width: 32,
     height: 32,
@@ -36,31 +37,46 @@ export const startingPieces = that => ({
     mobility: 5,
     team: 'blue'
   }),
-  3: new Infantry({
+  3: new SmallTank({
     game: that.game,
     x: 64,
-    y: 32,
+    y: 128,
+    asset: 'smallTank_blue',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 2,
+    id: 2,
+    mobility: 7,
+    team: 'blue'
+  }),
+
+  4: new Infantry({
+    game: that.game,
+    x: 0,
+    y: 0,
     asset: 'infantry',
     width: 32,
     height: 32,
     HP: 10,
     AP: 5,
     player: 2,
-    id: 2,
+    id: 3,
     mobility: 5,
     team: 'red'
   }),
-  4: new Infantry({
+  5: new Infantry({
     game: that.game,
-    x: 32,
-    y: 32,
+    x: 0,
+    y: 64,
     asset: 'infantry',
     width: 32,
     height: 32,
     HP: 10,
     AP: 5,
     player: 2,
-    id: 2,
+    id: 4,
     mobility: 5,
     team: 'red'
   }),
@@ -86,7 +102,7 @@ export const loadLevel = (that) => {
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);  
   that.attackButton = undefined;
   that.waitButton = undefined;
-  that.healthStyle = { font: "15px Arial", fill: "black" };  
+  that.healthStyle = { font: "18px Arial", fill: "black" };  
 
   that.pieces = startingPieces(that)
   
@@ -97,7 +113,7 @@ export const loadLevel = (that) => {
     added.events.onInputDown.add(showMoves(that), this)
     that.pieces[key] = added
     
-    let pieceHealth = that.game.add.text(10, 10, that.pieces[key].HP, that.healthStyle);
+    let pieceHealth = that.game.add.text(20,20, that.pieces[key].HP, that.healthStyle);
     that.pieces[key].addChild(pieceHealth);
   }
 
@@ -119,8 +135,7 @@ export const loadLevel = (that) => {
 
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
-  that.selectedPiece.moveAdded = false;
-  console.log('teamin showmoves', that.selectedPiece.team)
+
   if (that.currentPlayer === that.selectedPiece.team) {
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
@@ -148,11 +163,7 @@ const showMoves = that => (sprite, event) => {
       .filter(x => !!x)
 
     Promise.all(childrenPromises).then(elements => {
-      if (that.showingBlue) {
-        var inputEnabled = true
-      } else {
-        var inputEnabled = false
-      }
+      let inputEnabled = that.showingBlue ? true : false
       elements.forEach((ele) => {
         if (ele !== null ) {
           ele.alpha = alpha;
@@ -163,9 +174,6 @@ const showMoves = that => (sprite, event) => {
           }
         }
       })
-
     })
-
-    that.selectedPiece.moveAdded = true;
   }
 }
