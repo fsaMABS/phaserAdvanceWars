@@ -25,11 +25,13 @@ export default class extends Phaser.State {
     this.load.image('basicMap', 'assets/images/basicMap.png')
     this.load.image('greenSquare', 'assets/images/greenSquare.jpeg')
     this.load.image('blueSquare', 'assets/images/blueSquare.jpg')
+    this.load.image('fogSquare', 'assets/images/fogSquare.jpeg')
     this.load.image('aw1Map', 'assets/images/aw1.bmp')
     // this.load.image('infantry')
   }
 
   create () {
-    this.state.start('All_Lobbies')
+    // this.state.start('All_Lobbies')
+    this.state.start('Game')
   }
 }
