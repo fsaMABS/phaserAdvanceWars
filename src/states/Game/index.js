@@ -3,10 +3,8 @@ import Phaser from 'phaser'
 import easystarjs from 'easystarjs'
 import {loadLevel} from './initialize'
 import newGrid from '../../processMap'
-console.log('grid in iintilize ', newGrid())
 // var easystarjs = require('easystarjs')
 var easystar = new easystarjs.js()
-
 
 export default class extends Phaser.State {
   init () {
@@ -58,7 +56,7 @@ export default class extends Phaser.State {
       }, this)
     
     });
-    easystar.calculate() 
+    easystar.calculate()
   }
 
   checkForPieceOptions() {
@@ -82,8 +80,13 @@ export default class extends Phaser.State {
     }
     if(!this.waitButton || !this.waitButton.alive) {
       this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+64, 'waitSprite', this.wait, this, 2, 1, 0);
+    
+    if (!this.captButton || !this.captButton.alive) {
+      this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'captSprite',
+        () => this.captureCity(city), this, 2, 1, 0);
     }
-  }
+  
+}
 
   selectTargets(attacker, defenders) {
     this.targets = [];
@@ -114,23 +117,44 @@ export default class extends Phaser.State {
     this.disablePieceOptions();
   }
 
-  disablePieceMovement(piece) {
+  captureCity (campedCity) {
+    this.selectedPiece
+    campedCity.Cap -= this.selectedPiece.HP
+
+    this.selectedPiece.alpha = 0.7;
+    this.disablePieceOptions();
+  }
+
+  disablePieceMovement (piece) {
     piece.inputEnabled = false;
   }
 
-  disablePieceOptions() {
+  disablePieceOptions () {
+    if(this.captButton) this.captButton.destroy();
     if(this.waitButton) this.waitButton.destroy();
     if(this.attackButton) this.attackButton.destroy();
   }
 
-  wait() {
+  wait () {
     this.waitButton.pendingDestroy = true;
     this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
   }
 
-  endTurn() {
-    console.log('Turn ended!');
+  endTurn () {
+    // for(var i in this.pieces) {
+    //   console.log(this.pieces[i])
+    //   if(this.pieces[i].key.indexOf('city') !== -1) {
+    //     let current_city = this.pieces[i];
+    //     for(var j in this.pieces) {
+    //       if(this.pieces[j].key.indexOf('infantry') !== -1) {
+    //         if(this.pieces[j].position.x === current_city.position.x && this.pieces[j].position.y === current_city.position.y) {
+    //           // console.log('here')
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
     this.disablePieceOptions();
     //var style = { font: '18px Arial', fill: '#fff' }
     // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
@@ -139,7 +163,6 @@ export default class extends Phaser.State {
       this.togglePlayer()
     // }, this.turnEnded);
   }
-
 
   update () {
     this.enterKey.onDown.add(this.endTurn, this);
@@ -153,7 +176,7 @@ export default class extends Phaser.State {
       }
       //Else: Update Health by Destroying Old Health and Rendering New
       else {
-        this.pieces[piece].children[0].destroy() 
+        this.pieces[piece].children[0].destroy()
         let newHealth = this.game.add.text(40, 40, this.pieces[piece].HP, this.healthStyle)
         this.pieces[piece].addChild(newHealth);
       }
