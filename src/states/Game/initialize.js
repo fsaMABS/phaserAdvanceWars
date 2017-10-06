@@ -109,33 +109,41 @@ export const loadLevel = (that) => {
   that.waitButton = undefined;
   that.healthStyle = { font: "18px Arial", fill: "black" };  
 
-  that.pieces = startingPieces(that)
-  
-  for (var key in that.pieces) {
-    let current = that.pieces[key]
-    let added = that.game.world.add(current)
-    added.inputEnabled = true
-    added.events.onInputDown.add(showMoves(that), this)
-    that.pieces[key] = added
-    
-    let pieceHealth = that.game.add.text(20,20, that.pieces[key].HP, that.healthStyle);
-    that.pieces[key].addChild(pieceHealth);
-  }
-
   var style = { font: '20px Arial', fill: '#fff' }
   that.game.add.text(410, 20, 'Player:', style)
   that.currentPlayer = 'red'
   that.playerText = that.game.add.text(480, 20, that.currentPlayer, style)
   that.blocks = that.add.group()
-
+  that.fog = that.add.group()
+  const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
   for (var i = 0; i < 3000; i = i + 32) {
     for (var j = 0; j < 3000; j = j + 32) {
       var type = checkType(i, j)
       var block = new Block(i, j, 'blueSquare', 32, 32, type)
       block.alpha = 0.0
       that.blocks.add(block)
+      that.fog.add(new Block(i, j, 'fogSquare', 32, 32, type))
     }
   }
+
+  that.pieces = startingPieces(that)
+  const revealedFog = []
+
+  for (var key in that.pieces) {
+    let current = that.pieces[key]
+    let added = that.game.world.add(current)
+    added.inputEnabled = true
+    added.events.onInputDown.add(showMoves(that), this)
+    that.pieces[key] = added
+    revealedFog.push({x: current.position.x, y: current.position.y})
+    let pieceHealth = that.game.add.text(20, 20, that.pieces[key].HP, that.healthStyle);
+    that.pieces[key].addChild(pieceHealth)
+  }
+  that.fog.children.map(ele => {
+    revealedFog.forEach(fog => {
+      if (ele.alpha && isNear(ele, fog, 10)) ele.alpha = 0
+    })
+  })
 }
 
 const showMoves = that => (sprite, event) => {

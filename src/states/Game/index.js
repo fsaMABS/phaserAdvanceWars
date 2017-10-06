@@ -19,7 +19,7 @@ export default class extends Phaser.State {
   }
 
   togglePlayer () {
-    console.log('this.pieces', this.pieces)
+    // console.log('this.pieces', this.pieces)
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
     // ENABLE PIECES
     for (var key in this.pieces) {
@@ -47,6 +47,7 @@ export default class extends Phaser.State {
       for (var i = 0 ; i < path.length; i++) {
         var currCoords = path[i]
         this.changePosition.to({x: currCoords.x*32, y: currCoords.y* 32}, 150) 
+        revealedFog = {x: currCoords.x*32, y: currCoords.y*32}
       }
       this.changePosition.start()
       this.changePosition.onComplete.add(function () {
@@ -170,30 +171,39 @@ export default class extends Phaser.State {
   }
 
   update () {
-    this.enterKey.onDown.add(this.endTurn, this);
+    this.enterKey.onDown.add(this.endTurn, this)
 
     //ALL PIECE UPDATES
     for (var piece in this.pieces) {
+      const pc = this.pieces[piece]
+
       //If dead: destroy it
-      if (this.pieces[piece].HP <= 0) {
-        this.pieces[piece].destroy()
+      if (pc.HP <= 0) {
+        pc.destroy()
         delete this.pieces[piece]
       }
       //Else: Update Health by Destroying Old Health and Rendering New
       else {
-        this.pieces[piece].children[0].destroy()
-        let newHealth = this.game.add.text(40, 40, this.pieces[piece].HP, this.healthStyle)
-        this.pieces[piece].addChild(newHealth);
+        pc.children[0].destroy()
+        let newHealth = this.game.add.text(40, 40, pc.HP, this.healthStyle)
+        pc.addChild(newHealth);
       }
-      
+
       //If piece is disabled, make it transparent --- but this turns off when it can't move
       //  so it looks disabled when the piece can still attack or what...
     }
   }
 
   render () {
+    this.fog.children.map((ele) => {
+      if (ele.alpha && isNear(ele, revealedFog, 10)) ele.alpha = 0
+    })
     if (__DEV__) {
       // this.game.debug.spriteInfo(this.pieces, 32, 32)
     }
   }
 }
+
+let revealedFog = {}
+
+const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
