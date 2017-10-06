@@ -65,7 +65,8 @@ export default class extends Phaser.State {
       if(this.pieces[key] !== this.selectedPiece && this.pieces[key].team !== this.selectedPiece.team) {
         let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
         let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
-        if((diffX === 32 && diffY === 0) || (diffX === 0 && diffY === 32))  {
+        console.log('curr piece', this.selectedPiece)
+        if((diffX + diffY <= (this.selectedPiece.attackRadius*32))) {
           defenders.push(this.pieces[key]);
         }
       }

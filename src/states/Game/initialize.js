@@ -21,7 +21,8 @@ export const startingPieces = that => ({
     player: 1,
     id: 1,
     mobility: 5,
-    team: 'blue'
+    team: 'blue',
+    attackRadius: 2    
   }),
   2: new Infantry({
     game: that.game,
@@ -35,7 +36,8 @@ export const startingPieces = that => ({
     player: 1,
     id: 1,
     mobility: 5,
-    team: 'blue'
+    team: 'blue',
+    attackRadius: 2    
   }),
   3: new SmallTank({
     game: that.game,
@@ -49,7 +51,8 @@ export const startingPieces = that => ({
     player: 2,
     id: 2,
     mobility: 7,
-    team: 'blue'
+    team: 'blue',
+    attackRadius: 2
   }),
 
   4: new Infantry({
@@ -64,7 +67,8 @@ export const startingPieces = that => ({
     player: 2,
     id: 3,
     mobility: 5,
-    team: 'red'
+    team: 'red',
+    attackRadius: 2    
   }),
   5: new Infantry({
     game: that.game,
@@ -78,7 +82,8 @@ export const startingPieces = that => ({
     player: 2,
     id: 4,
     mobility: 5,
-    team: 'red'
+    team: 'red',
+    attackRadius: 2    
   }),
   5: new City({
     game: that.game,
