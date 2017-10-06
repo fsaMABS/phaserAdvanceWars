@@ -74,24 +74,33 @@ export default class extends Phaser.State {
     }
     if(!this.attackButton || !this.attackButton.alive) {
       if(defenders.length === 1) {
-        this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+99, 'fireSprite', 
+        this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 99, 'fireSprite', 
           () => this.attackPiece(this.selectedPiece, defenders[0], defenders), this, 2, 1, 0);
       } else if(defenders.length > 1) {
         this.selectTargets(this.selectedPiece, defenders)
       }
     }
     if(!this.waitButton || !this.waitButton.alive) {
-      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y+64, 'waitSprite', this.wait, this, 2, 1, 0);
+      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'waitSprite', this.wait, this, 2, 1, 0);
     }
     
     if (!this.captButton || !this.captButton.alive) {
-      this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'captSprite',
-        () => this.captureCity(city), this, 2, 1, 0);
+      for (var i in this.pieces) {
+        if (this.pieces[i].key.indexOf('city') !== -1) {
+          for (var j in this.pieces) {
+            if (this.pieces[j].key.indexOf('infantry') !== -1) {
+              if (this.pieces[j].position.x === this.pieces[i].position.x && this.pieces[j].position.y === this.pieces[i].position.y) {
+                  this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 32, 'captSprite',
+                  () => this.captureCity(this.pieces[i]), this, 2, 1, 0);
+              }
+            }
+          }
+        }
+      }
     }
-  
-}
+  }
 
-  selectTargets(attacker, defenders) {
+  selectTargets (attacker, defenders) {
     this.targets = [];
     defenders.forEach((defender, index) => {
       let target = this.game.add.image(defender.x, defender.y, 'target')
@@ -123,9 +132,16 @@ export default class extends Phaser.State {
   captureCity (campedCity) {
     this.selectedPiece
     campedCity.Cap -= this.selectedPiece.HP
+    
+    if (campedCity.Cap <= 0) {
+      campedCity.key = "city_" + this.selectedPiece.team
+      campedCity.team = this.selectedPiece.team
+    }
 
     this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
+
+    console.log(this.pieces)
   }
 
   disablePieceMovement (piece) {
@@ -145,19 +161,6 @@ export default class extends Phaser.State {
   }
 
   endTurn () {
-    // for(var i in this.pieces) {
-    //   console.log(this.pieces[i])
-    //   if(this.pieces[i].key.indexOf('city') !== -1) {
-    //     let current_city = this.pieces[i];
-    //     for(var j in this.pieces) {
-    //       if(this.pieces[j].key.indexOf('infantry') !== -1) {
-    //         if(this.pieces[j].position.x === current_city.position.x && this.pieces[j].position.y === current_city.position.y) {
-    //           // console.log('here')
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
     this.disablePieceOptions();
     //var style = { font: '18px Arial', fill: '#fff' }
     // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
