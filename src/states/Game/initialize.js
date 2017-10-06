@@ -96,7 +96,7 @@ export const startingPieces = that => ({
     Cap: 20,
     player: 1,
     id: 1,
-    team: 'red'
+    team: 'neutral'
   })
 })
 
@@ -122,7 +122,7 @@ export const loadLevel = (that) => {
       var block = new Block(i, j, 'blueSquare', 32, 32, type)
       block.alpha = 0.0
       that.blocks.add(block)
-      that.fog.add(new Block(i, j, 'fogSquare', 32, 32, type))
+      // that.fog.add(new Block(i, j, 'fogSquare', 32, 32, type))
     }
   }
 

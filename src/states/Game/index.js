@@ -3,6 +3,7 @@ import Phaser from 'phaser'
 import easystarjs from 'easystarjs'
 import {loadLevel} from './initialize'
 import newGrid from '../../processMap'
+import City from '../../sprites/City'
 // var easystarjs = require('easystarjs')
 var easystar = new easystarjs.js()
 
@@ -47,7 +48,7 @@ export default class extends Phaser.State {
       for (var i = 0 ; i < path.length; i++) {
         var currCoords = path[i]
         this.changePosition.to({x: currCoords.x*32, y: currCoords.y* 32}, 150) 
-        revealedFog = {x: currCoords.x*32, y: currCoords.y*32}
+        // revealedFog = {x: currCoords.x*32, y: currCoords.y*32}
       }
       this.changePosition.start()
       this.changePosition.onComplete.add(function () {
@@ -87,14 +88,10 @@ export default class extends Phaser.State {
     if (!this.captButton || !this.captButton.alive) {
       for (var i in this.pieces) {
         if (this.pieces[i].key.indexOf('city') !== -1) {
-          for (var j in this.pieces) {
-            if (this.pieces[j].key.indexOf('infantry') !== -1) {
-              if (this.pieces[j].position.x === this.pieces[i].position.x && this.pieces[j].position.y === this.pieces[i].position.y) {
+              if (this.selectedPiece.position.x === this.selectedPiece.position.x && this.selectedPiece.position.y === this.selectedPiece.position.y) {
                   this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 32, 'captSprite',
                   () => this.captureCity(this.pieces[i]), this, 2, 1, 0);
               }
-            }
-          }
         }
       }
     }
@@ -129,19 +126,50 @@ export default class extends Phaser.State {
     this.disablePieceOptions();
   }
 
-  captureCity (campedCity) {
+  captureCity (campedCity) {    
     this.selectedPiece
+
+    console.log('campedCity', campedCity)
     campedCity.Cap -= this.selectedPiece.HP
+
+   
     
     if (campedCity.Cap <= 0) {
-      campedCity.key = "city_" + this.selectedPiece.team
-      campedCity.team = this.selectedPiece.team
+      if (this.selectedPiece.team === 'red') {
+        var newCityColorAsset = 'city_red'
+      } else {
+        var newCityColorAsset = 'city_blue'
+      }
+      console.log('campedcity in if', campedCity)
+      campedCity.destroy()
+      setTimeout(() => {
+        console.log('campedCit after I destroy', campedCity)
+      }, 5000)
+      console.log('campedCit after I destroy', campedCity)
+      console.log('cityasset', newCityColorAsset)
+      var newCity = new City({
+        game: this.game,
+        x: 96,
+        y: 96,
+        asset: newCityColorAsset,
+        width: 30,
+        height: 40,
+        Def: 3,
+        Cap: 20,
+        player: 1,
+        id: 1,
+        team: 'neutral'
+      })
+      this.game.world.add(newCity);
+      
+      // campedCity.asset = "city_" + this.selectedPiece.team
+      // campedCity.team = this.selectedPiece.team
     }
 
     this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
 
-    console.log(this.pieces)
+    // console.log(this.pieces)
   }
 
   disablePieceMovement (piece) {
@@ -184,7 +212,9 @@ export default class extends Phaser.State {
       }
       //Else: Update Health by Destroying Old Health and Rendering New
       else {
-        pc.children[0].destroy()
+        if (pc.children[0]) {
+          pc.children[0].destroy()          
+        }
         let newHealth = this.game.add.text(40, 40, pc.HP, this.healthStyle)
         pc.addChild(newHealth);
       }
@@ -195,9 +225,9 @@ export default class extends Phaser.State {
   }
 
   render () {
-    this.fog.children.map((ele) => {
-      if (ele.alpha && isNear(ele, revealedFog, 10)) ele.alpha = 0
-    })
+    // this.fog.children.map((ele) => {
+    //   if (ele.alpha && isNear(ele, revealedFog, 10)) ele.alpha = 0
+    // })
     if (__DEV__) {
       // this.game.debug.spriteInfo(this.pieces, 32, 32)
     }
