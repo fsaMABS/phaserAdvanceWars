@@ -109,6 +109,7 @@ export default class extends Phaser.State {
   }
 
   attackPiece (attacker, defender, defenders) {
+    console.log('defenders', defenders)
     if(defenders.length > 1) {
       defenders.forEach(defender => {
         defender.inputEnabled = false
