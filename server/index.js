@@ -5,31 +5,28 @@ const server = require('swyx')()
 
 const app = server.app
 app.get('/api', (req, res) => res.send('this is api route'))
+
+let fbdata = {}
+app.get('/api/db', (req, res) => res.json(fbdata))
 app.use(server.finalHandler) // optional error handling
 server.start()
 
 firebase.initializeApp(FIREBASE_CONFIG)
 
 // write dumy data to start pple off
-function writeUserData(userId, name, email, imageUrl) {
+function writeUserData () {
   firebase.database().ref('lobbies').set({
-    'Lobby1': {
+    'AlwaysBusyLobby': {
       players: {
         1: {
           username: 'player1',
-          readyState: false
+          readyState: false,
+          role: 'red'
         },
         2: {
           username: 'player2',
-          readyState: false
-        }
-      }
-    },
-    'Lobby2': {
-      players: {
-        1: {
-          username: 'player3',
-          readyState: false
+          readyState: false,
+          role: 'blue'
         }
       }
     }
@@ -37,4 +34,7 @@ function writeUserData(userId, name, email, imageUrl) {
   // firebase.database().ref('lobbies').push().set({name: 'sldkj', '123': '345'})
 }
 
-writeUserData('1', 'Larry', 'larry@larry.com', 'url')
+writeUserData()
+firebase.database().ref('lobbies').on('value', snapshot => {
+  fbdata = snapshot.toJSON()
+})

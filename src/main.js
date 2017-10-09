@@ -8,6 +8,7 @@ import GameState from './states/Game'
 import SingleLobbyState from './states/SingleLobby'
 import AllLobbiesState from './states/All_Lobbies'
 import EndGameState from './states/EndGame'
+import MultiplayerGameState from './states/MultiplayerGame'
 import config from './config'
 
 const firebase = require('firebase')
@@ -30,6 +31,7 @@ class Game extends Phaser.Game {
     this.state.add('SingleLobby', SingleLobbyState, false)
     this.state.add('All_Lobbies', AllLobbiesState, false)
     this.state.add('Game', GameState, false)
+    this.state.add('MultiplayerGame', MultiplayerGameState, false)
     this.state.add('EndGame', EndGameState, false)
     this.state.start('Boot')
   }

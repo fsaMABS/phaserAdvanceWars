@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 // import { centerGameObjects } from '../utils'
 
+let textArray = []
 export default class extends Phaser.State {
   init () {}
 
@@ -23,9 +24,9 @@ export default class extends Phaser.State {
 
       let text = this.game.add.text(32, 64, '', style)
       text.parseList(headings)
-
+      textArray.forEach(text => text.destroy())
+      textArray = []
       this.game.add.text(22, 30, 'Pick a lobby to join. Current user: ' + myId, style)
-      const textArray = []
       const makelobby = (lobby, i) => {
         textArray[i] = this.game.add.text(32, 120 + i * 20, '', style)
         textArray[i].parseList(lobby)
@@ -39,7 +40,8 @@ export default class extends Phaser.State {
               players: {
                 1: {
                   username: myId,
-                  readyState: false
+                  readyState: false,
+                  role: 'red'
                 }
               }
             }) // created new lobby
@@ -47,13 +49,13 @@ export default class extends Phaser.State {
           } else { // join existing lobby
             firebase.database().ref('lobbies/' + text.lobby[0] + '/players').push().set({
               username: myId,
-              readyState: false
+              readyState: false,
+              role: 'blue'
             })
             this.game.lobby = text.lobby[0]
           }
           this.state.start('SingleLobby')
           firebase.database().ref('lobbies').off()
-
         }
         textArray[i].events.onInputDown.add(handleClick, this)
       }
