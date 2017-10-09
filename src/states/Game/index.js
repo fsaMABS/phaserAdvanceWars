@@ -172,6 +172,7 @@ export default class extends Phaser.State {
     if(this.waitButton) this.waitButton.destroy();
     if(this.attackButton) this.attackButton.destroy();
     if(this.targets) this.targets.forEach(target => target.destroy());
+    this.showingMoves = false;
     this.canEndTurn = true;
   }
 
@@ -203,8 +204,22 @@ export default class extends Phaser.State {
 
   update () {
     this.enterKey.onDown.add(this.endTurn, this)
-    if(!this.canEndTurn) this.enterKey._enabled = false;
-    else this.enterKey._enabled = true;
+
+    //Janky solution to the "staying still" player logic
+    // problems: 
+    // 1) Still no 'back' button for unwanted choices
+    // 2) Shift is a random key to use when the game is mostly mouse based
+
+    this.shiftKey.onDown.add(() => {
+      this.blocks.children.forEach((ele) => {
+        ele.alpha = 0
+        ele.inputEnabled = false
+      }, this)
+      this.checkForPieceOptions();
+    }, this)
+
+    this.shiftKey._enabled = this.showingMoves ? true : false
+    this.enterKey._enabled = this.canEndTurn ? true : false
 
     //ALL PIECE UPDATES
     for (var piece in this.pieces) {

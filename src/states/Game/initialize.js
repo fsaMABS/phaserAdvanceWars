@@ -105,6 +105,8 @@ export const loadLevel = (that) => {
   that.scale.pageAlignHorizontally = true;
   that.scale.pageAlignVertically = true;
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);  
+  that.shiftKey = that.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
+  that.canEndTurn = true;
   that.attackButton = undefined;
   that.waitButton = undefined;
   that.healthStyle = { font: "18px Arial", fill: "black" };  
@@ -148,6 +150,7 @@ export const loadLevel = (that) => {
 
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
+  that.showingMoves = that.showingMoves === true ? false : true
 
   if (that.currentPlayer === that.selectedPiece.team) {
     that.showingBlue = !that.showingBlue
