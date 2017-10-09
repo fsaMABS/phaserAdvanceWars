@@ -7,21 +7,37 @@ import City from '../../sprites/City'
 // var easystarjs = require('easystarjs')
 var easystar = new easystarjs.js()
 
+const turnobjectToArray = pieces => ({pieces: Object.keys(pieces).map(pckey => {
+  const piece = pieces[pckey]
+  const res = {}
+  const slots = ['alpha', 'team', 'id', 'key', 'player']
+  slots.forEach(x => res[x] = piece[x])
+  res['x'] = piece.position.x
+  res['y'] = piece.position.y
+  return res
+})})
+
+let firebase
 export default class extends Phaser.State {
   init () {
+    firebase = this.game.firebase
     this.showingBlue = false
     this.selectedPiece = undefined
+    firebase.database().ref(`lobbies/${this.game.lobby}/game`).set({currentPlayer: 'red'})
   }
 
   create () {
-    easystar.setGrid(newGrid());
-    easystar.setAcceptableTiles([2]);
+    easystar.setGrid(newGrid())
+    easystar.setAcceptableTiles([2])
     loadLevel(this)
+    console.log('*******this.piecesthis.pieces', this.pieces)
+    firebase.database().ref(`lobbies/${this.game.lobby}/pieces`).set(turnobjectToArray(this.pieces))
   }
 
   togglePlayer () {
     // console.log('this.pieces', this.pieces)
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
+    firebase.database().ref(`lobbies/${this.game.lobby}/game`).set({currentPlayer: this.currentPlayer})
     // ENABLE PIECES
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0;
@@ -202,6 +218,7 @@ export default class extends Phaser.State {
   update () {
     this.enterKey.onDown.add(this.endTurn, this)
 
+    firebase.database().ref(`lobbies/${this.game.lobby}/pieces`).set(turnobjectToArray(this.pieces))
     //ALL PIECE UPDATES
     for (var piece in this.pieces) {
       const pc = this.pieces[piece]

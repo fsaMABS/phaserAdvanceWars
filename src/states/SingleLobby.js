@@ -22,11 +22,10 @@ export default class extends Phaser.State {
       console.log('****firebase***', snapshot.toJSON())
       const lobbies = snapshot.toJSON().players
       let currentUserKey
-      let currentUser = {}
       var lobbylist = Object.keys(lobbies).map(key => {
         if (lobbies[key].username === this.game.userId) {
           currentUserKey = key
-          currentUser = lobbies[key]
+          this.game.currentUser = lobbies[key]
         }
         return [lobbies[key].username, lobbies[key].readyState, lobbies[key].role]
       })
@@ -50,10 +49,10 @@ export default class extends Phaser.State {
         buton.inputEnabled = true
         buton.events.onInputDown.removeAll()
         buton.events.onInputDown.add(() => {
-          currentUser.readyState = true
+          this.game.currentUser.readyState = true
           const newPlayerData = {
             players: Object.assign({}, lobbies, {
-              [currentUserKey]: currentUser
+              [currentUserKey]: this.game.currentUser
             })
           }
           firebase.database().ref('lobbies/' + this.game.lobby).set(newPlayerData)

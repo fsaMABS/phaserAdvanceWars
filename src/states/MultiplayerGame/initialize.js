@@ -102,12 +102,12 @@ export const startingPieces = that => ({
 
 export const loadLevel = (that) => {
   that.background = that.game.add.sprite(0, 0, 'aw1Map')
-  that.scale.pageAlignHorizontally = true;
-  that.scale.pageAlignVertically = true;
-  that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);  
-  that.attackButton = undefined;
-  that.waitButton = undefined;
-  that.healthStyle = { font: "18px Arial", fill: "black" };  
+  that.scale.pageAlignHorizontally = true
+  that.scale.pageAlignVertically = true
+  that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
+  that.attackButton = undefined
+  that.waitButton = undefined
+  that.healthStyle = { font: "18px Arial", fill: "black" }
 
   var style = { font: '20px Arial', fill: '#fff' }
   that.game.add.text(410, 20, 'Player:', style)
