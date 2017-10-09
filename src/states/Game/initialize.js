@@ -150,9 +150,9 @@ export const loadLevel = (that) => {
 
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
-  that.showingMoves = that.showingMoves === true ? false : true
 
   if (that.currentPlayer === that.selectedPiece.team) {
+    that.showingMoves = that.showingMoves === true ? false : true
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
     var childrenPromises = that.blocks.children.map((ele) => {

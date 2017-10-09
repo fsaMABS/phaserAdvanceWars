@@ -172,7 +172,7 @@ export default class extends Phaser.State {
     if(this.waitButton) this.waitButton.destroy();
     if(this.attackButton) this.attackButton.destroy();
     if(this.targets) this.targets.forEach(target => target.destroy());
-    this.showingMoves = false;
+    if(this.showingMoves) this.showingMoves = false;
     this.canEndTurn = true;
   }
 
@@ -203,6 +203,8 @@ export default class extends Phaser.State {
   }
 
   update () {
+    console.log(this.showingMoves)
+
     this.enterKey.onDown.add(this.endTurn, this)
 
     //Janky solution to the "staying still" player logic
@@ -219,7 +221,7 @@ export default class extends Phaser.State {
     }, this)
 
     this.shiftKey._enabled = this.showingMoves ? true : false
-    this.enterKey._enabled = this.canEndTurn ? true : false
+    this.enterKey._enabled = this.canEndTurn && !this.showingBlue ? true : false
 
     //ALL PIECE UPDATES
     for (var piece in this.pieces) {
