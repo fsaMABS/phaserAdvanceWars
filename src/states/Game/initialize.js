@@ -85,7 +85,7 @@ export const startingPieces = that => ({
     team: 'red',
     attackRadius: 2    
   }),
-  5: new City({
+  6: new City({
     game: that.game,
     x: 96,
     y: 96,
@@ -135,7 +135,7 @@ export const loadLevel = (that) => {
     let current = that.pieces[key]
     let added = that.game.world.add(current)
     added.inputEnabled = true
-    added.events.onInputDown.add(showMoves(that), this)
+    if(added.key.indexOf('city') === -1) added.events.onInputDown.add(showMoves(that), this)
     that.pieces[key] = added
     revealedFog.push({x: current.position.x, y: current.position.y})
     let pieceHealth = that.game.add.text(20, 20, that.pieces[key].HP, that.healthStyle);
@@ -150,36 +150,29 @@ export const loadLevel = (that) => {
 
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
-
   if (that.currentPlayer === that.selectedPiece.team) {
     that.showingMoves = that.showingMoves === true ? false : true
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
     var childrenPromises = that.blocks.children.map((ele) => {
       if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < (32 * sprite.mobility)) {
-        //if(ele.x === sprite.x && ele.y === sprite.y) {
-          //here we want to send out a new action for "staying", where we pass in just the current position
-        //}
-        // if (!(ele.x === sprite.x && ele.y === sprite.y)) {
-          if (ele.type === 'land') {
-            easystarz.setGrid(newGrid())
-            easystarz.setAcceptableTiles([2]);
-            return new Promise((resolve, reject) => {
-              easystarz.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {
-                if (path === null || (path.length > sprite.mobility)) {
-                  resolve(null)
-                } else {
-                  resolve(ele)
-                }
-              });
-              easystarz.calculate()
+        if (ele.type === 'land') {
+          easystarz.setGrid(newGrid())
+          easystarz.setAcceptableTiles([2]);
+          return new Promise((resolve, reject) => {
+            easystarz.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {
+              if (path === null || (path.length > sprite.mobility)) {
+                resolve(null)
+              } else {
+                resolve(ele)
+              }
+            });
+            easystarz.calculate()
 
-            })
-          }
-        // }
+          })
+        }
       }
-    }, that)
-      .filter(x => !!x)
+    }, that).filter(x => !!x)
 
     Promise.all(childrenPromises).then(elements => {
       let inputEnabled = that.showingBlue ? true : false

@@ -85,7 +85,7 @@ export const startingPieces = that => ({
     team: 'red',
     attackRadius: 2    
   }),
-  5: new City({
+  6: new City({
     game: that.game,
     x: 96,
     y: 96,

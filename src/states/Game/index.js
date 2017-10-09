@@ -36,6 +36,7 @@ export default class extends Phaser.State {
   }
 
   moveHere (sprite) {
+    console.log(this.selectedPiece.key)
     if(this.selectedPiece.position.x === sprite.position.x && this.selectedPiece.position.y === sprite.position.y) {
       console.log('hello')
     }
@@ -64,6 +65,8 @@ export default class extends Phaser.State {
   }
 
   checkForPieceOptions() {
+    console.log('checking called...')
+    this.disablePieceMovement(this.selectedPiece);
     let defenders = [];
     for(var key in this.pieces) {
       if(this.pieces[key] !== this.selectedPiece && this.pieces[key].team !== this.selectedPiece.team && this.pieces[key].key.indexOf('city') === -1) {
@@ -138,7 +141,7 @@ export default class extends Phaser.State {
       let newCityColorAsset = this.selectedPiece.team === 'red' ? 'city_red' : 'city_blue'
 
       campedCity.destroy()
-
+      
       var newCity = new City({
         game: this.game,
         x: 96,
@@ -202,24 +205,29 @@ export default class extends Phaser.State {
     // }, this.turnEnded);
   }
 
+  stayInPlace() {
+    this.shiftKey.onDown.remove(this.stayInPlace, this);
+    this.blocks.children.forEach((ele) => {
+      ele.alpha = 0
+      ele.inputEnabled = false
+    }, this)
+    this.checkForPieceOptions();
+  }
+
   update () {
     console.log(this.showingMoves)
-
     this.enterKey.onDown.add(this.endTurn, this)
 
+    
     //Janky solution to the "staying still" player logic
     // problems: 
     // 1) Still no 'back' button for unwanted choices
     // 2) Shift is a random key to use when the game is mostly mouse based
-
-    this.shiftKey.onDown.add(() => {
-      this.blocks.children.forEach((ele) => {
-        ele.alpha = 0
-        ele.inputEnabled = false
-      }, this)
-      this.checkForPieceOptions();
-    }, this)
-
+    
+    if (!this.shiftKey.onDown._bindings || (this.shiftKey.onDown._bindings && !this.shiftKey.onDown._bindings.length)) {
+      this.shiftKey.onDown.add(this.stayInPlace, this)
+    }
+    
     this.shiftKey._enabled = this.showingMoves ? true : false
     this.enterKey._enabled = this.canEndTurn && !this.showingBlue ? true : false
 
