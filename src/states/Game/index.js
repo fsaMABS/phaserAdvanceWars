@@ -36,12 +36,14 @@ export default class extends Phaser.State {
   }
 
   moveHere (sprite) {
+    if(this.selectedPiece.position.x === sprite.position.x && this.selectedPiece.position.y === sprite.position.y) {
+      console.log('hello')
+    }
     this.selectedPiece.visible = true
     this.blocks.children.forEach((ele) => {
       ele.alpha = 0
       ele.inputEnabled = false
     }, this)
-    
     if (this.selectedPiece.team === this.currentPlayer) this.changePosition = this.game.add.tween(this.selectedPiece)
     easystar.findPath(this.selectedPiece.x/32, this.selectedPiece.y/32, sprite.x/32, sprite.y/32, ( path ) => {
       this.changePosition = this.game.add.tween(this.selectedPiece)          
@@ -64,10 +66,9 @@ export default class extends Phaser.State {
   checkForPieceOptions() {
     let defenders = [];
     for(var key in this.pieces) {
-      if(this.pieces[key] !== this.selectedPiece && this.pieces[key].team !== this.selectedPiece.team) {
+      if(this.pieces[key] !== this.selectedPiece && this.pieces[key].team !== this.selectedPiece.team && this.pieces[key].key.indexOf('city') === -1) {
         let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
         let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
-        console.log('curr piece', this.selectedPiece)
         if((diffX + diffY <= (this.selectedPiece.attackRadius*32))) {
           defenders.push(this.pieces[key]);
         }
@@ -82,15 +83,17 @@ export default class extends Phaser.State {
       }
     }
     if(!this.waitButton || !this.waitButton.alive) {
-      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'waitSprite', this.wait, this, 2, 1, 0);
+      this.canEndTurn = false;
+      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'waitSprite', 
+      () => this.wait(defenders), this, 2, 1, 0);
     }
     
     if (!this.captButton || !this.captButton.alive) {
       for (var i in this.pieces) {
         if (this.pieces[i].key.indexOf('city') !== -1) {
-              if (this.selectedPiece.position.x === this.selectedPiece.position.x && this.selectedPiece.position.y === this.selectedPiece.position.y) {
+              if (this.selectedPiece.position.x === this.pieces[i].position.x && this.selectedPiece.position.y === this.pieces[i].position.y) {
                   this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 32, 'captSprite',
-                  () => this.captureCity(this.pieces[i]), this, 2, 1, 0);
+                  () => this.captureCity(this.pieces[i], defenders), this, 2, 1, 0);
               }
         }
       }
@@ -109,14 +112,7 @@ export default class extends Phaser.State {
   }
 
   attackPiece (attacker, defender, defenders) {
-    console.log('defenders', defenders)
-    if(defenders.length > 1) {
-      defenders.forEach(defender => {
-        defender.inputEnabled = false
-        defender.events.onInputDown.remove(defender.data.targetAttack, this);
-      })
-    }
-    // else { defender.inputEnabled = false} ...may need this later haven't found a bug associated with it though
+    this.disableDefenders(defenders)
     attacker.inputEnabled = false;
     if(this.targets) this.targets.forEach(target => target.destroy());
     defender.HP -= attacker.AP
@@ -127,27 +123,22 @@ export default class extends Phaser.State {
     this.disablePieceOptions();
   }
 
-  captureCity (campedCity) {    
-    this.selectedPiece
-
-    console.log('campedCity', campedCity)
+  captureCity (campedCity, defenders) {
+    this.disableDefenders(defenders)
     campedCity.Cap -= this.selectedPiece.HP
-
-   
     
+    //======== CITY ISSUE ======
+    // is this 'camped City' being persisted? after its been captured once, when I start to 
+    // capture with the other team, it says the new Cap is -10, so its not being destroyed? Not sure
+    // just a heads up
+
+    console.log('starting camped city', campedCity)
     if (campedCity.Cap <= 0) {
-      if (this.selectedPiece.team === 'red') {
-        var newCityColorAsset = 'city_red'
-      } else {
-        var newCityColorAsset = 'city_blue'
-      }
-      console.log('campedcity in if', campedCity)
+      console.log('getting here...')
+      let newCityColorAsset = this.selectedPiece.team === 'red' ? 'city_red' : 'city_blue'
+
       campedCity.destroy()
-      setTimeout(() => {
-        console.log('campedCit after I destroy', campedCity)
-      }, 5000)
-      console.log('campedCit after I destroy', campedCity)
-      console.log('cityasset', newCityColorAsset)
+
       var newCity = new City({
         game: this.game,
         x: 96,
@@ -159,18 +150,17 @@ export default class extends Phaser.State {
         Cap: 20,
         player: 1,
         id: 1,
-        team: 'neutral'
+        team: this.selectedPiece.team
       })
+      campedCity = newCity;
+      console.log('camped city after', campedCity)
       this.game.world.add(newCity);
-      
       // campedCity.asset = "city_" + this.selectedPiece.team
       // campedCity.team = this.selectedPiece.team
     }
-
+    console.log('campedCity all', campedCity)
     this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
-
-    // console.log(this.pieces)
   }
 
   disablePieceMovement (piece) {
@@ -181,9 +171,21 @@ export default class extends Phaser.State {
     if(this.captButton) this.captButton.destroy();
     if(this.waitButton) this.waitButton.destroy();
     if(this.attackButton) this.attackButton.destroy();
+    if(this.targets) this.targets.forEach(target => target.destroy());
+    this.canEndTurn = true;
   }
 
-  wait () {
+  disableDefenders(defenders) {
+    if(defenders.length) {
+      defenders.forEach(defender => {
+        defender.inputEnabled = false;
+        if(defenders.length > 1) defender.events.onInputDown.remove(defender.data.targetAttack, this);
+      })
+    }
+  }
+
+  wait (defenders) {
+    this.disableDefenders(defenders);
     this.waitButton.pendingDestroy = true;
     this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
@@ -201,6 +203,8 @@ export default class extends Phaser.State {
 
   update () {
     this.enterKey.onDown.add(this.endTurn, this)
+    if(!this.canEndTurn) this.enterKey._enabled = false;
+    else this.enterKey._enabled = true;
 
     //ALL PIECE UPDATES
     for (var piece in this.pieces) {

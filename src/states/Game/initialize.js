@@ -154,7 +154,10 @@ const showMoves = that => (sprite, event) => {
     var alpha = that.showingBlue ? 0.5 : 0
     var childrenPromises = that.blocks.children.map((ele) => {
       if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < (32 * sprite.mobility)) {
-        if (!(ele.x === sprite.x && ele.y === sprite.y)) {
+        //if(ele.x === sprite.x && ele.y === sprite.y) {
+          //here we want to send out a new action for "staying", where we pass in just the current position
+        //}
+        // if (!(ele.x === sprite.x && ele.y === sprite.y)) {
           if (ele.type === 'land') {
             easystarz.setGrid(newGrid())
             easystarz.setAcceptableTiles([2]);
@@ -170,7 +173,7 @@ const showMoves = that => (sprite, event) => {
 
             })
           }
-        }
+        // }
       }
     }, that)
       .filter(x => !!x)
@@ -180,7 +183,7 @@ const showMoves = that => (sprite, event) => {
       elements.forEach((ele) => {
         if (ele !== null ) {
           ele.alpha = alpha;
-          ele.inputEnabled = inputEnabled          
+          ele.inputEnabled = inputEnabled     
           ele.events.onInputDown.add((sprite) => that.moveHere(sprite), that)
           if (ele.events.onInputDown._bindings.length > 1) {
             ele.events.onInputDown._bindings.shift()            
