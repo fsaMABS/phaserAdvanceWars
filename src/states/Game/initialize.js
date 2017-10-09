@@ -22,7 +22,7 @@ export const startingPieces = that => ({
     id: 1,
     mobility: 5,
     team: 'blue',
-    attackRadius: 2    
+    attackRadius: 1   
   }),
   2: new Infantry({
     game: that.game,
@@ -37,7 +37,7 @@ export const startingPieces = that => ({
     id: 1,
     mobility: 5,
     team: 'blue',
-    attackRadius: 2    
+    attackRadius: 1    
   }),
   3: new SmallTank({
     game: that.game,
@@ -68,7 +68,7 @@ export const startingPieces = that => ({
     id: 3,
     mobility: 5,
     team: 'red',
-    attackRadius: 2    
+    attackRadius: 1    
   }),
   5: new Infantry({
     game: that.game,
@@ -83,7 +83,7 @@ export const startingPieces = that => ({
     id: 4,
     mobility: 5,
     team: 'red',
-    attackRadius: 2    
+    attackRadius: 1    
   }),
   6: new City({
     game: that.game,
@@ -138,6 +138,7 @@ export const loadLevel = (that) => {
     if(added.key.indexOf('city') === -1) added.events.onInputDown.add(showMoves(that), this)
     that.pieces[key] = added
     revealedFog.push({x: current.position.x, y: current.position.y})
+
     let pieceHealth = that.game.add.text(20, 20, that.pieces[key].HP, that.healthStyle);
     that.pieces[key].addChild(pieceHealth)
   }
@@ -150,6 +151,7 @@ export const loadLevel = (that) => {
 
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
+  console.log('SHOW MOVES', that.showingBlue)
   if (that.currentPlayer === that.selectedPiece.team) {
     that.showingMoves = that.showingMoves === true ? false : true
     that.showingBlue = !that.showingBlue

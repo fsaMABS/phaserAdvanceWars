@@ -9,7 +9,6 @@ var easystar = new easystarjs.js()
 
 export default class extends Phaser.State {
   init () {
-    this.showingBlue = false
     this.selectedPiece = undefined
   }
 
@@ -28,11 +27,6 @@ export default class extends Phaser.State {
       this.pieces[key].inputEnabled = this.pieces[key].team == this.currentPlayer ? true : false
     }
     this.playerText.text = this.currentPlayer
-  }
-  sendMoveMessage (sprite) {
-    if (this.showingBlue) {
-      this.showingBlue = false
-    }
   }
 
   moveHere (sprite) {
@@ -55,7 +49,6 @@ export default class extends Phaser.State {
       }
       this.changePosition.start()
       this.changePosition.onComplete.add(function () {
-        this.sendMoveMessage(this.selectedPiece);
         this.checkForPieceOptions();
         this.disablePieceMovement(this.selectedPiece);
       }, this)
@@ -65,8 +58,6 @@ export default class extends Phaser.State {
   }
 
   checkForPieceOptions() {
-    console.log('checking called...')
-    this.disablePieceMovement(this.selectedPiece);
     let defenders = [];
     for(var key in this.pieces) {
       if(this.pieces[key] !== this.selectedPiece && this.pieces[key].team !== this.selectedPiece.team && this.pieces[key].key.indexOf('city') === -1) {
@@ -176,6 +167,7 @@ export default class extends Phaser.State {
     if(this.attackButton) this.attackButton.destroy();
     if(this.targets) this.targets.forEach(target => target.destroy());
     if(this.showingMoves) this.showingMoves = false;
+    this.showingBlue = false;
     this.canEndTurn = true;
   }
 
@@ -214,22 +206,18 @@ export default class extends Phaser.State {
     this.checkForPieceOptions();
   }
 
+
   update () {
     console.log(this.showingMoves)
+    if(this.selectedPiece) console.log('this selected', this.selectedPiece.key)
     this.enterKey.onDown.add(this.endTurn, this)
 
-    
-    //Janky solution to the "staying still" player logic
-    // problems: 
-    // 1) Still no 'back' button for unwanted choices
-    // 2) Shift is a random key to use when the game is mostly mouse based
-    
     if (!this.shiftKey.onDown._bindings || (this.shiftKey.onDown._bindings && !this.shiftKey.onDown._bindings.length)) {
       this.shiftKey.onDown.add(this.stayInPlace, this)
     }
-    
+
     this.shiftKey._enabled = this.showingMoves ? true : false
-    this.enterKey._enabled = this.canEndTurn && !this.showingBlue ? true : false
+    this.enterKey._enabled = this.canEndTurn ? true : false
 
     //ALL PIECE UPDATES
     for (var piece in this.pieces) {
@@ -239,18 +227,12 @@ export default class extends Phaser.State {
       if (pc.HP <= 0) {
         pc.destroy()
         delete this.pieces[piece]
-      }
-      //Else: Update Health by Destroying Old Health and Rendering New
+      } 
       else {
-        if (pc.children[0]) {
-          pc.children[0].destroy()          
-        }
+        if (pc.children[0]) pc.children[0].destroy()          
         let newHealth = this.game.add.text(40, 40, pc.HP, this.healthStyle)
         pc.addChild(newHealth);
       }
-
-      //If piece is disabled, make it transparent --- but this turns off when it can't move
-      //  so it looks disabled when the piece can still attack or what...
     }
   }
 
@@ -267,3 +249,10 @@ export default class extends Phaser.State {
 let revealedFog = {}
 
 const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
+
+
+//toggleKeyboardEvents(key) {
+//   if (!key.onDown._bindings || (key.onDown._bindings && !key.onDown._bindings.length)) {
+//     key.onDown.add(this.stayInPlace, this);
+//   }
+// }
