@@ -22,7 +22,7 @@ export const startingPieces = that => ({
     id: 1,
     mobility: 5,
     team: 'blue',
-    attackRadius: 2    
+    attackRadius: 1   
   }),
   2: new Infantry({
     game: that.game,
@@ -37,7 +37,7 @@ export const startingPieces = that => ({
     id: 1,
     mobility: 5,
     team: 'blue',
-    attackRadius: 2    
+    attackRadius: 1    
   }),
   3: new SmallTank({
     game: that.game,
@@ -68,7 +68,7 @@ export const startingPieces = that => ({
     id: 3,
     mobility: 5,
     team: 'red',
-    attackRadius: 2    
+    attackRadius: 1    
   }),
   5: new Infantry({
     game: that.game,
@@ -83,9 +83,9 @@ export const startingPieces = that => ({
     id: 4,
     mobility: 5,
     team: 'red',
-    attackRadius: 2    
+    attackRadius: 1    
   }),
-  5: new City({
+  6: new City({
     game: that.game,
     x: 96,
     y: 96,
@@ -105,6 +105,8 @@ export const loadLevel = (that) => {
   that.scale.pageAlignHorizontally = true;
   that.scale.pageAlignVertically = true;
   that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER);  
+  that.shiftKey = that.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT);
+  that.canEndTurn = true;
   that.attackButton = undefined;
   that.waitButton = undefined;
   that.healthStyle = { font: "18px Arial", fill: "black" };  
@@ -133,9 +135,10 @@ export const loadLevel = (that) => {
     let current = that.pieces[key]
     let added = that.game.world.add(current)
     added.inputEnabled = true
-    added.events.onInputDown.add(showMoves(that), this)
+    if(added.key.indexOf('city') === -1) added.events.onInputDown.add(showMoves(that), this)
     that.pieces[key] = added
     revealedFog.push({x: current.position.x, y: current.position.y})
+
     let pieceHealth = that.game.add.text(20, 20, that.pieces[key].HP, that.healthStyle);
     that.pieces[key].addChild(pieceHealth)
   }
@@ -148,35 +151,30 @@ export const loadLevel = (that) => {
 
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
-
+  console.log('SHOW MOVES', that.showingBlue)
   if (that.currentPlayer === that.selectedPiece.team) {
+    that.showingMoves = that.showingMoves === true ? false : true
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
     var childrenPromises = that.blocks.children.map((ele) => {
       if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < (32 * sprite.mobility)) {
-        //if(ele.x === sprite.x && ele.y === sprite.y) {
-          //here we want to send out a new action for "staying", where we pass in just the current position
-        //}
-        // if (!(ele.x === sprite.x && ele.y === sprite.y)) {
-          if (ele.type === 'land') {
-            easystarz.setGrid(newGrid())
-            easystarz.setAcceptableTiles([2]);
-            return new Promise((resolve, reject) => {
-              easystarz.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {
-                if (path === null || (path.length > sprite.mobility)) {
-                  resolve(null)
-                } else {
-                  resolve(ele)
-                }
-              });
-              easystarz.calculate()
+        if (ele.type === 'land') {
+          easystarz.setGrid(newGrid())
+          easystarz.setAcceptableTiles([2]);
+          return new Promise((resolve, reject) => {
+            easystarz.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {
+              if (path === null || (path.length > sprite.mobility)) {
+                resolve(null)
+              } else {
+                resolve(ele)
+              }
+            });
+            easystarz.calculate()
 
-            })
-          }
-        // }
+          })
+        }
       }
-    }, that)
-      .filter(x => !!x)
+    }, that).filter(x => !!x)
 
     Promise.all(childrenPromises).then(elements => {
       let inputEnabled = that.showingBlue ? true : false

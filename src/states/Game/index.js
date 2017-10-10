@@ -9,7 +9,6 @@ var easystar = new easystarjs.js()
 
 export default class extends Phaser.State {
   init () {
-    this.showingBlue = false
     this.selectedPiece = undefined
   }
 
@@ -29,13 +28,9 @@ export default class extends Phaser.State {
     }
     this.playerText.text = this.currentPlayer
   }
-  sendMoveMessage (sprite) {
-    if (this.showingBlue) {
-      this.showingBlue = false
-    }
-  }
 
   moveHere (sprite) {
+    console.log(this.selectedPiece.key)
     if(this.selectedPiece.position.x === sprite.position.x && this.selectedPiece.position.y === sprite.position.y) {
       console.log('hello')
     }
@@ -54,7 +49,6 @@ export default class extends Phaser.State {
       }
       this.changePosition.start()
       this.changePosition.onComplete.add(function () {
-        this.sendMoveMessage(this.selectedPiece);
         this.checkForPieceOptions();
         this.disablePieceMovement(this.selectedPiece);
       }, this)
@@ -138,7 +132,7 @@ export default class extends Phaser.State {
       let newCityColorAsset = this.selectedPiece.team === 'red' ? 'city_red' : 'city_blue'
 
       campedCity.destroy()
-
+      
       var newCity = new City({
         game: this.game,
         x: 96,
@@ -172,6 +166,8 @@ export default class extends Phaser.State {
     if(this.waitButton) this.waitButton.destroy();
     if(this.attackButton) this.attackButton.destroy();
     if(this.targets) this.targets.forEach(target => target.destroy());
+    if(this.showingMoves) this.showingMoves = false;
+    this.showingBlue = false;
     this.canEndTurn = true;
   }
 
@@ -201,10 +197,27 @@ export default class extends Phaser.State {
     // }, this.turnEnded);
   }
 
+  stayInPlace() {
+    this.shiftKey.onDown.remove(this.stayInPlace, this);
+    this.blocks.children.forEach((ele) => {
+      ele.alpha = 0
+      ele.inputEnabled = false
+    }, this)
+    this.checkForPieceOptions();
+  }
+
+
   update () {
+    console.log(this.showingMoves)
+    if(this.selectedPiece) console.log('this selected', this.selectedPiece.key)
     this.enterKey.onDown.add(this.endTurn, this)
-    if(!this.canEndTurn) this.enterKey._enabled = false;
-    else this.enterKey._enabled = true;
+
+    if (!this.shiftKey.onDown._bindings || (this.shiftKey.onDown._bindings && !this.shiftKey.onDown._bindings.length)) {
+      this.shiftKey.onDown.add(this.stayInPlace, this)
+    }
+
+    this.shiftKey._enabled = this.showingMoves ? true : false
+    this.enterKey._enabled = this.canEndTurn ? true : false
 
     //ALL PIECE UPDATES
     for (var piece in this.pieces) {
@@ -214,18 +227,12 @@ export default class extends Phaser.State {
       if (pc.HP <= 0) {
         pc.destroy()
         delete this.pieces[piece]
-      }
-      //Else: Update Health by Destroying Old Health and Rendering New
+      } 
       else {
-        if (pc.children[0]) {
-          pc.children[0].destroy()          
-        }
+        if (pc.children[0]) pc.children[0].destroy()          
         let newHealth = this.game.add.text(40, 40, pc.HP, this.healthStyle)
         pc.addChild(newHealth);
       }
-
-      //If piece is disabled, make it transparent --- but this turns off when it can't move
-      //  so it looks disabled when the piece can still attack or what...
     }
   }
 
@@ -242,3 +249,10 @@ export default class extends Phaser.State {
 let revealedFog = {}
 
 const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
+
+
+//toggleKeyboardEvents(key) {
+//   if (!key.onDown._bindings || (key.onDown._bindings && !key.onDown._bindings.length)) {
+//     key.onDown.add(this.stayInPlace, this);
+//   }
+// }
