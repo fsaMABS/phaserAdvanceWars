@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import config from '../../config'
+import {winner} from '../Game'
 // import { centerGameObjects } from '../../utils'
 
 export default class extends Phaser.State {
@@ -15,7 +16,7 @@ export default class extends Phaser.State {
     this.bar.drawRect(80, 80, 800, 640);
     const winnerStyle = { font: "64px Arial", fill: "white", fontWeight: 'bold', align: 'center' }
     const style = { font: "18px Arial", fill: "white", align: 'center' };
-    const winner = 'player1'
+    const winner = window.game.winner.charAt(0).toUpperCase() + window.game.winner.slice(1) + ' Team'
     const text = `${winner} Wins!`
     this.winnerText = this.add.text(this.game.world.centerX, this.game.world.centerY-100, text, winnerStyle)
     this.winnerText.anchor.set(0.5)    

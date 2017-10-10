@@ -89,14 +89,15 @@ export const startingPieces = that => ({
     game: that.game,
     x: 96,
     y: 96,
-    asset: 'city_grey',
+    asset: 'city_blue',
     width: 30,
     height: 40,
     Def: 3,
-    Cap: 20,
+    Cap: 10,
     player: 1,
     id: 1,
-    team: 'neutral'
+    team: 'blue',
+    isHQ: true
   })
 })
 
@@ -111,6 +112,7 @@ export const loadLevel = (that) => {
   that.waitButton = undefined;
   that.healthStyle = { font: "18px Arial", fill: "black" };
   that.gameOver = false;  
+  that.winner = '';
 
   var style = { font: '20px Arial', fill: '#fff' }
   that.game.add.text(410, 20, 'Player:', style)
