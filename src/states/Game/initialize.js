@@ -7,12 +7,13 @@ import newGrid from '../../processMap'
 import easystarjs from 'easystarjs'
 var easystarz = new easystarjs.js()
 
+
 export const startingPieces = that => ({
   // NEED TO ADD TYPES TO THE NAME AT SOME POINT
   1: new Infantry({
     game: that.game,
-    x: 64,
-    y: 64,
+    x: (64),
+    y: (32*16),
     asset: 'infantry_blue',
     width: 32,
     height: 32,
@@ -22,12 +23,12 @@ export const startingPieces = that => ({
     id: 1,
     mobility: 5,
     team: 'blue',
-    attackRadius: 1   
+    attackRadius: 2    
   }),
   2: new Infantry({
     game: that.game,
-    x: 64,
-    y: 0,
+    x: (32*0),
+    y: (32*15),
     asset: 'infantry_blue',
     width: 32,
     height: 32,
@@ -37,12 +38,12 @@ export const startingPieces = that => ({
     id: 1,
     mobility: 5,
     team: 'blue',
-    attackRadius: 1    
+    attackRadius: 2    
   }),
   3: new SmallTank({
     game: that.game,
-    x: 64,
-    y: 128,
+    x: (32*0),
+    y: (32*17),
     asset: 'smallTank_blue',
     width: 32,
     height: 32,
@@ -52,13 +53,14 @@ export const startingPieces = that => ({
     id: 2,
     mobility: 7,
     team: 'blue',
-    attackRadius: 2
+    attackRadius: 2,
+    troopType: 'smallTank'
   }),
 
   4: new Infantry({
     game: that.game,
-    x: 0,
-    y: 0,
+    x: (32*25),
+    y: 64,
     asset: 'infantry',
     width: 32,
     height: 32,
@@ -68,12 +70,12 @@ export const startingPieces = that => ({
     id: 3,
     mobility: 5,
     team: 'red',
-    attackRadius: 1    
+    attackRadius: 2    
   }),
   5: new Infantry({
     game: that.game,
-    x: 0,
-    y: 64,
+    x: (32*27),
+    y: (64),
     asset: 'infantry',
     width: 32,
     height: 32,
@@ -83,13 +85,13 @@ export const startingPieces = that => ({
     id: 4,
     mobility: 5,
     team: 'red',
-    attackRadius: 1    
+    attackRadius: 2    
   }),
   6: new City({
     game: that.game,
-    x: 96,
-    y: 96,
-    asset: 'city_blue',
+    x: (32),
+    y: (32*18),
+    asset: 'city_grey',
     width: 30,
     height: 40,
     Def: 3,
@@ -100,6 +102,7 @@ export const startingPieces = that => ({
     isHQ: true
   })
 })
+
 
 export const loadLevel = (that) => {
   that.background = that.game.add.sprite(0, 0, 'aw1Map')
@@ -162,8 +165,14 @@ const showMoves = that => (sprite, event) => {
     var childrenPromises = that.blocks.children.map((ele) => {
       if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < (32 * sprite.mobility)) {
         if (ele.type === 'land') {
+          console.log('thisselctedpiece', that.selectedPiece)
           easystarz.setGrid(newGrid())
-          easystarz.setAcceptableTiles([2]);
+          console.log(that.selectedPiece)
+          if (that.selectedPiece.troopType) {
+            easystarz.setAcceptableTiles([0,2]);            
+          } else {
+            easystarz.setAcceptableTiles([0,2,3,4]);            
+          }
           return new Promise((resolve, reject) => {
             easystarz.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {
               if (path === null || (path.length > sprite.mobility)) {

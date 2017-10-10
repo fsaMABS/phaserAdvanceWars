@@ -14,7 +14,7 @@ export default class extends Phaser.State {
 
   create () {
     easystar.setGrid(newGrid());
-    easystar.setAcceptableTiles([2]);
+    easystar.setAcceptableTiles([0,2,3,4]);
     loadLevel(this)
   }
 
@@ -207,7 +207,6 @@ export default class extends Phaser.State {
   }
 
   update () {
-    console.log(window.game.winner)
     this.enterKey.onDown.add(this.endTurn, this)
 
     if (!this.shiftKey.onDown._bindings || (this.shiftKey.onDown._bindings && !this.shiftKey.onDown._bindings.length)) {
