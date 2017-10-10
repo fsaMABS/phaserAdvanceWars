@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import config from '../config'
 // import { centerGameObjects } from '../utils'
 
 let textArray = []
@@ -6,10 +7,15 @@ export default class extends Phaser.State {
   init () {}
 
   preload () {
-    // this.load.image('bg', 'assets/skies/deepblue.png')
   }
-
+  
   create () {
+    this.background = game.add.tileSprite(0, 0,  config.gameWidth, config.gameHeight, 'background')
+    this.bar = game.add.graphics();
+    this.bar.beginFill(0x000000, 0.9);
+    this.bar.drawRect(80, 80, 800, 640);
+    const tableTab = 140;
+    const tableTop = 220;
     const firebase = this.game.firebase
     const myId = window.prompt('What is your gameid?')
     this.game.userId = myId
@@ -17,25 +23,23 @@ export default class extends Phaser.State {
       console.log('****firebase***', snapshot.toJSON())
       const lobbies = snapshot.toJSON()
       let lobbylist = Object.keys(lobbies).map(key => [key, Object.keys(lobbies[key].players).length])
-
-      var style = { font: '16px Courier', fill: '#fff', tabs: [ 164, 120, 80 ] }
-
-      var headings = [ 'Lobby', 'Players' ]
-
-      let text = this.game.add.text(32, 64, '', style)
+      let style = { font: '24px Arial', fill: '#fff', tabs: [ 164, 120, 80 ] }
+      let headings = [ 'Lobby', 'Players' ]
+      let text = this.game.add.text(tableTab, tableTop, '', style)
       text.parseList(headings)
       textArray.forEach(text => text.destroy())
       textArray = []
-      this.game.add.text(22, 30, 'Pick a lobby to join. Current user: ' + myId, style)
+      this.game.add.text(this.game.world.centerX-120, 100, 'Game Lobbies', { font: '34px Arial', fill: 'white'})
+      this.game.add.text(this.game.world.centerX-200, 160, 'Welcome, ' + myId + '     Pick a lobby to join', style)
       const makelobby = (lobby, i) => {
-        textArray[i] = this.game.add.text(32, 120 + i * 20, '', style)
+        textArray[i] = this.game.add.text(tableTab+15, 60+ tableTop + (i * 40), '', style)
         textArray[i].parseList(lobby)
         textArray[i].lobby = lobby
         textArray[i].inputEnabled = true
         const handleClick = (text, pointer) => {
-          if (text.lobby[1] > 1) return alert('too many people')
+          if (text.lobby[1] > 1) return alert('Too many people')
           if (text.lobby[0] === 'New Lobby') {
-            const newLobbyName = window.prompt('Name the new lobby!!!!')
+            const newLobbyName = window.prompt('Name the new lobby!')
             firebase.database().ref('lobbies/' + newLobbyName).set({
               players: {
                 1: {
