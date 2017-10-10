@@ -81,8 +81,9 @@ export default class extends Phaser.State {
       for (var i in this.pieces) {
         if (this.pieces[i].key.indexOf('city') !== -1) {
               if (this.selectedPiece.position.x === this.pieces[i].position.x && this.selectedPiece.position.y === this.pieces[i].position.y) {
+                console.log('thispieces', this.pieces[i].position)
                   this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 32, 'captSprite',
-                  () => this.captureCity(this.pieces[i], defenders), this, 2, 1, 0);
+                    () => this.captureCity(this.pieces[i], i, defenders), this, 2, 1, 0);
               }
         }
       }
@@ -112,11 +113,15 @@ export default class extends Phaser.State {
     this.disablePieceOptions();
   }
 
-  captureCity (campedCity, defenders) {
+  captureCity (city, index, defenders) {
+    let campedCity = this.pieces[index];
+    console.log('CC', campedCity)
+    console.log(this.pieces[index])
     this.disableDefenders(defenders)
 
-    if(campedCity.isHQ) {
-      if(this.selectedPiece.team !== campedCity.team) {
+    if(this.selectedPiece.team !== campedCity.team) {
+      //HQ Scenario: 
+      if(campedCity.isHQ) {
         campedCity.Cap -= this.selectedPiece.HP
         if(campedCity.Cap <= 0) {
           window.game.winner = this.selectedPiece.team;
@@ -133,23 +138,27 @@ export default class extends Phaser.State {
     // just a heads up
 
     if (campedCity.Cap <= 0) {
+      console.log('campedCity', campedCity)
       let newCityColorAsset = this.selectedPiece.team === 'red' ? 'city_red' : 'city_blue'
-      campedCity.destroy()
       var newCity = new City({
         game: this.game,
-        x: 96,
-        y: 96,
+        x: campedCity.position.x,
+        y: campedCity.position.y,
         asset: newCityColorAsset,
         width: 30,
         height: 40,
         Def: 3,
         Cap: 20,
         player: 1,
-        id: 1,
-        team: this.selectedPiece.team
+        id: campedCity.id,
+        team: this.selectedPiece.team,
+        isHQ: false
       })
-      campedCity = newCity;
+      this.destroyPieceById(campedCity.id)
+      campedCity.destroy()
+
       this.game.world.add(newCity);
+      console.log('newCity', newCity)
     }
     this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
@@ -163,6 +172,7 @@ export default class extends Phaser.State {
     if(this.captButton) this.captButton.destroy();
     if(this.waitButton) this.waitButton.destroy();
     if(this.attackButton) this.attackButton.destroy();
+    if(this.captButton) this.captButton.destroy();
     if(this.targets) this.targets.forEach(target => target.destroy());
     if(this.showingMoves) this.showingMoves = false;
     this.showingBlue = false;
@@ -206,6 +216,12 @@ export default class extends Phaser.State {
     this.checkForPieceOptions();
   }
 
+  destroyPieceById(pieceId) {
+    for(var key in this.pieces) {
+      if(this.pieces[key].id === pieceId) delete this.pieces[key]
+    }
+  }
+
   update () {
     this.enterKey.onDown.add(this.endTurn, this)
 
@@ -234,27 +250,32 @@ export default class extends Phaser.State {
       if(pc.team == 'red') redLose = false
       if(pc.team == 'blue') blueLose = false
     }
-    if(redLose) this.gameOver = true;
-    if(blueLose) this.gameOver = true;
-    if(this.gameOver) {
-      this.state.start('EndGame')
+    if(redLose) {
+      window.game.winner = 'blue'
+      this.gameOver = true;
     }
+    if(blueLose) {
+      window.game.winner = 'red'
+      this.gameOver = true;
+    }
+    if(this.gameOver) this.state.start('EndGame')
   }
 
   render () {
-    // this.fog.children.map((ele) => {
-    //   if (ele.alpha && isNear(ele, revealedFog, 10)) ele.alpha = 0
-    // })
-    if (__DEV__) {
-      // this.game.debug.spriteInfo(this.pieces, 32, 32)
-    }
   }
 }
 // let revealedFog = {}
 
-
+//Helper Functions
 const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
 
+
+//    if (__DEV__) {
+// this.game.debug.spriteInfo(this.pieces, 32, 32)
+// }
+// this.fog.children.map((ele) => {
+    //   if (ele.alpha && isNear(ele, revealedFog, 10)) ele.alpha = 0
+    // })
 //toggleKeyboardEvents(key) {
 //   if (!key.onDown._bindings || (key.onDown._bindings && !key.onDown._bindings.length)) {
 //     key.onDown.add(this.stayInPlace, this);

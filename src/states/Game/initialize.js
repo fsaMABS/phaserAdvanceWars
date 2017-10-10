@@ -23,7 +23,8 @@ export const startingPieces = that => ({
     id: 1,
     mobility: 5,
     team: 'blue',
-    attackRadius: 2    
+    attackRadius: 2,
+    troopType: 'infantry'
   }),
   2: new Infantry({
     game: that.game,
@@ -35,10 +36,11 @@ export const startingPieces = that => ({
     HP: 10,
     AP: 5,
     player: 1,
-    id: 1,
+    id: 2,
     mobility: 5,
     team: 'blue',
-    attackRadius: 2    
+    attackRadius: 2,
+    troopType: 'infantry'  
   }),
   3: new SmallTank({
     game: that.game,
@@ -50,7 +52,7 @@ export const startingPieces = that => ({
     HP: 20,
     AP: 8,
     player: 2,
-    id: 2,
+    id: 3,
     mobility: 7,
     team: 'blue',
     attackRadius: 2,
@@ -67,7 +69,7 @@ export const startingPieces = that => ({
     HP: 10,
     AP: 5,
     player: 2,
-    id: 3,
+    id: 4,
     mobility: 5,
     team: 'red',
     attackRadius: 2    
@@ -82,7 +84,7 @@ export const startingPieces = that => ({
     HP: 10,
     AP: 5,
     player: 2,
-    id: 4,
+    id: 5,
     mobility: 5,
     team: 'red',
     attackRadius: 2    
@@ -95,12 +97,58 @@ export const startingPieces = that => ({
     width: 30,
     height: 40,
     Def: 3,
-    Cap: 10,
+    Cap: 20,
     player: 1,
-    id: 1,
+    id: 6,
+    team: 'neutral',
+    isHQ: false
+  }),
+  7: new SmallTank({
+    game: that.game,
+    x: (32*1),
+    y: (32*17),
+    asset: 'smallTank_blue',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 2,
+    id: 7,
+    mobility: 7,
     team: 'blue',
-    isHQ: true
-  })
+    attackRadius: 2,
+    troopType: 'smallTank'
+  }),
+  8: new Infantry({
+    game: that.game,
+    x: (32*2),
+    y: (32*15),
+    asset: 'infantry_blue',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 5,
+    player: 1,
+    id: 8,
+    mobility: 5,
+    team: 'blue',
+    attackRadius: 2,
+    troopType: 'infantry'  
+  }),
+  9: new City({
+    game: that.game,
+    x: (32*5),
+    y: (32*14),
+    asset: 'city_grey',
+    width: 30,
+    height: 40,
+    Def: 3,
+    Cap: 20,
+    player: 1,
+    id: 9,
+    team: 'neutral',
+    isHQ: false
+  }),
 })
 
 
@@ -158,20 +206,19 @@ export const loadLevel = (that) => {
 const showMoves = that => (sprite, event) => {
   if(!that.selectedPiece) that.selectedPiece = sprite
   if (that.currentPlayer == that.selectedPiece.team) {
-    console.log('here');
     that.showingMoves = that.showingMoves === true ? false : true
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
     var childrenPromises = that.blocks.children.map((ele) => {
       if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < (32 * sprite.mobility)) {
         if (ele.type === 'land') {
-          console.log('thisselctedpiece', that.selectedPiece)
           easystarz.setGrid(newGrid())
-          console.log(that.selectedPiece)
-          if (that.selectedPiece.troopType) {
+          if (that.selectedPiece.troopType == 'smallTank') {
             easystarz.setAcceptableTiles([0,2]);            
+          } else if (that.selectedPiece.troopType == 'ship'){
+            easystarz.setAcceptableTiles([1]);            
           } else {
-            easystarz.setAcceptableTiles([0,2,3,4]);            
+            easystarz.setAcceptableTiles([0,2,3,4]);                        
           }
           return new Promise((resolve, reject) => {
             easystarz.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {

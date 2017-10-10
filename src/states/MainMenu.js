@@ -29,21 +29,10 @@ const MenuState = {
         this.localSelect.events.onInputOver.add(() => select(this.localSelect), this)
         this.localSelect.events.onInputOut.add(() => deSelect(this.localSelect), this);
 
-    
-        const selectOnline = () => {
-            this.state.start('All_Lobbies')
-        }
-
-        const selectLocal = () => {
-            this.state.start('Game');
-        }
-        const select = (item) => {
-            item.alpha = 0.7
-        }
-
-        const deSelect = (item) => {
-            item.alpha = 1.0
-        }
+        const selectOnline = () => this.state.start('All_Lobbies')
+        const selectLocal = () => this.state.start('Game');
+        const select = (item) => item.alpha = 0.6
+        const deSelect = (item) => item.alpha = 1.0
 
     },
     update: function(){
