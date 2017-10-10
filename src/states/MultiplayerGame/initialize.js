@@ -11,8 +11,8 @@ export const startingPieces = that => ({
   // NEED TO ADD TYPES TO THE NAME AT SOME POINT
   1: new Infantry({
     game: that.game,
-    x: 64,
-    y: 64,
+    x: (480),
+    y: (32*16),
     asset: 'infantry_blue',
     width: 32,
     height: 32,
@@ -26,8 +26,8 @@ export const startingPieces = that => ({
   }),
   2: new Infantry({
     game: that.game,
-    x: 64,
-    y: 0,
+    x: 480,
+    y: (32*15),
     asset: 'infantry_blue',
     width: 32,
     height: 32,
@@ -41,8 +41,8 @@ export const startingPieces = that => ({
   }),
   3: new SmallTank({
     game: that.game,
-    x: 64,
-    y: 128,
+    x: 480,
+    y: (32*17),
     asset: 'smallTank_blue',
     width: 32,
     height: 32,
@@ -57,8 +57,8 @@ export const startingPieces = that => ({
 
   4: new Infantry({
     game: that.game,
-    x: 0,
-    y: 0,
+    x: 32,
+    y: 32,
     asset: 'infantry',
     width: 32,
     height: 32,
@@ -72,7 +72,7 @@ export const startingPieces = that => ({
   }),
   5: new Infantry({
     game: that.game,
-    x: 0,
+    x: 64,
     y: 64,
     asset: 'infantry',
     width: 32,
@@ -87,8 +87,8 @@ export const startingPieces = that => ({
   }),
   6: new City({
     game: that.game,
-    x: 96,
-    y: 96,
+    x: (32),
+    y: (32*19),
     asset: 'city_grey',
     width: 30,
     height: 40,
