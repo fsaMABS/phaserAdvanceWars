@@ -18,7 +18,18 @@ export default class extends Phaser.State {
     const tableTop = 220;
     const firebase = this.game.firebase
     const myId = window.prompt('What is your gameid?')
-    this.game.userId = myId
+    console.log(myId)
+    if(myId === null) { 
+      this.state.start('MainMenu')
+      return;
+    }
+    else if(!myId.length) {
+      this.game.userId = 'user';
+    }
+    else {
+      this.game.userId = myId
+    }
+
     firebase.database().ref('lobbies').on('value', snapshot => {
       console.log('****firebase***', snapshot.toJSON())
       const lobbies = snapshot.toJSON()
@@ -30,7 +41,7 @@ export default class extends Phaser.State {
       textArray.forEach(text => text.destroy())
       textArray = []
       this.game.add.text(this.game.world.centerX-120, 100, 'Game Lobbies', { font: '34px Arial', fill: 'white', fontWeight: 'bold'})
-      this.game.add.text(this.game.world.centerX-200, 160, 'Welcome, ' + myId + '!     Pick a lobby to join', style)
+      this.game.add.text(this.game.world.centerX-200, 160, 'Welcome, ' + this.game.userId + '!     Pick a lobby to join', style)
       const makelobby = (lobby, i) => {
         textArray[i] = this.game.add.text(tableTab+15, 60+ tableTop + (i * 40), '', style)
         textArray[i].parseList(lobby)

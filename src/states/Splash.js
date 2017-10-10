@@ -33,7 +33,7 @@ export default class extends Phaser.State {
   }
 
   create () {
-    this.state.start('All_Lobbies')
-    //this.state.start('MainMenu')
+    //this.state.start('All_Lobbies')
+    this.state.start('MainMenu')
   }
 }
