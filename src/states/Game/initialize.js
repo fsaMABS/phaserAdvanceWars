@@ -109,7 +109,8 @@ export const loadLevel = (that) => {
   that.canEndTurn = true;
   that.attackButton = undefined;
   that.waitButton = undefined;
-  that.healthStyle = { font: "18px Arial", fill: "black" };  
+  that.healthStyle = { font: "18px Arial", fill: "black" };
+  that.gameOver = false;  
 
   var style = { font: '20px Arial', fill: '#fff' }
   that.game.add.text(410, 20, 'Player:', style)

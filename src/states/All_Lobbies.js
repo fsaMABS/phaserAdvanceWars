@@ -17,7 +17,7 @@ export default class extends Phaser.State {
     const tableTab = 140;
     const tableTop = 220;
     const firebase = this.game.firebase
-    const myId = window.prompt('What is your gameid?')
+    const myId = window.prompt('What\'s Your Name?')
     console.log(myId)
     if(myId === null) { 
       this.state.start('MainMenu')

@@ -12,7 +12,8 @@ const MenuState = {
         this.bar = game.add.graphics();
         this.bar.beginFill(0x000000, 0.7);
         this.bar.drawRect(0, 160, 960, 100);
-        this.add.text(220, 160, 'Advance Wars', {font: '64pt Arial', fill: 'white', fontStyle: 'oblique', fontWeight: 'bold'})
+        this.title = this.add.text(this.game.world.centerX, 210, 'Advance Wars', {font: '64pt Arial', fill: 'white', fontStyle: 'oblique', fontWeight: 'bold'})
+        this.title.anchor.set(0.5)
         
         this.onlineSelect = game.add.text(this.game.world.centerX, this.game.world.centerY, 'Online Multiplayer', {font: '34pt Arial', fill: 'white', fontWeight: 'bold'})
         this.onlineSelect.anchor.set(.5);

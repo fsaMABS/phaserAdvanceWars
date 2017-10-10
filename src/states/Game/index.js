@@ -204,7 +204,6 @@ export default class extends Phaser.State {
     this.checkForPieceOptions();
   }
 
-
   update () {
     if(this.selectedPiece) console.log(this.selectedPiece.key)
     this.enterKey.onDown.add(this.endTurn, this)
@@ -216,6 +215,8 @@ export default class extends Phaser.State {
     this.shiftKey._enabled = this.showingMoves ? true : false
     this.enterKey._enabled = this.canEndTurn ? true : false
 
+    let redLose = true;
+    let blueLose = true;
     //ALL PIECE UPDATES
     for (var piece in this.pieces) {
       const pc = this.pieces[piece]
@@ -230,7 +231,12 @@ export default class extends Phaser.State {
         let newHealth = this.game.add.text(40, 40, pc.HP, this.healthStyle)
         pc.addChild(newHealth);
       }
+      if(pc.team == 'red') redLose = false
+      if(pc.team == 'blue') blueLose = false
     }
+    if(redLose) this.gameOver = true;
+    if(blueLose) this.gameOver = true;
+    if(this.gameOver) this.state.start('EndGame')
   }
 
   render () {
