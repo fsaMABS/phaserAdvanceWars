@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import { centerGameObjects } from '../utils'
+import config from '../config'
 
 export default class extends Phaser.State {
   init () {}
@@ -11,13 +12,29 @@ export default class extends Phaser.State {
   create () {
     // this.state.start('Game')
     const firebase = this.game.firebase
+    const tableTab = this.game.world.centerX-180;
+    const tableTop = 130;
+    const startTop = this.game.world.centerY+200
+    const tabs = [220, 220, 80]
     // console.log('*User', firebase.User())
-    console.log('*database', firebase.database())
-    console.log('this.game.lobby', this.game.lobby)
-    console.log('this.lobby', this.lobby)
-    var style = { font: '16px Courier', fill: '#fff', tabs: [ 164, 120, 80 ] }
-    var text2 = this.game.add.text(32, 120, '', style)
-    const buton = this.game.add.text(300, 300, 'WAITING FOR PLAYER 2', style)
+    // console.log('*database', firebase.database())
+    // console.log('this.game.lobby', this.game.lobby)
+    // console.log('this.lobby', this.lobby)
+
+    this.background = game.add.tileSprite(0, 0,  config.gameWidth, config.gameHeight, 'background')
+    this.bar = game.add.graphics();
+    this.bar.beginFill(0x000000, 0.9);
+    this.bar.drawRect(80, 80, 800, 640);
+
+    const lobbyName = this.game.add.text(this.game.world.centerX, tableTop, this.game.lobby, { font: '34px Arial', fill: 'white', fontWeight: 'bold'})
+    lobbyName.anchor.set(0.5)
+    let style = { font: '24px Arial', fill: '#fff', tabs: tabs, align: 'center' }
+    let headerStyle = { font: '24px Arial', fill: '#fff', tabs: tabs, fontWeight: 'bold', align: 'center' }
+    let butonStyle = { font: '32px Arial', fill: '#fff', tabs: tabs, fontWeight: 'bold', align: 'center' }
+    let playerReady = this.game.add.text(this.game.world.centerX, tableTop + 100, '', style)
+    playerReady.anchor.set(0.5)
+    const buton = this.game.add.text(this.game.world.centerX, startTop, 'WAITING FOR PLAYER 2', style)
+    buton.anchor.set(0.5)
     firebase.database().ref('lobbies/' + this.game.lobby).on('value', snapshot => {
       console.log('****firebase***', snapshot.toJSON())
       const lobbies = snapshot.toJSON().players
@@ -38,15 +55,17 @@ export default class extends Phaser.State {
 
       var headings = [ 'Username', 'Ready?', 'role' ]
 
-      let text = this.game.add.text(32, 64, '', style)
+      let text = this.game.add.text(this.game.world.centerX, tableTop+60, '', headerStyle)
       text.parseList(headings)
+      text.anchor.set(0.5)
+      // this.game.add.text(22, 30, 'Current user: ' + this.game.userId, style)
 
-      // var text1 = 
-      this.game.add.text(22, 30, 'Current user: ' + this.game.userId, style)
-      text2.parseList(lobbylist)
+      playerReady.parseList(lobbylist)
       if (lobbylist.length === 2) {
         buton.setText('START GAME')
         buton.inputEnabled = true
+        buton.events.onInputOver.add(() => buton.alpha = 0.7, this)
+        buton.events.onInputOut.add(() =>  buton.alpha = 1.0 , this)
         buton.events.onInputDown.removeAll()
         buton.events.onInputDown.add(() => {
           this.game.currentUser.readyState = true
