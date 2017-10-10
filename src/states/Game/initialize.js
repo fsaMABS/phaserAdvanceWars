@@ -52,7 +52,7 @@ export const startingPieces = that => ({
     id: 2,
     mobility: 7,
     team: 'blue',
-    attackRadius: 2
+    attackRadius: 1
   }),
   4: new SmallTank({
     game: that.game,
@@ -67,7 +67,7 @@ export const startingPieces = that => ({
     id: 2,
     mobility: 7,
     team: 'red',
-    attackRadius: 2
+    attackRadius: 1
   }),
 
   5: new Infantry({
