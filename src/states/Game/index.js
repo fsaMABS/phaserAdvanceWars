@@ -14,7 +14,7 @@ export default class extends Phaser.State {
 
   create () {
     easystar.setGrid(newGrid());
-    easystar.setAcceptableTiles([2]);
+    easystar.setAcceptableTiles([0,2,3,4]);
     loadLevel(this)
   }
 
@@ -122,9 +122,9 @@ export default class extends Phaser.State {
     // capture with the other team, it says the new Cap is -10, so its not being destroyed? Not sure
     // just a heads up
 
-    console.log('starting camped city', campedCity)
+    // console.log('starting camped city', campedCity)
     if (campedCity.Cap <= 0) {
-      console.log('getting here...')
+      // console.log('getting here...')
       let newCityColorAsset = this.selectedPiece.team === 'red' ? 'city_red' : 'city_blue'
 
       campedCity.destroy()
@@ -143,12 +143,12 @@ export default class extends Phaser.State {
         team: this.selectedPiece.team
       })
       campedCity = newCity;
-      console.log('camped city after', campedCity)
+      // console.log('camped city after', campedCity)
       this.game.world.add(newCity);
       // campedCity.asset = "city_" + this.selectedPiece.team
       // campedCity.team = this.selectedPiece.team
     }
-    console.log('campedCity all', campedCity)
+    // console.log('campedCity all', campedCity)
     this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
   }
@@ -206,7 +206,7 @@ export default class extends Phaser.State {
 
 
   update () {
-    if(this.selectedPiece) console.log(this.selectedPiece.key)
+    // if(this.selectedPiece) console.log(this.selectedPiece.key)
     this.enterKey.onDown.add(this.endTurn, this)
 
     if (!this.shiftKey.onDown._bindings || (this.shiftKey.onDown._bindings && !this.shiftKey.onDown._bindings.length)) {
