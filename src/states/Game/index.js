@@ -73,7 +73,7 @@ export default class extends Phaser.State {
     }
     if(!this.waitButton || !this.waitButton.alive) {
       this.canEndTurn = false;
-      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'waitSprite', 
+      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 32, 'waitSprite', 
       () => this.wait(defenders), this, 2, 1, 0);
     }
     
