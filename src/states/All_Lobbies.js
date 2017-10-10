@@ -29,8 +29,8 @@ export default class extends Phaser.State {
       text.parseList(headings)
       textArray.forEach(text => text.destroy())
       textArray = []
-      this.game.add.text(this.game.world.centerX-120, 100, 'Game Lobbies', { font: '34px Arial', fill: 'white'})
-      this.game.add.text(this.game.world.centerX-200, 160, 'Welcome, ' + myId + '     Pick a lobby to join', style)
+      this.game.add.text(this.game.world.centerX-120, 100, 'Game Lobbies', { font: '34px Arial', fill: 'white', fontWeight: 'bold'})
+      this.game.add.text(this.game.world.centerX-200, 160, 'Welcome, ' + myId + '!     Pick a lobby to join', style)
       const makelobby = (lobby, i) => {
         textArray[i] = this.game.add.text(tableTab+15, 60+ tableTop + (i * 40), '', style)
         textArray[i].parseList(lobby)
@@ -62,6 +62,12 @@ export default class extends Phaser.State {
           firebase.database().ref('lobbies').off()
         }
         textArray[i].events.onInputDown.add(handleClick, this)
+        textArray[i].events.onInputOver.add(() => {
+          textArray[i].alpha = 0.7;
+        }, this)
+        textArray[i].events.onInputOut.add(() => {
+          textArray[i].alpha = 1.0
+        }, this)
       }
       lobbylist.forEach(makelobby)
       makelobby(['New Lobby', 0], lobbylist.length)
