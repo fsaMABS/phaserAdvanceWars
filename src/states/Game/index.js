@@ -19,9 +19,7 @@ export default class extends Phaser.State {
   }
 
   togglePlayer () {
-    // console.log('this.pieces', this.pieces)
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
-    // ENABLE PIECES
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0;
       this.pieces[key].inputEnabled = this.pieces[key].team == this.currentPlayer ? true : false
@@ -30,9 +28,7 @@ export default class extends Phaser.State {
   }
 
   moveHere (sprite) {
-    console.log(this.selectedPiece.key)
     if(this.selectedPiece.position.x === sprite.position.x && this.selectedPiece.position.y === sprite.position.y) {
-      console.log('hello')
     }
     this.selectedPiece.visible = true
     this.blocks.children.forEach((ele) => {
@@ -65,6 +61,7 @@ export default class extends Phaser.State {
         let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
         if((diffX + diffY <= (this.selectedPiece.attackRadius*32))) {
           defenders.push(this.pieces[key]);
+          console.log(defenders)
         }
       }
     }
@@ -208,8 +205,6 @@ export default class extends Phaser.State {
 
 
   update () {
-    console.log(this.showingMoves)
-    if(this.selectedPiece) console.log('this selected', this.selectedPiece.key)
     this.enterKey.onDown.add(this.endTurn, this)
 
     if (!this.shiftKey.onDown._bindings || (this.shiftKey.onDown._bindings && !this.shiftKey.onDown._bindings.length)) {

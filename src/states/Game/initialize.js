@@ -54,8 +54,23 @@ export const startingPieces = that => ({
     team: 'blue',
     attackRadius: 2
   }),
+  4: new SmallTank({
+    game: that.game,
+    x: 128,
+    y: 160,
+    asset: 'smallTank_red',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 2,
+    id: 2,
+    mobility: 7,
+    team: 'red',
+    attackRadius: 2
+  }),
 
-  4: new Infantry({
+  5: new Infantry({
     game: that.game,
     x: 0,
     y: 0,
@@ -70,7 +85,7 @@ export const startingPieces = that => ({
     team: 'red',
     attackRadius: 1    
   }),
-  5: new Infantry({
+  6: new Infantry({
     game: that.game,
     x: 0,
     y: 64,
@@ -85,7 +100,7 @@ export const startingPieces = that => ({
     team: 'red',
     attackRadius: 1    
   }),
-  6: new City({
+  7: new City({
     game: that.game,
     x: 96,
     y: 96,
@@ -151,7 +166,6 @@ export const loadLevel = (that) => {
 
 const showMoves = that => (sprite, event) => {
   that.selectedPiece = sprite
-  console.log('SHOW MOVES', that.showingBlue)
   if (that.currentPlayer === that.selectedPiece.team) {
     that.showingMoves = that.showingMoves === true ? false : true
     that.showingBlue = !that.showingBlue
