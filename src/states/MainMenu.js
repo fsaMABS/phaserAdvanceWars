@@ -17,24 +17,27 @@ const MenuState = {
 
     create: function() {
         //Load Background and Title
+        let highlighted;
         this.background = game.add.tileSprite(0, 0,  config.gameWidth, config.gameHeight, 'background')
         this.bar = game.add.graphics();
         this.bar.beginFill(0x000000, 0.7);
         this.bar.drawRect(0, 160, 960, 100);
-        // game.add.image(180, 30, 'title')
         this.add.text(220, 160, 'Advance Wars', {font: '64pt Arial', fill: 'white', fontStyle: 'oblique', fontWeight: 'bold'})
-        // game.add.text(220, 300, this.gameplayOptions[this.selected], {font: '42pt Impact', fill: 'gray'})
-        // shadow = game.add.text(this.shadowX, this.shadowY, 'DUEL', {font: '42pt Impact', fill: '#AF1010'})
         
         this.onlineSelect = game.add.text(this.game.world.centerX, this.game.world.centerY, 'Online Multiplayer', {font: '42pt Arial', fill: 'white', fontWeight: 'bold'})
         this.onlineSelect.anchor.set(.5);
         this.onlineSelect.inputEnabled = true;
         this.onlineSelect.events.onInputDown.add(selectOnline, this);
+        this.onlineSelect.events.onInputOver.add(() => select(this.onlineSelect), this)
+        this.onlineSelect.events.onInputOut.add(() => deSelect(this.onlineSelect), this);
 
         this.localSelect = game.add.text(this.game.world.centerX, this.game.world.centerY+80, 'Local Multiplayer', {font: '42pt Arial', fill: 'white', fontWeight: 'bold'})
         this.localSelect.anchor.set(.5);
         this.localSelect.inputEnabled = true;
         this.localSelect.events.onInputDown.add(selectLocal, this);
+        this.localSelect.events.onInputOver.add(() => select(this.localSelect), this)
+        this.localSelect.events.onInputOut.add(() => deSelect(this.localSelect), this);
+
     
         function selectOnline() {
             this.state.start('All_Lobbies')
@@ -43,7 +46,13 @@ const MenuState = {
         function selectLocal() {
             this.state.start('Game');
         }
-        
+        const select = (item) => {
+            item.alpha = 0.7
+        }
+
+        const deSelect = (item) => {
+            item.alpha = 1.0
+        }
 
         // arrow = game.add.sprite(168, 312, 'arrow')
         // arrow.enableBody = true
