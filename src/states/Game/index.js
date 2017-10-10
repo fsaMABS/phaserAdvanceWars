@@ -115,8 +115,8 @@ export default class extends Phaser.State {
 
   captureCity (city, index, defenders) {
     let campedCity = this.pieces[index];
-    console.log('CC', campedCity)
-    console.log(this.pieces[index])
+    console.log('CC', campedCity.position)
+    console.log(this.pieces[index].position)
     this.disableDefenders(defenders)
 
     if(this.selectedPiece.team !== campedCity.team) {
