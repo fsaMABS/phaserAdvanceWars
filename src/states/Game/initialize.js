@@ -150,9 +150,9 @@ export const loadLevel = (that) => {
 }
 
 const showMoves = that => (sprite, event) => {
-  that.selectedPiece = sprite
-  console.log('SHOW MOVES', that.showingBlue)
-  if (that.currentPlayer === that.selectedPiece.team) {
+  if(!that.selectedPiece) that.selectedPiece = sprite
+  if (that.currentPlayer == that.selectedPiece.team) {
+    console.log('here');
     that.showingMoves = that.showingMoves === true ? false : true
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
@@ -191,3 +191,14 @@ const showMoves = that => (sprite, event) => {
     })
   }
 }
+
+// const disableMovementToOtherPieces = (x, y) => {
+//   for(var key in that.pieces) {
+//     //if that piece isn't a city, don't move on top of it
+//     if(that.pieces[key].key.indexOf('city') === -1) {
+//       if(x === that.pieces[key].position.x && y === that.pieces[key].position.y) {
+
+//       }
+//     }
+//   }
+// }
