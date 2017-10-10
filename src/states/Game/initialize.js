@@ -95,10 +95,11 @@ export const startingPieces = that => ({
     width: 30,
     height: 40,
     Def: 3,
-    Cap: 20,
+    Cap: 10,
     player: 1,
     id: 1,
-    team: 'neutral'
+    team: 'blue',
+    isHQ: true
   })
 })
 
@@ -112,7 +113,9 @@ export const loadLevel = (that) => {
   that.canEndTurn = true;
   that.attackButton = undefined;
   that.waitButton = undefined;
-  that.healthStyle = { font: "18px Arial", fill: "black" };  
+  that.healthStyle = { font: "18px Arial", fill: "black" };
+  that.gameOver = false;  
+  that.winner = '';
 
   var style = { font: '20px Arial', fill: '#fff' }
   that.game.add.text(410, 20, 'Player:', style)

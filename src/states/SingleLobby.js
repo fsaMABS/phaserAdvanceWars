@@ -16,10 +16,6 @@ export default class extends Phaser.State {
     const tableTop = 130;
     const startTop = this.game.world.centerY+200
     const tabs = [220, 220, 80]
-    // console.log('*User', firebase.User())
-    // console.log('*database', firebase.database())
-    // console.log('this.game.lobby', this.game.lobby)
-    // console.log('this.lobby', this.lobby)
 
     this.background = game.add.tileSprite(0, 0,  config.gameWidth, config.gameHeight, 'background')
     this.bar = game.add.graphics();

@@ -19,7 +19,6 @@ export default class extends Phaser.State {
   }
 
   togglePlayer () {
-    // console.log('this.pieces', this.pieces)
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
     // ENABLE PIECES
     for (var key in this.pieces) {
@@ -115,6 +114,17 @@ export default class extends Phaser.State {
 
   captureCity (campedCity, defenders) {
     this.disableDefenders(defenders)
+
+    if(campedCity.isHQ) {
+      if(this.selectedPiece.team !== campedCity.team) {
+        campedCity.Cap -= this.selectedPiece.HP
+        if(campedCity.Cap <= 0) {
+          window.game.winner = this.selectedPiece.team;
+          this.gameOver = true;
+        }
+      }
+    }
+
     campedCity.Cap -= this.selectedPiece.HP
     
     //======== CITY ISSUE ======
@@ -122,13 +132,9 @@ export default class extends Phaser.State {
     // capture with the other team, it says the new Cap is -10, so its not being destroyed? Not sure
     // just a heads up
 
-    // console.log('starting camped city', campedCity)
     if (campedCity.Cap <= 0) {
-      // console.log('getting here...')
       let newCityColorAsset = this.selectedPiece.team === 'red' ? 'city_red' : 'city_blue'
-
       campedCity.destroy()
-      
       var newCity = new City({
         game: this.game,
         x: 96,
@@ -143,12 +149,8 @@ export default class extends Phaser.State {
         team: this.selectedPiece.team
       })
       campedCity = newCity;
-      // console.log('camped city after', campedCity)
       this.game.world.add(newCity);
-      // campedCity.asset = "city_" + this.selectedPiece.team
-      // campedCity.team = this.selectedPiece.team
     }
-    // console.log('campedCity all', campedCity)
     this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
   }
@@ -204,9 +206,7 @@ export default class extends Phaser.State {
     this.checkForPieceOptions();
   }
 
-
   update () {
-    // if(this.selectedPiece) console.log(this.selectedPiece.key)
     this.enterKey.onDown.add(this.endTurn, this)
 
     if (!this.shiftKey.onDown._bindings || (this.shiftKey.onDown._bindings && !this.shiftKey.onDown._bindings.length)) {
@@ -216,11 +216,12 @@ export default class extends Phaser.State {
     this.shiftKey._enabled = this.showingMoves ? true : false
     this.enterKey._enabled = this.canEndTurn ? true : false
 
+    let redLose = true;
+    let blueLose = true;
     //ALL PIECE UPDATES
     for (var piece in this.pieces) {
       const pc = this.pieces[piece]
 
-      //If dead: destroy it
       if (pc.HP <= 0) {
         pc.destroy()
         delete this.pieces[piece]
@@ -230,6 +231,13 @@ export default class extends Phaser.State {
         let newHealth = this.game.add.text(40, 40, pc.HP, this.healthStyle)
         pc.addChild(newHealth);
       }
+      if(pc.team == 'red') redLose = false
+      if(pc.team == 'blue') blueLose = false
+    }
+    if(redLose) this.gameOver = true;
+    if(blueLose) this.gameOver = true;
+    if(this.gameOver) {
+      this.state.start('EndGame')
     }
   }
 
@@ -242,11 +250,10 @@ export default class extends Phaser.State {
     }
   }
 }
+// let revealedFog = {}
 
-let revealedFog = {}
 
 const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
-
 
 //toggleKeyboardEvents(key) {
 //   if (!key.onDown._bindings || (key.onDown._bindings && !key.onDown._bindings.length)) {
