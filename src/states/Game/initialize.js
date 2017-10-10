@@ -74,7 +74,7 @@ export const startingPieces = that => ({
   }),
   5: new Infantry({
     game: that.game,
-    x: (32*27),
+    x: (32*24),
     y: (64),
     asset: 'infantry',
     width: 32,
@@ -124,8 +124,8 @@ export const loadLevel = (that) => {
   that.blocks = that.add.group()
   that.fog = that.add.group()
   const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
-  for (var i = 0; i < 3000; i = i + 32) {
-    for (var j = 0; j < 3000; j = j + 32) {
+  for (var i = 0; i <= 928; i = i + 32) {
+    for (var j = 0; j <= 768; j = j + 32) {
       var type = checkType(i, j)
       var block = new Block(i, j, 'blueSquare', 32, 32, type)
       block.alpha = 0.0
@@ -174,6 +174,8 @@ const showMoves = that => (sprite, event) => {
             easystarz.setAcceptableTiles([0,2,3,4]);            
           }
           return new Promise((resolve, reject) => {
+            console.log('sprite coords', sprite.x/32, sprite.y/32)
+            console.log('elexeley', ele.x/32, ele.y/32)
             easystarz.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {
               if (path === null || (path.length > sprite.mobility)) {
                 resolve(null)
