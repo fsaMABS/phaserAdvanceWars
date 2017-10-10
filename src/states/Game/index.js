@@ -30,10 +30,6 @@ export default class extends Phaser.State {
   }
 
   moveHere (sprite) {
-    console.log(this.selectedPiece.key)
-    if(this.selectedPiece.position.x === sprite.position.x && this.selectedPiece.position.y === sprite.position.y) {
-      console.log('hello')
-    }
     this.selectedPiece.visible = true
     this.blocks.children.forEach((ele) => {
       ele.alpha = 0
@@ -169,6 +165,7 @@ export default class extends Phaser.State {
     if(this.showingMoves) this.showingMoves = false;
     this.showingBlue = false;
     this.canEndTurn = true;
+    this.selectedPiece = undefined;
   }
 
   disableDefenders(defenders) {
@@ -188,6 +185,7 @@ export default class extends Phaser.State {
   }
 
   endTurn () {
+    this.selectedPiece = undefined;
     this.disablePieceOptions();
     //var style = { font: '18px Arial', fill: '#fff' }
     // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
@@ -208,8 +206,7 @@ export default class extends Phaser.State {
 
 
   update () {
-    console.log(this.showingMoves)
-    if(this.selectedPiece) console.log('this selected', this.selectedPiece.key)
+    if(this.selectedPiece) console.log(this.selectedPiece.key)
     this.enterKey.onDown.add(this.endTurn, this)
 
     if (!this.shiftKey.onDown._bindings || (this.shiftKey.onDown._bindings && !this.shiftKey.onDown._bindings.length)) {

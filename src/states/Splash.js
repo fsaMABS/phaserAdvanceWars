@@ -13,6 +13,7 @@ export default class extends Phaser.State {
     //
     // load your assets
     //
+    this.load.image('background', 'assets/images/menubackground.png')
     this.load.image('infantry', 'assets/images/infantry.png')
     this.load.image('infantry_blue', 'assets/images/infantry_blue.png')
     this.load.image('smallTank_blue', 'assets/images/smallTank_blue.png')
@@ -33,6 +34,6 @@ export default class extends Phaser.State {
 
   create () {
     //this.state.start('All_Lobbies')
-    this.state.start('Game')
+    this.state.start('MainMenu')
   }
 }
