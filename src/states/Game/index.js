@@ -27,7 +27,6 @@ export default class extends Phaser.State {
   }
 
   moveHere (sprite) {
-    //console.log('sprite properties', sprite)
     this.selectedPiece.visible = true
     this.blocks.children.forEach(ele => {
       ele.alpha = 0
@@ -56,7 +55,6 @@ export default class extends Phaser.State {
         }, this)
       }
     )
-    //console.log('spirteXSPriteY', this.selectedPiece.squareType = sprite.type)
     easystar.calculate()
   }
 
@@ -74,13 +72,8 @@ export default class extends Phaser.State {
         let diffY = Math.abs(
           this.pieces[key].position.y - this.selectedPiece.position.y
         )
-
-        console.log(diffX, diffY, this.selectedPiece)
-        console.log(diffX + diffY <= this.selectedPiece.attackRadius * 32)
-
         if (diffX + diffY <= this.selectedPiece.attackRadius * 32) {
           defenders.push(this.pieces[key])
-          console.log(defenders)
         }
       }
     }
@@ -120,7 +113,6 @@ export default class extends Phaser.State {
             this.selectedPiece.position.x === this.pieces[i].position.x &&
             this.selectedPiece.position.y === this.pieces[i].position.y
           ) {
-            console.log('thispieces', this.pieces[i].position)
             this.captButton = this.game.add.button(
               this.selectedPiece.x,
               this.selectedPiece.y + 32,
@@ -151,7 +143,6 @@ export default class extends Phaser.State {
   }
 
   attackPiece (attacker, defender, defenders) {
-    console.log('attacker defender', attacker, defender)
     this.disableDefenders(defenders)
     attacker.inputEnabled = false
     if (this.targets) this.targets.forEach(target => target.destroy())
@@ -165,8 +156,6 @@ export default class extends Phaser.State {
 
   captureCity (city, index, defenders) {
     let campedCity = this.pieces[index]
-    console.log('CC', campedCity.position)
-    console.log(this.pieces[index].position)
     this.disableDefenders(defenders)
 
     if (this.selectedPiece.team !== campedCity.team) {
@@ -188,7 +177,6 @@ export default class extends Phaser.State {
     // just a heads up
 
     if (campedCity.Cap <= 0) {
-      console.log('campedCity', campedCity)
       let newCityColorAsset =
         this.selectedPiece.team === 'red' ? 'city_red' : 'city_blue'
       var newCity = new City({
@@ -211,7 +199,7 @@ export default class extends Phaser.State {
       campedCity.destroy()
 
       this.game.world.add(newCity)
-      console.log('newCity', newCity)
+      this.pieces[index] = newCity
     }
     this.selectedPiece.alpha = 0.7
     this.disablePieceOptions()
