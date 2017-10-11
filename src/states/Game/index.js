@@ -57,6 +57,7 @@ export default class extends Phaser.State {
         }, this)
       }
     )
+    console.log('spirteXSPriteY', this.selectedPiece.squareType = sprite.type)
     easystar.calculate()
   }
 
