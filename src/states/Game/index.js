@@ -79,31 +79,16 @@ export default class extends Phaser.State {
     if (!this.attackButton || !this.attackButton.alive) {
       console.log('getting here', defenders)
       if (defenders.length === 1) {
-        this.attackButton = this.game.add.button(
-          this.selectedPiece.x,
-          this.selectedPiece.y + 99,
-          'fireSprite',
-          () => this.attackPiece(this.selectedPiece, defenders[0], defenders),
-          this,
-          2,
-          1,
-          0
-        )
+        this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*2) + 35, 'fireSprite', 
+          () => this.attackPiece(this.selectedPiece, defenders[0], defenders), this, 2, 1, 0)
       } else if (defenders.length > 1) {
         this.selectTargets(this.selectedPiece, defenders)
       }
     }
     if (!this.waitButton || !this.waitButton.alive) {
       this.canEndTurn = false
-      this.waitButton = this.game.add.button(
-        this.selectedPiece.x,
-        this.selectedPiece.y + 32,
-        'waitSprite',
-        () => this.wait(defenders), this,
-        2,
-        1,
-        0
-      )
+      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*1) + 35, 'waitSprite',
+        () => this.wait(defenders), this, 2, 1, 0)
     }
 
     if (!this.captButton || !this.captButton.alive) {
@@ -113,16 +98,8 @@ export default class extends Phaser.State {
             this.selectedPiece.position.x === this.pieces[i].position.x &&
             this.selectedPiece.position.y === this.pieces[i].position.y
           ) {
-            this.captButton = this.game.add.button(
-              this.selectedPiece.x,
-              this.selectedPiece.y + 32,
-              'captSprite',
-              () => this.captureCity(this.pieces[i].position, i, defenders),
-              this,
-              2,
-              1,
-              0
-            )
+            this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*3) + 35, 'captSprite',
+              () => this.captureCity(this.pieces[i].position, i, defenders), this, 2, 1, 0)
             break;
           }
         }
@@ -147,8 +124,11 @@ export default class extends Phaser.State {
     attacker.inputEnabled = false
     if (this.targets) this.targets.forEach(target => target.destroy())
     defender.HP -= attacker.AP
+    this.add.tween(defender).to( { alpha: 0}, 80, Phaser.Easing.Linear.None, true, 0, 5, true);
     if (defender.HP >= 0) {
-      attacker.HP -= Math.floor(defender.AP / 2)
+      let defenderAttack = Math.floor(defender.AP / 2)
+      attacker.HP -= defenderAttack
+      this.add.tween(attacker).to( { alpha: 0, tint: 0xffffff}, 80, Phaser.Easing.Linear.None, true, 0, 3, true);
     }
     attacker.alpha = 0.7
     this.disablePieceOptions()
@@ -243,21 +223,19 @@ export default class extends Phaser.State {
   endTurn () {
     this.selectedPiece = undefined
     this.disablePieceOptions()
-    // var style = { font: '18px Arial', fill: '#fff' }
-    // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
-    // this.time.events.add(1000, () => {
-    // this.turnEnded.destroy()
-    this.togglePlayer()
-    // }, this.turnEnded);
+    var style = { font: '18px Arial', fill: '#fff' }
+    this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
+    this.time.events.add(1000, () => {
+        this.turnEnded.destroy()
+        this.togglePlayer()
+    }, this.turnEnded);
 
     let currentPlayer = this.currentPlayer
     let pieces = Object.values(this.pieces)
 
-
     let infantry_men = pieces.filter(function (piece) {
         return piece.troopType === 'infantry'
     })
-
 
     let cities = pieces.filter(function (piece) {
        return piece.troopType === 'city'
@@ -268,7 +246,7 @@ export default class extends Phaser.State {
     cities.forEach(function (city) {
       infantry_men .forEach(function (infantry) {
         if (((city.position.x === infantry.position.x) && (city.position.y === infantry.position.y)) && (city.team === infantry.team)) {
-          currentPlayer !== infantry.team ? infantry.HP += 2 : console.log('do nothing')
+          currentPlayer !== infantry.team && infantry.HP <= 10 ? infantry.HP += 2 : console.log('do nothing')
       }
     })
   })

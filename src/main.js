@@ -1,4 +1,4 @@
-import 'pixi'
+import PIXI from 'pixi'
 import 'p2'
 import Phaser from 'phaser'
 import BootState from './states/Boot'
@@ -14,6 +14,7 @@ import config from './config'
 const firebase = require('firebase')
 const FIREBASE_CONFIG = require('../server/config').FIREBASE_CONFIG
 firebase.initializeApp(FIREBASE_CONFIG)
+
 
 class Game extends Phaser.Game {
   constructor () {
