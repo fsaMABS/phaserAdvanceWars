@@ -30,7 +30,7 @@ export default class extends Phaser.State {
       this.game.userId = myId
     }
 
-    firebase.database().ref('lobbies').on('value', snapshot => {
+    firebase.database().ref('lobbiesTest').on('value', snapshot => {
       console.log('****firebase***', snapshot.toJSON())
       const lobbies = snapshot.toJSON()
       let lobbylist = Object.keys(lobbies)
@@ -54,7 +54,7 @@ export default class extends Phaser.State {
           if (text.lobby[1] > 1) return alert('Too many people')
           if (text.lobby[0] === 'New Lobby') {
             const newLobbyName = window.prompt('Name the new lobby!')
-            firebase.database().ref('lobbies/' + newLobbyName).set({
+            firebase.database().ref('lobbiesTest/' + newLobbyName).set({
               players: {
                 1: {
                   username: myId,
@@ -65,7 +65,7 @@ export default class extends Phaser.State {
             }) // created new lobby
             this.game.lobby = newLobbyName
           } else { // join existing lobby
-            firebase.database().ref('lobbies/' + text.lobby[0] + '/players').push().set({
+            firebase.database().ref('lobbiesTest/' + text.lobby[0] + '/players').push().set({
               username: myId,
               readyState: false,
               role: 'blue'
@@ -73,7 +73,7 @@ export default class extends Phaser.State {
             this.game.lobby = text.lobby[0]
           }
           this.state.start('SingleLobby')
-          firebase.database().ref('lobbies').off()
+          firebase.database().ref('lobbiesTest').off()
         }
         textArray[i].events.onInputDown.add(handleClick, this)
         textArray[i].events.onInputOver.add(() => {
