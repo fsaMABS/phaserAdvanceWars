@@ -83,6 +83,7 @@ const showMoves = that => (sprite, event) => {
     that.showingMoves = that.showingMoves !== true
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
+    removeOtherShowMoves(that.pieces, sprite.id)
     var childrenPromises = that.blocks.children
       .map(ele => {
         if (
@@ -154,9 +155,9 @@ const pieceIsAlreadyHere = (pieces, x, y, spriteId) => {
   return check;
 }
 
-const removeOtherShowMoves = (pieces, sprite) => {
+const removeOtherShowMoves = (pieces, spriteId) => {
   for(var key in pieces) {
-    if(pieces[key].id !== sprite.id) {
+    if(pieces[key].id !== spriteId) {
       pieces[key].events.onInputDown.remove(showMoves, this);
     }
   }
