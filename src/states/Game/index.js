@@ -76,15 +76,12 @@ export default class extends Phaser.State {
           this.pieces[key].position.y - this.selectedPiece.position.y
         )
 
-        console.log(diffX, diffY, this.selectedPiece)
-        console.log(diffX + diffY <= this.selectedPiece.attackRadius * 32)
-
         if (diffX + diffY <= this.selectedPiece.attackRadius * 32) {
           defenders.push(this.pieces[key])
-          console.log(defenders)
         }
       }
     }
+
     if (!this.attackButton || !this.attackButton.alive) {
       if (defenders.length === 1) {
         this.attackButton = this.game.add.button(
@@ -205,7 +202,8 @@ export default class extends Phaser.State {
         player: 1,
         id: campedCity.id,
         team: this.selectedPiece.team,
-        isHQ: false
+        isHQ: false,
+        troopType: 'city'
       })
       for (var key in this.pieces) {
         if (this.pieces[key].id === campedCity.id) delete this.pieces[key]
@@ -213,8 +211,9 @@ export default class extends Phaser.State {
       campedCity.destroy()
 
       this.game.world.add(newCity)
-      console.log('newCity', newCity)
+      this.pieces[index] = newCity
     }
+
     this.selectedPiece.alpha = 0.7
     this.disablePieceOptions()
   }
@@ -260,7 +259,30 @@ export default class extends Phaser.State {
     // this.turnEnded.destroy()
     this.togglePlayer()
     // }, this.turnEnded);
-  }
+
+    let currentPlayer = this.currentPlayer
+    let pieces = Object.values(this.pieces)
+
+
+    let infantry_men = pieces.filter(function (piece) {
+        return piece.troopType === 'infantry'
+    })
+
+
+    let cities = pieces.filter(function (piece) {
+       return piece.troopType === 'city'
+    })
+
+    console.log(currentPlayer)
+
+    cities.forEach(function (city) {
+      infantry_men .forEach(function (infantry) {
+        if (((city.position.x === infantry.position.x) && (city.position.y === infantry.position.y)) && (city.team === infantry.team)) {
+          currentPlayer !== infantry.team ? infantry.HP += 2 : console.log('do nothing')
+      }
+    })
+  })
+}
 
   stayInPlace () {
     this.shiftKey.onDown.remove(this.stayInPlace, this)
