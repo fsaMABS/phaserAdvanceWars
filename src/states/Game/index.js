@@ -81,7 +81,7 @@ export default class extends Phaser.State {
       if (defenders.length === 1) {
         this.attackButton = this.game.add.button(
           this.selectedPiece.x,
-          this.selectedPiece.y + 99,
+          this.selectedPiece.y + (32*2) + 35,
           'fireSprite',
           () => this.attackPiece(this.selectedPiece, defenders[0], defenders),
           this,
@@ -97,7 +97,7 @@ export default class extends Phaser.State {
       this.canEndTurn = false
       this.waitButton = this.game.add.button(
         this.selectedPiece.x,
-        this.selectedPiece.y + 32,
+        this.selectedPiece.y + (32*1) + 35,
         'waitSprite',
         () => this.wait(defenders), this,
         2,
@@ -115,7 +115,7 @@ export default class extends Phaser.State {
           ) {
             this.captButton = this.game.add.button(
               this.selectedPiece.x,
-              this.selectedPiece.y + 32,
+              this.selectedPiece.y + (32*3) + 35,
               'captSprite',
               () => this.captureCity(this.pieces[i].position, i, defenders),
               this,
@@ -147,8 +147,11 @@ export default class extends Phaser.State {
     attacker.inputEnabled = false
     if (this.targets) this.targets.forEach(target => target.destroy())
     defender.HP -= attacker.AP
+    this.add.tween(defender).to( { alpha: 0}, 80, Phaser.Easing.Linear.None, true, 0, 5, true);
     if (defender.HP >= 0) {
-      attacker.HP -= Math.floor(defender.AP / 2)
+      let defenderAttack = Math.floor(defender.AP / 2)
+      attacker.HP -= defenderAttack
+      this.add.tween(attacker).to( { alpha: 0, tint: 0xffffff}, 80, Phaser.Easing.Linear.None, true, 0, 5, true);
     }
     attacker.alpha = 0.7
     this.disablePieceOptions()
@@ -253,11 +256,9 @@ export default class extends Phaser.State {
     let currentPlayer = this.currentPlayer
     let pieces = Object.values(this.pieces)
 
-
     let infantry_men = pieces.filter(function (piece) {
         return piece.troopType === 'infantry'
     })
-
 
     let cities = pieces.filter(function (piece) {
        return piece.troopType === 'city'
@@ -268,7 +269,7 @@ export default class extends Phaser.State {
     cities.forEach(function (city) {
       infantry_men .forEach(function (infantry) {
         if (((city.position.x === infantry.position.x) && (city.position.y === infantry.position.y)) && (city.team === infantry.team)) {
-          currentPlayer !== infantry.team ? infantry.HP += 2 : console.log('do nothing')
+          currentPlayer !== infantry.team && infantry.HP <= 10 ? infantry.HP += 2 : console.log('do nothing')
       }
     })
   })
