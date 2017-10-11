@@ -1,6 +1,7 @@
 import Block from '../../sprites/Block'
 import newGrid, {startingPieces} from '../../maps/aw2'
 import easystarjs from 'easystarjs'
+import SmallTank from '../../sprites/SmallTank'
 var easystarz = new easystarjs.js()
 
 const setupPiece = (piece) => {
@@ -66,6 +67,7 @@ export const loadLevel = (that) => {
     let added = that.game.world.add(current)
     added.inputEnabled = true
     if (added.key.indexOf('city') === -1) { added.events.onInputDown.add(showMoves(that), this) }
+    if (added.isFactory) { added.events.onInputDown.add(makeTroops(that), this) }
     that.pieces[key] = added
     revealedFog.push({ x: current.position.x, y: current.position.y })
 
@@ -87,6 +89,48 @@ export const loadLevel = (that) => {
     })
   })
   return newGrid
+}
+
+const makeTroops = that => (sprite, event) => {
+  var isThereSomethingThere = false;
+  console.log('ANYTHING!')
+  for (var key in that.pieces) {
+    var currPieceX = that.pieces[key].position.x
+    var factoryPositionX = sprite.position.x
+    var currPieceY = that.pieces[key].position.y
+    var factoryPositionY = sprite.position.y + 32
+    if ((currPieceX === factoryPositionX) && (currPieceY === factoryPositionY)) {
+      isThereSomethingThere = true
+    }
+  }
+  console.log(isThereSomethingThere)  
+  if (!isThereSomethingThere) {
+    var count = Object.keys(that.pieces).length;
+    count = count + 1
+    var newTank = new SmallTank({
+      game: that.game,
+      x: sprite.x,
+      y: sprite.y + 32,
+      asset: 'smallTank_red',
+      width: 32,
+      height: 32,
+      HP: 20,
+      AP: 8,
+      player: 2,
+      id: count,
+      mobility: 7,
+      team: 'red',
+      attackRadius: 1,
+      troopType: 'smallTank',
+      squareType: 'land'
+    })
+    let newTroop = that.game.world.add(newTank)
+    that.pieces[newTroop.id] = newTroop
+    newTroop.events.onInputDown.add(showMoves(that), this)
+    console.log(that.pieces)  
+  }
+
+  
 }
 
 const showMoves = that => (sprite, event) => {

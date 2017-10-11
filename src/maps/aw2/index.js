@@ -1,6 +1,7 @@
 import Infantry from '../../sprites/Infantry'
 import City from '../../sprites/City'
 import SmallTank from '../../sprites/SmallTank'
+import Factory from '../../sprites/Factory'
 import processMapcreateGrid from '../processMap'
 const mapdata = require('./map.json')
 
@@ -172,7 +173,21 @@ export const startingPieces = that => ({
     player: 1,
     id: 10,
     team: 'neutral',
+    isHQ: false
+  }),
+  11: new Factory({
+    game: that.game,
+    x: 32*23,
+    y: 32 * 6,
+    asset: 'city_grey',
+    width: 30,
+    height: 40,
+    Def: 3,
+    Cap: 20,
+    player: 1,
+    id: 10,
+    team: 'neutral',
     isHQ: false,
-    troopType: 'city'
+    isFactory: true,
   })
 })
