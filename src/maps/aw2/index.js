@@ -158,7 +158,8 @@ export const startingPieces = that => ({
     player: 1,
     id: 9,
     team: 'neutral',
-    isHQ: false
+    isHQ: false,
+    troopType: 'city'
   }),
   10: new City({
     game: that.game,
