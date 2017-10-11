@@ -284,6 +284,8 @@ export default class extends Phaser.State {
       } else {
         if (pc.children[1]) pc.children[1].destroy()
         let newHealth = this.game.add.text(31, 31, pc.HP, this.healthStyle)
+        newHealth.anchor.set(0)
+
         pc.addChild(newHealth)
       }
       if (pc.team === 'red') redLose = false

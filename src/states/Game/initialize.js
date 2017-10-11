@@ -18,7 +18,7 @@ export const loadLevel = (that) => {
   that.canEndTurn = true
   that.attackButton = undefined
   that.waitButton = undefined
-  that.healthStyle = { font: '18px Arial', fill: 'black' }
+  that.healthStyle = { font: '18px Arial', fill: 'black', align: 'center'}
   that.gameOver = false
   that.winner = ''
   that.explosions = game.add.group();
@@ -72,6 +72,7 @@ export const loadLevel = (that) => {
     if(that.pieces[key].key.indexOf('city') === -1) {
       let healthShape = that.game.add.graphics(30, 30);
       let pieceHealth = that.game.add.text(31, 31, that.pieces[key].HP, that.healthStyle)
+      pieceHealth.anchor.set(1)
 
       healthShape.beginFill(0xffffff, 1);
       healthShape.drawRoundedRect(0,0,23,23,5)
