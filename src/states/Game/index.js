@@ -60,24 +60,23 @@ export default class extends Phaser.State {
 
   checkForPieceOptions () {
     let defenders = []
+    console.log('selected', this.selectedPiece.position.x, this.selectedPiece.position.y)
     for (var key in this.pieces) {
       if (
         this.pieces[key] !== this.selectedPiece &&
         this.pieces[key].team !== this.selectedPiece.team &&
         this.pieces[key].key.indexOf('city') === -1
       ) {
-        let diffX = Math.abs(
-          this.pieces[key].position.x - this.selectedPiece.position.x
-        )
-        let diffY = Math.abs(
-          this.pieces[key].position.y - this.selectedPiece.position.y
-        )
+        //console.log('pieces', this.pieces[key].position.x, this.pieces[key].position.y)
+        let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
+        let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
         if (diffX + diffY <= this.selectedPiece.attackRadius * 32) {
           defenders.push(this.pieces[key])
         }
       }
     }
     if (!this.attackButton || !this.attackButton.alive) {
+      console.log('getting here', defenders)
       if (defenders.length === 1) {
         this.attackButton = this.game.add.button(
           this.selectedPiece.x,
