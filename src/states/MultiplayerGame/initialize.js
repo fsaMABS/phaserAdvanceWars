@@ -155,12 +155,12 @@ const showMoves = that => (sprite, event) => {
         if (!(ele.x === sprite.x && ele.y === sprite.y)) {
           if (ele.type === 'land') {
             easystarz.setGrid(newGrid())
-            easystarz.setAcceptableTiles([2]);
+            easystarz.setAcceptableTiles([0,1,2,3,4]);
             return new Promise((resolve, reject) => {
               easystarz.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {
                 if (path === null || (path.length > sprite.mobility)) {
                   resolve(null)
-                } else {
+                } else {å
                   resolve(ele)
                 }
               });
