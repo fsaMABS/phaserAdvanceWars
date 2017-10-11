@@ -125,12 +125,13 @@ export default class extends Phaser.State {
               this.selectedPiece.x,
               this.selectedPiece.y + 32,
               'captSprite',
-              () => this.captureCity(this.pieces[i], i, defenders),
+              () => this.captureCity(this.pieces[i].position, i, defenders),
               this,
               2,
               1,
               0
             )
+            break;
           }
         }
       }
