@@ -21,8 +21,7 @@ export default class extends Phaser.State {
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0
-      this.pieces[key].inputEnabled =
-        this.pieces[key].team === this.currentPlayer
+      this.pieces[key].inputEnabled = this.pieces[key].team === this.currentPlayer
     }
     this.playerText.text = this.currentPlayer
   }
@@ -67,18 +66,16 @@ export default class extends Phaser.State {
         this.pieces[key].team !== this.selectedPiece.team &&
         this.pieces[key].key.indexOf('city') === -1
       ) {
-        let diffX = Math.abs(
-          this.pieces[key].position.x - this.selectedPiece.position.x
-        )
-        let diffY = Math.abs(
-          this.pieces[key].position.y - this.selectedPiece.position.y
-        )
+        //console.log('pieces', this.pieces[key].position.x, this.pieces[key].position.y)
+        let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
+        let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
         if (diffX + diffY <= this.selectedPiece.attackRadius * 32) {
           defenders.push(this.pieces[key])
         }
       }
     }
     if (!this.attackButton || !this.attackButton.alive) {
+      console.log('getting here', defenders)
       if (defenders.length === 1) {
         this.attackButton = this.game.add.button(
           this.selectedPiece.x,
@@ -100,8 +97,7 @@ export default class extends Phaser.State {
         this.selectedPiece.x,
         this.selectedPiece.y + 32,
         'waitSprite',
-        () => this.wait(defenders),
-        this,
+        () => this.wait(defenders), this,
         2,
         1,
         0
@@ -231,6 +227,7 @@ export default class extends Phaser.State {
       })
     }
   }
+
 
   wait (defenders) {
     this.disableDefenders(defenders)
