@@ -3,6 +3,11 @@ import newGrid, {startingPieces} from '../../maps/aw2'
 import easystarjs from 'easystarjs'
 var easystarz = new easystarjs.js()
 
+const setupPiece = (piece) => {
+    piece.anchor.x = 0;
+    piece.anchor.y = 0;
+    piece.animations.add('explode');
+}
 
 export const loadLevel = (that) => {
   that.background = that.game.add.sprite(0, 0, 'aw1Map')
@@ -16,6 +21,9 @@ export const loadLevel = (that) => {
   that.healthStyle = { font: '18px Arial', fill: 'black' }
   that.gameOver = false
   that.winner = ''
+  that.explosions = game.add.group();
+  that.explosions.createMultiple(400, 'explode');
+  that.explosions.forEach(setupPiece, this);
 
   var style = { font: '20px Arial', fill: '#fff' }
   that.game.add.text(410, 20, 'Player:', style)
@@ -61,13 +69,16 @@ export const loadLevel = (that) => {
     that.pieces[key] = added
     revealedFog.push({ x: current.position.x, y: current.position.y })
 
-    let pieceHealth = that.game.add.text(
-      20,
-      20,
-      that.pieces[key].HP,
-      that.healthStyle
-    )
-    that.pieces[key].addChild(pieceHealth)
+    if(that.pieces[key].key.indexOf('city') === -1) {
+      let healthShape = that.game.add.graphics(30, 30);
+      let pieceHealth = that.game.add.text(31, 31, that.pieces[key].HP, that.healthStyle)
+
+      healthShape.beginFill(0xffffff, 1);
+      healthShape.drawRoundedRect(0,0,23,23,5)
+
+      that.pieces[key].addChild(healthShape)
+      that.pieces[key].addChild(pieceHealth)
+    }
   }
   that.fog.children.map(ele => {
     revealedFog.forEach(fog => {
@@ -147,6 +158,7 @@ const pieceIsAlreadyHere = (pieces, x, y, spriteId) => {
     if(x === pieces[key].position.x 
       && y === pieces[key].position.y 
       && pieces[key].id !== spriteId
+      && pieces[key].key.indexOf('city') === -1
       ) 
       { 
         check = true;
@@ -157,7 +169,7 @@ const pieceIsAlreadyHere = (pieces, x, y, spriteId) => {
 
 const removeOtherShowMoves = (pieces, spriteId) => {
   for(var key in pieces) {
-    if(pieces[key].id !== spriteId) {
+    if(pieces[key].id !== spriteId && pieces[key].key.indexOf('city') === -1) {
       pieces[key].events.onInputDown.remove(showMoves, this);
     }
   }
