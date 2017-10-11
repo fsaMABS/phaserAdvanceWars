@@ -77,7 +77,6 @@ export default class extends Phaser.State {
     }
 
     if (!this.attackButton || !this.attackButton.alive) {
-      console.log('getting here', defenders)
       if (defenders.length === 1) {
         this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*2) + 35, 'fireSprite', 
           () => this.attackPiece(this.selectedPiece, defenders[0], defenders), this, 2, 1, 0)
