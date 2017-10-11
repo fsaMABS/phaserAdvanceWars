@@ -304,10 +304,15 @@ export default class extends Phaser.State {
 
       if (pc.HP <= 0) {
         pc.destroy()
+        let explosion = this.explosions.getFirstExists(false);
+        explosion.reset(this.pieces[piece].position.x, this.pieces[piece].position.y);
+        explosion.play('explode', 400, false, true);
         delete this.pieces[piece]
       } else {
-        if (pc.children[0]) pc.children[0].destroy()
-        let newHealth = this.game.add.text(60, 60, pc.HP, this.healthStyle)
+        if (pc.children[1]) pc.children[1].destroy()
+        let newHealth = this.game.add.text(31, 31, pc.HP, this.healthStyle)
+        newHealth.anchor.set(0)
+
         pc.addChild(newHealth)
       }
       if (pc.team === 'red') redLose = false

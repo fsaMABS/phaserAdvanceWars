@@ -18,6 +18,7 @@ export default class extends Phaser.State {
     centerGameObjects([this.loaderBg, this.loaderBar])
 
     this.load.setPreloadSprite(this.loaderBar)
+    this.load.spritesheet('explode', 'assets/images/explode.png', 32, 32);
     this.load.image('background', 'assets/images/menubackground.png')
     this.load.image('infantry', 'assets/images/infantry.png')
     this.load.image('infantry_blue', 'assets/images/infantry_blue.png')
@@ -38,7 +39,7 @@ export default class extends Phaser.State {
   }
 
   create () {
-    this.state.start('MainMenu')
-    // this.state.start('Game');
+    //this.state.start('MainMenu')
+    this.state.start('Game');
   }
 }
