@@ -10,30 +10,7 @@ const setupPiece = (piece) => {
     piece.animations.add('explode');
 }
 
-export const loadLevel = (that) => {
-  that.background = that.game.add.sprite(0, 0, 'aw1Map')
-  that.scale.pageAlignHorizontally = true
-  that.scale.pageAlignVertically = true
-  that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
-  that.shiftKey = that.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT)
-  that.canEndTurn = true
-  that.attackButton = undefined
-  that.waitButton = undefined
-  that.healthStyle = { font: '18px Arial', fill: 'black', align: 'center'}
-  that.gameOver = false
-  that.winner = ''
-  that.explosions = game.add.group();
-  that.explosions.createMultiple(400, 'explode');
-  that.explosions.forEach(setupPiece, this);
-
-  var style = { font: '20px Arial', fill: '#fff' }
-  that.game.add.text(410, 20, 'Player:', style)
-  that.currentPlayer = 'blue'
-  that.playerText = that.game.add.text(480, 20, that.currentPlayer, style)
-  that.blocks = that.add.group()
-  that.fog = that.add.group()
-  const isNear = (ele, sprite, dist) =>
-    Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
+const createGrid = (that) => {
   for (var i = 0; i <= 928; i = i + 32) {
     for (var j = 0; j <= 768; j = j + 32) {
       var ourGrid = newGrid()
@@ -41,7 +18,7 @@ export const loadLevel = (that) => {
       var secondIndex = i/32;
       var numberType = (ourGrid[firstIndex][secondIndex])
       var type;
-
+  
       if (numberType === 0) {
         type = 'land'
       } else if (numberType ===  1) {
@@ -58,8 +35,37 @@ export const loadLevel = (that) => {
       that.blocks.add(block)
     }
   }
+}
 
+export const loadLevel = (that) => {
+  that.background = that.game.add.sprite(0, 0, 'aw1Map')
+  that.scale.pageAlignHorizontally = true
+  that.scale.pageAlignVertically = true
+  that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
+  that.shiftKey = that.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT)
+  that.canEndTurn = true
+  that.attackButton = undefined
+  that.waitButton = undefined
+  that.healthStyle = { font: '18px Arial', fill: 'black', align: 'center'}
+  that.gameOver = false
+  that.redTeam = {team: 'red', money: 10000}
+  that.blueTeam = {team: 'blue', money: 10000}
+  that.currentPlayer = that.blueTeam;
+  that.winner = ''
+  that.explosions = game.add.group();
+  that.explosions.createMultiple(400, 'explode');
+  that.explosions.forEach(setupPiece, this);
+  that.textStyle = { font: '20px Arial', fill: '#fff' }
+  that.game.add.text(410, 20, 'Player:', that.textStyle)
+  that.playerText = that.game.add.text(480, 20, that.currentPlayer.team, that.textStyle)
+  that.moneyText = that.game.add.text(20, 20, '$' + that.currentPlayer.money, that.textStyle)
+  that.blocks = that.add.group()
+  that.fog = that.add.group()
+  const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
+
+  createGrid(that)
   that.pieces = startingPieces(that)
+
   const revealedFog = []
 
   for (var key in that.pieces) {
@@ -67,7 +73,10 @@ export const loadLevel = (that) => {
     let added = that.game.world.add(current)
     added.inputEnabled = true
     if (added.key.indexOf('city') === -1) { added.events.onInputDown.add(showMoves(that), this) }
-    if (added.isFactory) { added.events.onInputDown.add(makeTroops(that), this) }
+    if (added.isFactory) { 
+      added.events.onInputDown.add(makeTroops(that), this) 
+    }
+
     that.pieces[key] = added
     revealedFog.push({ x: current.position.x, y: current.position.y })
 
@@ -92,50 +101,51 @@ export const loadLevel = (that) => {
 }
 
 const makeTroops = that => (sprite, event) => {
-  var isThereSomethingThere = false;
-  console.log('ANYTHING!')
-  for (var key in that.pieces) {
-    var currPieceX = that.pieces[key].position.x
-    var factoryPositionX = sprite.position.x
-    var currPieceY = that.pieces[key].position.y
-    var factoryPositionY = sprite.position.y + 32
-    if ((currPieceX === factoryPositionX) && (currPieceY === factoryPositionY)) {
-      isThereSomethingThere = true
+  if (that.currentPlayer.team === sprite.team) {
+    var isThereSomethingThere = false;
+    console.log('ANYTHING!')
+    for (var key in that.pieces) {
+      var currPieceX = that.pieces[key].position.x
+      var factoryPositionX = sprite.position.x
+      var currPieceY = that.pieces[key].position.y
+      var factoryPositionY = sprite.position.y + 32
+      if ((currPieceX === factoryPositionX) && (currPieceY === factoryPositionY)) {
+        isThereSomethingThere = true
+      }
+    }
+    console.log(isThereSomethingThere)  
+    if (!isThereSomethingThere) {
+      that.currentPlayer.money -= 4000;
+      var count = Object.keys(that.pieces).length;
+      count = count + 1
+      var newTank = new SmallTank({
+        game: that.game,
+        x: sprite.x,
+        y: sprite.y + 32,
+        asset: 'smallTank_red',
+        width: 32,
+        height: 32,
+        HP: 20,
+        AP: 8,
+        player: 2,
+        id: count,
+        mobility: 7,
+        team: 'red',
+        attackRadius: 1,
+        troopType: 'smallTank',
+        squareType: 'land'
+      })
+      let newTroop = that.game.world.add(newTank)
+      that.pieces[newTroop.id] = newTroop
+      newTroop.events.onInputDown.add(showMoves(that), this)
+      console.log(that.pieces)  
     }
   }
-  console.log(isThereSomethingThere)  
-  if (!isThereSomethingThere) {
-    var count = Object.keys(that.pieces).length;
-    count = count + 1
-    var newTank = new SmallTank({
-      game: that.game,
-      x: sprite.x,
-      y: sprite.y + 32,
-      asset: 'smallTank_red',
-      width: 32,
-      height: 32,
-      HP: 20,
-      AP: 8,
-      player: 2,
-      id: count,
-      mobility: 7,
-      team: 'red',
-      attackRadius: 1,
-      troopType: 'smallTank',
-      squareType: 'land'
-    })
-    let newTroop = that.game.world.add(newTank)
-    that.pieces[newTroop.id] = newTroop
-    newTroop.events.onInputDown.add(showMoves(that), this)
-    console.log(that.pieces)  
-  }
-
-  
 }
 
 const showMoves = that => (sprite, event) => {
   if (!that.selectedPiece) that.selectedPiece = sprite
-  if (that.currentPlayer === that.selectedPiece.team) {
+  if (that.currentPlayer.team === that.selectedPiece.team) {
     that.showingMoves = that.showingMoves !== true
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
