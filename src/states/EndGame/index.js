@@ -1,4 +1,6 @@
 import Phaser from 'phaser'
+import config from '../../config'
+import {winner} from '../Game'
 // import { centerGameObjects } from '../../utils'
 
 export default class extends Phaser.State {
@@ -8,21 +10,29 @@ export default class extends Phaser.State {
   }
 
   create () {
-    const style = { font: "15px Arial", fill: "white" };
-    const winner = 'player1'
-    const text = `The game has now ended. Player ${winner} has won!`
-    this.winnerText = this.add.text(this.game.world.centerX, this.game.world.centerY, text, style)    
+    this.background = game.add.tileSprite(0, 0,  config.gameWidth, config.gameHeight, 'background')
+    this.bar = game.add.graphics();
+    this.bar.beginFill(0x000000, 0.9);
+    this.bar.drawRect(80, 80, 800, 640);
+    const winnerStyle = { font: "64px Arial", fill: "white", fontWeight: 'bold', align: 'center' }
+    const style = { font: "18px Arial", fill: "white", align: 'center' };
+    const winner = window.game.winner.charAt(0).toUpperCase() + window.game.winner.slice(1) + ' Team'
+    const text = `${winner} Wins!`
+    this.winnerText = this.add.text(this.game.world.centerX, this.game.world.centerY-100, text, winnerStyle)
+    this.winnerText.anchor.set(0.5)    
     var timeLeft = 5
-    const otherText = `You will be redirected back to the lobby in ${timeLeft} seconds`;    
-    this.endingGame = this.add.text(this.game.world.centerX, this.game.world.centerY-50, otherText, style)     
+    const otherText = `You will be redirected back to the main menu in ${timeLeft} seconds`;    
+    this.endingGame = this.add.text(this.game.world.centerX, this.game.world.centerY+200, otherText, style)  
+    this.endingGame.anchor.set(0.5)   
     var clearId = setInterval(() => {
       if (timeLeft <= 1) {clearInterval(clearId)}
       this.endingGame.destroy()
       timeLeft--;
-      this.endingGame = this.add.text(this.game.world.centerX, this.game.world.centerY-50, `You will be redirected back to the lobby in ${timeLeft} seconds`, style)           
+      this.endingGame = this.add.text(this.game.world.centerX, this.game.world.centerY+200, `You will be redirected back to the main menu in ${timeLeft} seconds`, style)           
+      this.endingGame.anchor.set(0.5)
     }, 1000)        
     setTimeout(() => {
-      this.state.start('All_Lobbies')
+      this.state.start('MainMenu')
       console.log('1 second passed')
     }, 5000);
   }

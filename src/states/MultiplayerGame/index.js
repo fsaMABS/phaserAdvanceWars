@@ -28,7 +28,7 @@ export default class extends Phaser.State {
 
   create () {
     easystar.setGrid(newGrid())
-    easystar.setAcceptableTiles([2])
+    easystar.setAcceptableTiles([0,1,2,3,4])
     loadLevel(this)
     console.log('*******this.piecesthis.pieces', this.pieces)
     firebase.database().ref(`lobbies/${this.game.lobby}/pieces`).set(turnobjectToArray(this.pieces))

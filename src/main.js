@@ -5,6 +5,7 @@ import processMap from './processMap'
 import BootState from './states/Boot'
 import SplashState from './states/Splash'
 import GameState from './states/Game'
+import MainMenu from './states/MainMenu';
 import SingleLobbyState from './states/SingleLobby'
 import AllLobbiesState from './states/All_Lobbies'
 import EndGameState from './states/EndGame'
@@ -25,11 +26,13 @@ class Game extends Phaser.Game {
 
     super(width, height, Phaser.CANVAS, 'content', null)
 
+    this.winner = 'brian'
     this.firebase = firebase
     this.state.add('Boot', BootState, false)
     this.state.add('Splash', SplashState, false)
     this.state.add('SingleLobby', SingleLobbyState, false)
     this.state.add('All_Lobbies', AllLobbiesState, false)
+    this.state.add('MainMenu', MainMenu, false)
     this.state.add('Game', GameState, false)
     this.state.add('MultiplayerGame', MultiplayerGameState, false)
     this.state.add('EndGame', EndGameState, false)

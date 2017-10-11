@@ -10,9 +10,7 @@ export default class extends Phaser.State {
     centerGameObjects([this.loaderBg, this.loaderBar])
 
     this.load.setPreloadSprite(this.loaderBar)
-    //
-    // load your assets
-    //
+    this.load.image('background', 'assets/images/menubackground.png')
     this.load.image('infantry', 'assets/images/infantry.png')
     this.load.image('infantry_blue', 'assets/images/infantry_blue.png')
     this.load.image('smallTank_blue', 'assets/images/smallTank_blue.png')
@@ -29,11 +27,13 @@ export default class extends Phaser.State {
     this.load.image('greenSquare', 'assets/images/greenSquare.jpeg')
     this.load.image('blueSquare', 'assets/images/blueSquare.jpg')
     this.load.image('fogSquare', 'assets/images/fogSquare.jpeg')
-    this.load.image('aw1Map', 'assets/images/aw1.bmp')
+    this.load.image('aw1Map', 'assets/images/aw2.bmp')
+    //this.load.image('aw1Map', 'assets/images/aw1.bmp')    
   }
 
   create () {
     //this.state.start('All_Lobbies')
-    this.state.start('Game')
+    //this.state.start('MainMenu')
+    this.state.start('Game');
   }
 }

@@ -11,8 +11,8 @@ export const startingPieces = that => ({
   // NEED TO ADD TYPES TO THE NAME AT SOME POINT
   1: new Infantry({
     game: that.game,
-    x: 64,
-    y: 64,
+    x: (64),
+    y: (32*16),
     asset: 'infantry_blue',
     width: 32,
     height: 32,
@@ -22,37 +22,40 @@ export const startingPieces = that => ({
     id: 1,
     mobility: 5,
     team: 'blue',
-    attackRadius: 1   
+    attackRadius: 1,
+    troopType: 'infantry'
   }),
   2: new Infantry({
     game: that.game,
-    x: 64,
-    y: 0,
+    x: (32*0),
+    y: (32*15),
     asset: 'infantry_blue',
     width: 32,
     height: 32,
     HP: 10,
     AP: 5,
     player: 1,
-    id: 1,
+    id: 2,
     mobility: 5,
     team: 'blue',
-    attackRadius: 1    
+    attackRadius: 1,
+    troopType: 'infantry'
   }),
   3: new SmallTank({
     game: that.game,
-    x: 64,
-    y: 128,
+    x: (32*0),
+    y: (32*17),
     asset: 'smallTank_blue',
     width: 32,
     height: 32,
     HP: 20,
     AP: 8,
     player: 2,
-    id: 2,
+    id: 3,
     mobility: 7,
     team: 'blue',
-    attackRadius: 1
+    attackRadius: 1,
+    troopType: 'smallTank'
   }),
   4: new SmallTank({
     game: that.game,
@@ -67,27 +70,12 @@ export const startingPieces = that => ({
     id: 2,
     mobility: 7,
     team: 'red',
-    attackRadius: 1
+    attackRadius: 1,
+    troopType: 'smallTank'
   }),
-
   5: new Infantry({
     game: that.game,
-    x: 0,
-    y: 0,
-    asset: 'infantry',
-    width: 32,
-    height: 32,
-    HP: 10,
-    AP: 5,
-    player: 2,
-    id: 3,
-    mobility: 5,
-    team: 'red',
-    attackRadius: 1    
-  }),
-  6: new Infantry({
-    game: that.game,
-    x: 0,
+    x: (32*25),
     y: 64,
     asset: 'infantry',
     width: 32,
@@ -98,22 +86,85 @@ export const startingPieces = that => ({
     id: 4,
     mobility: 5,
     team: 'red',
-    attackRadius: 1    
+    attackRadius: 2    
+  }),
+  6: new Infantry({
+    game: that.game,
+    x: (32*24),
+    y: (64),
+    asset: 'infantry',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 5,
+    player: 2,
+    id: 5,
+    mobility: 5,
+    team: 'red',
+    attackRadius: 2    
   }),
   7: new City({
     game: that.game,
-    x: 96,
-    y: 96,
+    x: (32),
+    y: (32*18),
     asset: 'city_grey',
     width: 30,
     height: 40,
     Def: 3,
     Cap: 20,
     player: 1,
-    id: 1,
-    team: 'neutral'
-  })
+    id: 6,
+    team: 'neutral',
+    isHQ: false
+  }),
+  7: new SmallTank({
+    game: that.game,
+    x: (32*1),
+    y: (32*17),
+    asset: 'smallTank_blue',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 2,
+    id: 7,
+    mobility: 7,
+    team: 'blue',
+    attackRadius: 2,
+    troopType: 'smallTank'
+  }),
+  8: new Infantry({
+    game: that.game,
+    x: (32*2),
+    y: (32*15),
+    asset: 'infantry_blue',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 5,
+    player: 1,
+    id: 8,
+    mobility: 5,
+    team: 'blue',
+    attackRadius: 2,
+    troopType: 'infantry'  
+  }),
+  9: new City({
+    game: that.game,
+    x: (32*5),
+    y: (32*14),
+    asset: 'city_grey',
+    width: 30,
+    height: 40,
+    Def: 3,
+    Cap: 20,
+    player: 1,
+    id: 9,
+    team: 'neutral',
+    isHQ: false
+  }),
 })
+
 
 export const loadLevel = (that) => {
   that.background = that.game.add.sprite(0, 0, 'aw1Map')
@@ -124,7 +175,9 @@ export const loadLevel = (that) => {
   that.canEndTurn = true;
   that.attackButton = undefined;
   that.waitButton = undefined;
-  that.healthStyle = { font: "18px Arial", fill: "black" };  
+  that.healthStyle = { font: "18px Arial", fill: "black" };
+  that.gameOver = false;  
+  that.winner = '';
 
   var style = { font: '20px Arial', fill: '#fff' }
   that.game.add.text(410, 20, 'Player:', style)
@@ -133,8 +186,8 @@ export const loadLevel = (that) => {
   that.blocks = that.add.group()
   that.fog = that.add.group()
   const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
-  for (var i = 0; i < 3000; i = i + 32) {
-    for (var j = 0; j < 3000; j = j + 32) {
+  for (var i = 0; i <= 928; i = i + 32) {
+    for (var j = 0; j <= 768; j = j + 32) {
       var type = checkType(i, j)
       var block = new Block(i, j, 'blueSquare', 32, 32, type)
       block.alpha = 0.0
@@ -165,8 +218,8 @@ export const loadLevel = (that) => {
 }
 
 const showMoves = that => (sprite, event) => {
-  that.selectedPiece = sprite
-  if (that.currentPlayer === that.selectedPiece.team) {
+  if(!that.selectedPiece) that.selectedPiece = sprite
+  if (that.currentPlayer == that.selectedPiece.team) {
     that.showingMoves = that.showingMoves === true ? false : true
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
@@ -174,8 +227,16 @@ const showMoves = that => (sprite, event) => {
       if ((Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y)) < (32 * sprite.mobility)) {
         if (ele.type === 'land') {
           easystarz.setGrid(newGrid())
-          easystarz.setAcceptableTiles([2]);
+          if (that.selectedPiece.troopType == 'smallTank') {
+            easystarz.setAcceptableTiles([0,2]);            
+          } else if (that.selectedPiece.troopType == 'ship'){
+            easystarz.setAcceptableTiles([1]);            
+          } else {
+            easystarz.setAcceptableTiles([0,2,3,4]);                        
+          }
           return new Promise((resolve, reject) => {
+            console.log('sprite coords', sprite.x/32, sprite.y/32)
+            console.log('elexeley', ele.x/32, ele.y/32)
             easystarz.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {
               if (path === null || (path.length > sprite.mobility)) {
                 resolve(null)
@@ -205,3 +266,14 @@ const showMoves = that => (sprite, event) => {
     })
   }
 }
+
+// const disableMovementToOtherPieces = (x, y) => {
+//   for(var key in that.pieces) {
+//     //if that piece isn't a city, don't move on top of it
+//     if(that.pieces[key].key.indexOf('city') === -1) {
+//       if(x === that.pieces[key].position.x && y === that.pieces[key].position.y) {
+
+//       }
+//     }
+//   }
+// }

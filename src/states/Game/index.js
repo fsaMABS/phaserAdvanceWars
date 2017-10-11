@@ -14,7 +14,7 @@ export default class extends Phaser.State {
 
   create () {
     easystar.setGrid(newGrid());
-    easystar.setAcceptableTiles([2]);
+    easystar.setAcceptableTiles([0,2,3,4]);
     loadLevel(this)
   }
 
@@ -28,8 +28,6 @@ export default class extends Phaser.State {
   }
 
   moveHere (sprite) {
-    if(this.selectedPiece.position.x === sprite.position.x && this.selectedPiece.position.y === sprite.position.y) {
-    }
     this.selectedPiece.visible = true
     this.blocks.children.forEach((ele) => {
       ele.alpha = 0
@@ -80,7 +78,7 @@ export default class extends Phaser.State {
     }
     if(!this.waitButton || !this.waitButton.alive) {
       this.canEndTurn = false;
-      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 64, 'waitSprite', 
+      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 32, 'waitSprite', 
       () => this.wait(defenders), this, 2, 1, 0);
     }
     
@@ -88,8 +86,9 @@ export default class extends Phaser.State {
       for (var i in this.pieces) {
         if (this.pieces[i].key.indexOf('city') !== -1) {
               if (this.selectedPiece.position.x === this.pieces[i].position.x && this.selectedPiece.position.y === this.pieces[i].position.y) {
+                console.log('thispieces', this.pieces[i].position)
                   this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + 32, 'captSprite',
-                  () => this.captureCity(this.pieces[i], defenders), this, 2, 1, 0);
+                    () => this.captureCity(this.pieces[i], i, defenders), this, 2, 1, 0);
               }
         }
       }
@@ -119,8 +118,23 @@ export default class extends Phaser.State {
     this.disablePieceOptions();
   }
 
-  captureCity (campedCity, defenders) {
+  captureCity (city, index, defenders) {
+    let campedCity = this.pieces[index];
+    console.log('CC', campedCity.position)
+    console.log(this.pieces[index].position)
     this.disableDefenders(defenders)
+
+    if(this.selectedPiece.team !== campedCity.team) {
+      //HQ Scenario: 
+      if(campedCity.isHQ) {
+        campedCity.Cap -= this.selectedPiece.HP
+        if(campedCity.Cap <= 0) {
+          window.game.winner = this.selectedPiece.team;
+          this.gameOver = true;
+        }
+      }
+    }
+
     campedCity.Cap -= this.selectedPiece.HP
     
     //======== CITY ISSUE ======
@@ -128,33 +142,29 @@ export default class extends Phaser.State {
     // capture with the other team, it says the new Cap is -10, so its not being destroyed? Not sure
     // just a heads up
 
-    console.log('starting camped city', campedCity)
     if (campedCity.Cap <= 0) {
-      console.log('getting here...')
+      console.log('campedCity', campedCity)
       let newCityColorAsset = this.selectedPiece.team === 'red' ? 'city_red' : 'city_blue'
-
-      campedCity.destroy()
-      
       var newCity = new City({
         game: this.game,
-        x: 96,
-        y: 96,
+        x: campedCity.position.x,
+        y: campedCity.position.y,
         asset: newCityColorAsset,
         width: 30,
         height: 40,
         Def: 3,
         Cap: 20,
         player: 1,
-        id: 1,
-        team: this.selectedPiece.team
+        id: campedCity.id,
+        team: this.selectedPiece.team,
+        isHQ: false
       })
-      campedCity = newCity;
-      console.log('camped city after', campedCity)
+      this.destroyPieceById(campedCity.id)
+      campedCity.destroy()
+
       this.game.world.add(newCity);
-      // campedCity.asset = "city_" + this.selectedPiece.team
-      // campedCity.team = this.selectedPiece.team
+      console.log('newCity', newCity)
     }
-    console.log('campedCity all', campedCity)
     this.selectedPiece.alpha = 0.7;
     this.disablePieceOptions();
   }
@@ -167,10 +177,12 @@ export default class extends Phaser.State {
     if(this.captButton) this.captButton.destroy();
     if(this.waitButton) this.waitButton.destroy();
     if(this.attackButton) this.attackButton.destroy();
+    if(this.captButton) this.captButton.destroy();
     if(this.targets) this.targets.forEach(target => target.destroy());
     if(this.showingMoves) this.showingMoves = false;
     this.showingBlue = false;
     this.canEndTurn = true;
+    this.selectedPiece = undefined;
   }
 
   disableDefenders (defenders) {
@@ -190,6 +202,7 @@ export default class extends Phaser.State {
   }
 
   endTurn () {
+    this.selectedPiece = undefined;
     this.disablePieceOptions();
     //var style = { font: '18px Arial', fill: '#fff' }
     // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
@@ -208,6 +221,11 @@ export default class extends Phaser.State {
     this.checkForPieceOptions();
   }
 
+  destroyPieceById(pieceId) {
+    for(var key in this.pieces) {
+      if(this.pieces[key].id === pieceId) delete this.pieces[key]
+    }
+  }
 
   update () {
     this.enterKey.onDown.add(this.endTurn, this)
@@ -219,11 +237,12 @@ export default class extends Phaser.State {
     this.shiftKey._enabled = this.showingMoves ? true : false
     this.enterKey._enabled = this.canEndTurn ? true : false
 
+    let redLose = true;
+    let blueLose = true;
     //ALL PIECE UPDATES
     for (var piece in this.pieces) {
       const pc = this.pieces[piece]
 
-      //If dead: destroy it
       if (pc.HP <= 0) {
         pc.destroy()
         delete this.pieces[piece]
@@ -233,24 +252,35 @@ export default class extends Phaser.State {
         let newHealth = this.game.add.text(60, 60, pc.HP, this.healthStyle)
         pc.addChild(newHealth);
       }
+      if(pc.team == 'red') redLose = false
+      if(pc.team == 'blue') blueLose = false
     }
+    if(redLose) {
+      window.game.winner = 'blue'
+      this.gameOver = true;
+    }
+    if(blueLose) {
+      window.game.winner = 'red'
+      this.gameOver = true;
+    }
+    if(this.gameOver) this.state.start('EndGame')
   }
 
   render () {
-    // this.fog.children.map((ele) => {
-    //   if (ele.alpha && isNear(ele, revealedFog, 10)) ele.alpha = 0
-    // })
-    if (__DEV__) {
-      // this.game.debug.spriteInfo(this.pieces, 32, 32)
-    }
   }
 }
+// let revealedFog = {}
 
-let revealedFog = {}
-
+//Helper Functions
 const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
 
 
+//    if (__DEV__) {
+// this.game.debug.spriteInfo(this.pieces, 32, 32)
+// }
+// this.fog.children.map((ele) => {
+    //   if (ele.alpha && isNear(ele, revealedFog, 10)) ele.alpha = 0
+    // })
 //toggleKeyboardEvents(key) {
 //   if (!key.onDown._bindings || (key.onDown._bindings && !key.onDown._bindings.length)) {
 //     key.onDown.add(this.stayInPlace, this);
