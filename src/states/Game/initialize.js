@@ -4,105 +4,105 @@ import easystarjs from 'easystarjs'
 var easystarz = new easystarjs.js()
 
 
-export const startingPieces = that => ({
-  // NEED TO ADD TYPES TO THE NAME AT SOME POINT
-  1: new Infantry({
-    game: that.game,
-    x: (64),
-    y: (32*16),
-    asset: 'infantry_blue',
-    width: 32,
-    height: 32,
-    HP: 10,
-    AP: 5,
-    player: 1,
-    id: 1,
-    mobility: 5,
-    team: 'blue',
-    attackRadius: 2,
-    squareType :'land' 
-  }),
-  2: new Infantry({
-    game: that.game,
-    x: (32*0),
-    y: (32*15),
-    asset: 'infantry_blue',
-    width: 32,
-    height: 32,
-    HP: 10,
-    AP: 5,
-    player: 1,
-    id: 1,
-    mobility: 5,
-    team: 'blue',
-    attackRadius: 2,
-    squareType :'land'     
-  }),
-  3: new SmallTank({
-    game: that.game,
-    x: (32*0),
-    y: (32*17),
-    asset: 'smallTank_blue',
-    width: 32,
-    height: 32,
-    HP: 20,
-    AP: 8,
-    player: 2,
-    id: 2,
-    mobility: 7,
-    team: 'blue',
-    attackRadius: 2,
-    troopType: 'smallTank',
-    squareType :'land' 
-  }),
+// export const startingPieces = that => ({
+//   // NEED TO ADD TYPES TO THE NAME AT SOME POINT
+//   1: new Infantry({
+//     game: that.game,
+//     x: (64),
+//     y: (32*16),
+//     asset: 'infantry_blue',
+//     width: 32,
+//     height: 32,
+//     HP: 10,
+//     AP: 5,
+//     player: 1,
+//     id: 1,
+//     mobility: 5,
+//     team: 'blue',
+//     attackRadius: 2,
+//     squareType :'land' 
+//   }),
+//   2: new Infantry({
+//     game: that.game,
+//     x: (32*0),
+//     y: (32*15),
+//     asset: 'infantry_blue',
+//     width: 32,
+//     height: 32,
+//     HP: 10,
+//     AP: 5,
+//     player: 1,
+//     id: 1,
+//     mobility: 5,
+//     team: 'blue',
+//     attackRadius: 2,
+//     squareType :'land'     
+//   }),
+//   3: new SmallTank({
+//     game: that.game,
+//     x: (32*0),
+//     y: (32*17),
+//     asset: 'smallTank_blue',
+//     width: 32,
+//     height: 32,
+//     HP: 20,
+//     AP: 8,
+//     player: 2,
+//     id: 2,
+//     mobility: 7,
+//     team: 'blue',
+//     attackRadius: 2,
+//     troopType: 'smallTank',
+//     squareType :'land' 
+//   }),
 
-  4: new Infantry({
-    game: that.game,
-    x: (32*1),
-    y: (32*15),
-    asset: 'infantry',
-    width: 32,
-    height: 32,
-    HP: 10,
-    AP: 5,
-    player: 2,
-    id: 3,
-    mobility: 5,
-    team: 'red',
-    attackRadius: 2  ,
-    squareType :'land'   
-  }),
-  5: new Infantry({
-    game: that.game,
-    x: (32*24),
-    y: (64),
-    asset: 'infantry',
-    width: 32,
-    height: 32,
-    HP: 10,
-    AP: 5,
-    player: 2,
-    id: 4,
-    mobility: 5,
-    team: 'red',
-    attackRadius: 2,
-    squareType :'land'    
-  }),
-  6: new City({
-    game: that.game,
-    x: (32),
-    y: (32*18),
-    asset: 'city_grey',
-    width: 30,
-    height: 40,
-    Def: 3,
-    Cap: 10,
-    player: 1,
-    id: 1,
-    team: 'blue',
-    isHQ: true
-  })
-})
+//   4: new Infantry({
+//     game: that.game,
+//     x: (32*1),
+//     y: (32*15),
+//     asset: 'infantry',
+//     width: 32,
+//     height: 32,
+//     HP: 10,
+//     AP: 5,
+//     player: 2,
+//     id: 3,
+//     mobility: 5,
+//     team: 'red',
+//     attackRadius: 2  ,
+//     squareType :'land'   
+//   }),
+//   5: new Infantry({
+//     game: that.game,
+//     x: (32*24),
+//     y: (64),
+//     asset: 'infantry',
+//     width: 32,
+//     height: 32,
+//     HP: 10,
+//     AP: 5,
+//     player: 2,
+//     id: 4,
+//     mobility: 5,
+//     team: 'red',
+//     attackRadius: 2,
+//     squareType :'land'    
+//   }),
+//   6: new City({
+//     game: that.game,
+//     x: (32),
+//     y: (32*18),
+//     asset: 'city_grey',
+//     width: 30,
+//     height: 40,
+//     Def: 3,
+//     Cap: 10,
+//     player: 1,
+//     id: 1,
+//     team: 'blue',
+//     isHQ: true
+//   })
+// })
 
 
 export const loadLevel = (that) => {
@@ -128,9 +128,8 @@ export const loadLevel = (that) => {
     Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
   for (var i = 0; i <= 928; i = i + 32) {
     for (var j = 0; j <= 768; j = j + 32) {
-      var type = checkType(i, j)
       var ourGrid = newGrid()
-      console.log('GRIDDD', ourGrid, i, j )
+      // console.log('GRIDDD', ourGrid, i, j )
       var firstIndex = j/32;
       var secondIndex = i/32;
       var numberType = (ourGrid[firstIndex][secondIndex])
@@ -150,7 +149,6 @@ export const loadLevel = (that) => {
       var block = new Block(i, j, 'blueSquare', 32, 32, type)
       block.alpha = 0.0
       that.blocks.add(block)
-      // that.fog.add(new Block(i, j, 'fogSquare', 32, 32, type))
     }
   }
 

@@ -23,7 +23,8 @@ export const startingPieces = that => ({
     mobility: 5,
     team: 'blue',
     attackRadius: 1,
-    troopType: 'infantry'
+    troopType: 'infantry',
+    squareType: 'land'
   }),
   2: new Infantry({
     game: that.game,
@@ -39,7 +40,8 @@ export const startingPieces = that => ({
     mobility: 5,
     team: 'blue',
     attackRadius: 1,
-    troopType: 'infantry'
+    troopType: 'infantry',
+    squareType: 'land'
   }),
   3: new SmallTank({
     game: that.game,
@@ -55,7 +57,8 @@ export const startingPieces = that => ({
     mobility: 7,
     team: 'blue',
     attackRadius: 1,
-    troopType: 'smallTank'
+    troopType: 'smallTank',
+    squareType: 'land'
   }),
   4: new SmallTank({
     game: that.game,
@@ -71,7 +74,8 @@ export const startingPieces = that => ({
     mobility: 7,
     team: 'red',
     attackRadius: 1,
-    troopType: 'smallTank'
+    troopType: 'smallTank',
+    squareType: 'land'
   }),
   5: new Infantry({
     game: that.game,
@@ -86,7 +90,9 @@ export const startingPieces = that => ({
     id: 5,
     mobility: 5,
     team: 'red',
-    attackRadius: 2
+    attackRadius: 2,
+    troopType: 'infantry',
+    squareType: 'land'
   }),
   6: new Infantry({
     game: that.game,
@@ -101,7 +107,9 @@ export const startingPieces = that => ({
     id: 6,
     mobility: 5,
     team: 'red',
-    attackRadius: 2
+    attackRadius: 2,
+    troopType: 'infantry',
+    squareType: 'land'
   }),
   7: new SmallTank({
     game: that.game,
@@ -117,7 +125,8 @@ export const startingPieces = that => ({
     mobility: 7,
     team: 'blue',
     attackRadius: 2,
-    troopType: 'smallTank'
+    troopType: 'smallTank',
+    squareType: 'land'
   }),
   8: new Infantry({
     game: that.game,
@@ -133,7 +142,8 @@ export const startingPieces = that => ({
     mobility: 5,
     team: 'blue',
     attackRadius: 2,
-    troopType: 'infantry'
+    troopType: 'infantry',
+    squareType: 'land'
   }),
   9: new City({
     game: that.game,
