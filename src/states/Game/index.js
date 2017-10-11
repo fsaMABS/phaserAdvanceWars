@@ -203,7 +203,9 @@ export default class extends Phaser.State {
         team: this.selectedPiece.team,
         isHQ: false
       })
-      this.destroyPieceById(campedCity.id)
+      for (var key in this.pieces) {
+        if (this.pieces[key].id === campedCity.id) delete this.pieces[key]
+      }
       campedCity.destroy()
 
       this.game.world.add(newCity)
@@ -263,12 +265,6 @@ export default class extends Phaser.State {
       ele.inputEnabled = false
     }, this)
     this.checkForPieceOptions()
-  }
-
-  destroyPieceById (pieceId) {
-    for (var key in this.pieces) {
-      if (this.pieces[key].id === pieceId) delete this.pieces[key]
-    }
   }
 
   update () {

@@ -75,12 +75,15 @@ const showMoves = that => (sprite, event) => {
         ) {
           if (ele.type === 'land') {
             easystarz.setGrid(newGrid())
-            if (that.selectedPiece.troopType === 'smallTank') {
-              easystarz.setAcceptableTiles([0, 2])
-            } else if (that.selectedPiece.troopType === 'ship') {
-              easystarz.setAcceptableTiles([1])
-            } else {
-              easystarz.setAcceptableTiles([0, 2, 3, 4])
+            switch (that.selectedPiece.troopType) {
+              case 'smallTank':
+                easystarz.setAcceptableTiles([0, 2])
+                break
+              case 'ship':
+                easystarz.setAcceptableTiles([1])
+                break
+              default:
+                easystarz.setAcceptableTiles([0, 2, 3, 4])
             }
             return new Promise((resolve, reject) => {
               // console.log('sprite coords', sprite.x / 32, sprite.y / 32)
