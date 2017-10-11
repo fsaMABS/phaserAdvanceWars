@@ -28,6 +28,7 @@ export default class extends Phaser.State {
   }
 
   moveHere (sprite) {
+    console.log('sprite properties', sprite)
     this.selectedPiece.visible = true
     this.blocks.children.forEach(ele => {
       ele.alpha = 0
@@ -151,6 +152,7 @@ export default class extends Phaser.State {
   }
 
   attackPiece (attacker, defender, defenders) {
+    console.log('attacker defender', attacker, defender)
     this.disableDefenders(defenders)
     attacker.inputEnabled = false
     if (this.targets) this.targets.forEach(target => target.destroy())
