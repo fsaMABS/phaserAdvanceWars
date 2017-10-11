@@ -225,27 +225,30 @@ export default class extends Phaser.State {
     this.selectedPiece = undefined
     this.disablePieceOptions()
     var style = { font: '18px Arial', fill: '#fff' }
-    this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
-    this.time.events.add(1000, () => {
-        this.turnEnded.destroy()
+    // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
+    // this.time.events.add(1000, () => {
+    //     this.turnEnded.destroy()
         this.togglePlayer()
-    }, this.turnEnded);
+    // }, this.turnEnded);
 
     let currentPlayer = this.currentPlayer.team
+    console.log('team', currentPlayer)
     let pieces = Object.values(this.pieces)
 
     let infantry_men = pieces.filter(function (piece) {
         return piece.troopType === 'infantry'
     })
 
-    let cities = pieces.filter(function (piece) {
+    let cities = pieces.filter((piece) => {
        return piece.troopType === 'city'
     })
+    //adding money per each city
 
-    console.log(currentPlayer)
-
-    cities.forEach(function (city) {
-      infantry_men .forEach(function (infantry) {
+    cities.forEach((city) => {
+      console.log('city', city)
+      if(city.team == 'red' && currentPlayer == 'red') this.redTeam.money += 1000
+      if(city.team == 'blue' && currentPlayer == 'blue') this.blueTeam.money += 1000
+      infantry_men.forEach(function (infantry) {
         if (((city.position.x === infantry.position.x) && (city.position.y === infantry.position.y)) && (city.team === infantry.team)) {
           currentPlayer.team !== infantry.team && infantry.HP <= 10 ? infantry.HP += 2 : console.log('do nothing')
       }
@@ -277,6 +280,7 @@ export default class extends Phaser.State {
     let blueLose = true
     for (var piece in this.pieces) {
       const pc = this.pieces[piece]
+
 
       //if piece is dead
       if (pc.HP <= 0) {

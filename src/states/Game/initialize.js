@@ -101,7 +101,7 @@ export const loadLevel = (that) => {
 }
 
 const makeTroops = that => (sprite, event) => {
-  if (that.currentPlayer.team === sprite.team) {
+  if (that.currentPlayer.team === sprite.team && that.currentPlayer.money >= 4000) {
     var isThereSomethingThere = false;
     console.log('ANYTHING!')
     for (var key in that.pieces) {
