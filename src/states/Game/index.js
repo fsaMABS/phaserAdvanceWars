@@ -21,14 +21,12 @@ export default class extends Phaser.State {
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0
-      this.pieces[key].inputEnabled =
-        this.pieces[key].team === this.currentPlayer
+      this.pieces[key].inputEnabled = this.pieces[key].team === this.currentPlayer
     }
     this.playerText.text = this.currentPlayer
   }
 
   moveHere (sprite) {
-    console.log('sprite properties', sprite)
     this.selectedPiece.visible = true
     this.blocks.children.forEach(ele => {
       ele.alpha = 0
@@ -57,7 +55,6 @@ export default class extends Phaser.State {
         }, this)
       }
     )
-    console.log('spirteXSPriteY', this.selectedPiece.squareType = sprite.type)
     easystar.calculate()
   }
 
@@ -69,13 +66,10 @@ export default class extends Phaser.State {
         this.pieces[key].team !== this.selectedPiece.team &&
         this.pieces[key].key.indexOf('city') === -1
       ) {
-        let diffX = Math.abs(
-          this.pieces[key].position.x - this.selectedPiece.position.x
-        )
-        let diffY = Math.abs(
-          this.pieces[key].position.y - this.selectedPiece.position.y
-        )
-
+        //console.log('pieces', this.pieces[key].position.x, this.pieces[key].position.y)
+        let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
+        let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
+        
         if (diffX + diffY <= this.selectedPiece.attackRadius * 32) {
           defenders.push(this.pieces[key])
         }
@@ -83,6 +77,7 @@ export default class extends Phaser.State {
     }
 
     if (!this.attackButton || !this.attackButton.alive) {
+      console.log('getting here', defenders)
       if (defenders.length === 1) {
         this.attackButton = this.game.add.button(
           this.selectedPiece.x,
@@ -104,8 +99,7 @@ export default class extends Phaser.State {
         this.selectedPiece.x,
         this.selectedPiece.y + 32,
         'waitSprite',
-        () => this.wait(defenders),
-        this,
+        () => this.wait(defenders), this,
         2,
         1,
         0
@@ -119,7 +113,6 @@ export default class extends Phaser.State {
             this.selectedPiece.position.x === this.pieces[i].position.x &&
             this.selectedPiece.position.y === this.pieces[i].position.y
           ) {
-            console.log('thispieces', this.pieces[i].position)
             this.captButton = this.game.add.button(
               this.selectedPiece.x,
               this.selectedPiece.y + 32,
@@ -150,7 +143,6 @@ export default class extends Phaser.State {
   }
 
   attackPiece (attacker, defender, defenders) {
-    console.log('attacker defender', attacker, defender)
     this.disableDefenders(defenders)
     attacker.inputEnabled = false
     if (this.targets) this.targets.forEach(target => target.destroy())
@@ -164,8 +156,6 @@ export default class extends Phaser.State {
 
   captureCity (city, index, defenders) {
     let campedCity = this.pieces[index]
-    console.log('CC', campedCity.position)
-    console.log(this.pieces[index].position)
     this.disableDefenders(defenders)
 
     if (this.selectedPiece.team !== campedCity.team) {
@@ -187,7 +177,6 @@ export default class extends Phaser.State {
     // just a heads up
 
     if (campedCity.Cap <= 0) {
-      console.log('campedCity', campedCity)
       let newCityColorAsset =
         this.selectedPiece.team === 'red' ? 'city_red' : 'city_blue'
       var newCity = new City({
@@ -242,6 +231,7 @@ export default class extends Phaser.State {
       })
     }
   }
+
 
   wait (defenders) {
     this.disableDefenders(defenders)
