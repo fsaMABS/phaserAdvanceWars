@@ -34,6 +34,8 @@ export default class extends Phaser.State {
       ele.inputEnabled = false
     }, this)
     if (this.selectedPiece.team === this.currentPlayer.team) { this.changePosition = this.game.add.tween(this.selectedPiece) }
+
+    if (this.selectedPiece.team === this.currentPlayer) { this.changePosition = this.game.add.tween(this.selectedPiece) }
     easystar.findPath(
       this.selectedPiece.x / 32,
       this.selectedPiece.y / 32,
@@ -59,6 +61,8 @@ export default class extends Phaser.State {
     easystar.calculate()
   }
 
+  
+
   checkForPieceOptions () {
     let defenders = []
     for (var key in this.pieces) {
@@ -78,7 +82,6 @@ export default class extends Phaser.State {
     }
 
     if (!this.attackButton || !this.attackButton.alive) {
-      console.log('getting here', defenders)
       if (defenders.length === 1) {
         this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*2) + 35, 'fireSprite', 
           () => this.attackPiece(this.selectedPiece, defenders[0], defenders), this, 2, 1, 0)
