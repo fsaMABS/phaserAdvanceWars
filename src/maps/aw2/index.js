@@ -79,8 +79,8 @@ export const startingPieces = that => ({
   }),
   5: new Infantry({
     game: that.game,
-    x: 32 * 25,
-    y: 32 * 4,
+    x: 32 * 0,
+    y: 32 * 16,
     asset: 'infantry',
     width: 32,
     height: 32,
