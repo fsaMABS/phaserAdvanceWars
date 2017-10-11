@@ -2,6 +2,7 @@ import Infantry from '../../sprites/Infantry'
 import City from '../../sprites/City'
 import SmallTank from '../../sprites/SmallTank'
 import Factory from '../../sprites/Factory'
+import LongRange from '../../sprites/LongRange'
 import processMapcreateGrid from '../processMap'
 const mapdata = require('./map.json')
 
@@ -80,8 +81,8 @@ export const startingPieces = that => ({
   }),
   5: new Infantry({
     game: that.game,
-    x: 32 * 0,
-    y: 32 * 16,
+    x: 32 * 23,
+    y: 32 * 8,
     asset: 'infantry',
     width: 32,
     height: 32,
@@ -114,7 +115,7 @@ export const startingPieces = that => ({
   }),
   7: new SmallTank({
     game: that.game,
-    x: 32 * 1,
+    x: 32 * 4,
     y: 32 * 17,
     asset: 'smallTank_blue',
     width: 32,
@@ -189,5 +190,42 @@ export const startingPieces = that => ({
     team: 'neutral',
     isHQ: false,
     isFactory: true,
+  }),
+
+   12: new LongRange({
+    game: that.game,
+    x: 32 * 22,
+    y: 32 * 7,
+    asset: 'longRange_red',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 15,
+    player: 1,
+    id: 8,
+    mobility: 5,
+    team: 'red',
+    attackRadius: 4,
+    troopType: 'longRange',
+    squareType: 'land'
+  }),
+
+   13: new LongRange({
+    game: that.game,
+    x: 32 * 4,
+    y: 32 * 15,
+    asset: 'longRange_blue',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 15,
+    player: 1,
+    id: 8,
+    mobility: 5,
+    team: 'blue',
+    attackRadius: 4,
+    troopType: 'longRange',
+    squareType: 'land'
   })
+
 })
