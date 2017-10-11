@@ -100,21 +100,37 @@ export const loadLevel = (that) => {
   return newGrid
 }
 
-const makeTroops = that => (sprite, event) => {
-  if (that.currentPlayer.team === sprite.team && that.currentPlayer.money >= 4000) {
-    var isThereSomethingThere = false;
-    console.log('ANYTHING!')
-    for (var key in that.pieces) {
-      var currPieceX = that.pieces[key].position.x
-      var factoryPositionX = sprite.position.x
-      var currPieceY = that.pieces[key].position.y
-      var factoryPositionY = sprite.position.y + 32
-      if ((currPieceX === factoryPositionX) && (currPieceY === factoryPositionY)) {
-        isThereSomethingThere = true
-      }
+const somethingIsThere = (that, sprite) => {
+  let result = false;
+  for (var key in that.pieces) {
+    var currPieceX = that.pieces[key].position.x
+    var factoryPositionX = sprite.position.x
+    var currPieceY = that.pieces[key].position.y
+    var factoryPositionY = sprite.position.y + 32
+    if ((currPieceX === factoryPositionX) && (currPieceY === factoryPositionY)) {
+      result = true;
     }
-    console.log(isThereSomethingThere)  
-    if (!isThereSomethingThere) {
+  }
+  return result;
+}
+
+const makeTroops = that => (sprite, event) => {
+  const budget = that.currentPlayer.money
+  let selected = '';
+
+  if (that.currentPlayer.team === sprite.team && budget >= 1000) {
+    var somethingThere = somethingIsThere(that, sprite)
+    if (!somethingThere) {
+      //render out an option for what unit to buy
+      // if(budget >= 1000) {
+      //   that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*0) + 35, 'waitSprite',
+      //     () => console.log('infantry'), this, 2, 1, 0)
+      // } else if(budget >= 4000) {
+      //   that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*1) + 35, 'waitSprite',
+      //     () => console.log('small tank'), this, 2, 1, 0)
+      // }
+      console.log('selected', selected)
+
       that.currentPlayer.money -= 4000;
       var count = Object.keys(that.pieces).length;
       count = count + 1
@@ -137,8 +153,7 @@ const makeTroops = that => (sprite, event) => {
       })
       let newTroop = that.game.world.add(newTank)
       that.pieces[newTroop.id] = newTroop
-      newTroop.events.onInputDown.add(showMoves(that), this)
-      console.log(that.pieces)  
+      newTroop.events.onInputDown.add(showMoves(that), this) 
     }
   }
 }
