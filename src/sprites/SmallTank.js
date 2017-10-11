@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 
 export default class extends Phaser.Sprite {
-  constructor ({ game, x, y, asset, width, height, HP, AP, player, id, mobility, team , troopType}) {
+  constructor ({ game, x, y, asset, width, height, HP, AP, player, id, mobility, team, attackRadius, troopType}) {
     super(game, x, y, asset)
     this.scale.setTo(0.9)
     this.width = width
@@ -11,10 +11,11 @@ export default class extends Phaser.Sprite {
     this.player = player
     this.id = id
     this.mobility = mobility
-    this.team = team,
+    this.team = team
+    this.attackRadius = attackRadius
     this.troopType = troopType
   }
 
   update () {
   }
-  }
+}

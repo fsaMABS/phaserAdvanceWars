@@ -7,7 +7,6 @@ import newGrid from '../../processMap'
 import easystarjs from 'easystarjs'
 var easystarz = new easystarjs.js()
 
-
 export const startingPieces = that => ({
   // NEED TO ADD TYPES TO THE NAME AT SOME POINT
   1: new Infantry({
@@ -23,7 +22,7 @@ export const startingPieces = that => ({
     id: 1,
     mobility: 5,
     team: 'blue',
-    attackRadius: 2,
+    attackRadius: 1,
     troopType: 'infantry'
   }),
   2: new Infantry({
@@ -39,8 +38,8 @@ export const startingPieces = that => ({
     id: 2,
     mobility: 5,
     team: 'blue',
-    attackRadius: 2,
-    troopType: 'infantry'  
+    attackRadius: 1,
+    troopType: 'infantry'
   }),
   3: new SmallTank({
     game: that.game,
@@ -55,11 +54,26 @@ export const startingPieces = that => ({
     id: 3,
     mobility: 7,
     team: 'blue',
-    attackRadius: 2,
+    attackRadius: 1,
     troopType: 'smallTank'
   }),
-
-  4: new Infantry({
+  4: new SmallTank({
+    game: that.game,
+    x: 128,
+    y: 160,
+    asset: 'smallTank_red',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 2,
+    id: 2,
+    mobility: 7,
+    team: 'red',
+    attackRadius: 1,
+    troopType: 'smallTank'
+  }),
+  5: new Infantry({
     game: that.game,
     x: (32*25),
     y: 64,
@@ -74,7 +88,7 @@ export const startingPieces = that => ({
     team: 'red',
     attackRadius: 2    
   }),
-  5: new Infantry({
+  6: new Infantry({
     game: that.game,
     x: (32*24),
     y: (64),
@@ -89,7 +103,7 @@ export const startingPieces = that => ({
     team: 'red',
     attackRadius: 2    
   }),
-  6: new City({
+  7: new City({
     game: that.game,
     x: (32),
     y: (32*18),

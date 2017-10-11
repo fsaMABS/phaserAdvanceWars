@@ -20,7 +20,6 @@ export default class extends Phaser.State {
 
   togglePlayer () {
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
-    // ENABLE PIECES
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0;
       this.pieces[key].inputEnabled = this.pieces[key].team == this.currentPlayer ? true : false
@@ -58,8 +57,14 @@ export default class extends Phaser.State {
       if(this.pieces[key] !== this.selectedPiece && this.pieces[key].team !== this.selectedPiece.team && this.pieces[key].key.indexOf('city') === -1) {
         let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
         let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
-        if((diffX + diffY <= (this.selectedPiece.attackRadius*32))) {
+
+        console.log(diffX, diffY, this.selectedPiece)
+        console.log((diffX + diffY <= (this.selectedPiece.attackRadius * 32)))
+
+
+        if((diffX + diffY <= (this.selectedPiece.attackRadius * 32))) {
           defenders.push(this.pieces[key]);
+          console.log(defenders)
         }
       }
     }
@@ -180,7 +185,7 @@ export default class extends Phaser.State {
     this.selectedPiece = undefined;
   }
 
-  disableDefenders(defenders) {
+  disableDefenders (defenders) {
     if(defenders.length) {
       defenders.forEach(defender => {
         defender.inputEnabled = false;
@@ -207,7 +212,7 @@ export default class extends Phaser.State {
     // }, this.turnEnded);
   }
 
-  stayInPlace() {
+  stayInPlace () {
     this.shiftKey.onDown.remove(this.stayInPlace, this);
     this.blocks.children.forEach((ele) => {
       ele.alpha = 0
@@ -244,7 +249,7 @@ export default class extends Phaser.State {
       } 
       else {
         if (pc.children[0]) pc.children[0].destroy()          
-        let newHealth = this.game.add.text(40, 40, pc.HP, this.healthStyle)
+        let newHealth = this.game.add.text(60, 60, pc.HP, this.healthStyle)
         pc.addChild(newHealth);
       }
       if(pc.team == 'red') redLose = false
