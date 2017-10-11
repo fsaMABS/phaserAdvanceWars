@@ -61,8 +61,8 @@ export const startingPieces = that => ({
 
   4: new Infantry({
     game: that.game,
-    x: (32*25),
-    y: 64,
+    x: (32*5),
+    y: (32*18),
     asset: 'infantry',
     width: 32,
     height: 32,
@@ -76,8 +76,8 @@ export const startingPieces = that => ({
   }),
   5: new Infantry({
     game: that.game,
-    x: (32*24),
-    y: (64),
+    x: (32*6),
+    y: (32*18),
     asset: 'infantry',
     width: 32,
     height: 32,
@@ -221,8 +221,6 @@ const showMoves = that => (sprite, event) => {
             easystarz.setAcceptableTiles([0,2,3,4]);                        
           }
           return new Promise((resolve, reject) => {
-            console.log('sprite coords', sprite.x/32, sprite.y/32)
-            console.log('elexeley', ele.x/32, ele.y/32)
             easystarz.findPath(sprite.x/32, sprite.y/32, ele.x/32, ele.y/32, function( path ) {
               if (path === null || (path.length > sprite.mobility)) {
                 resolve(null)

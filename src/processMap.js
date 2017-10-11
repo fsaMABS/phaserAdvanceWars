@@ -42,7 +42,6 @@ export default function createGrid(boolean) {
             finaldata[i] = 4;
         }
     }
-    console.log('gridwidth', gridWidth)
     for (var i = 0; i < finaldata.length; i += gridWidth) {
         grid.push(finaldata.slice(i, i + gridWidth))
     }
