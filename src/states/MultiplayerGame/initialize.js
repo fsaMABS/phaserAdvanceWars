@@ -1,9 +1,8 @@
 import Infantry from '../../sprites/Infantry'
 import City from '../../sprites/City'
 import SmallTank from '../../sprites/SmallTank'
-import {checkType} from '../../levels/level1'
 import Block from '../../sprites/Block'
-import newGrid from '../../processMap'
+// import newGrid from '../../processMap'
 import easystarjs from 'easystarjs'
 var easystarz = new easystarjs.js()
 
@@ -118,8 +117,7 @@ export const loadLevel = (that) => {
   const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
   for (var i = 0; i < 3000; i = i + 32) {
     for (var j = 0; j < 3000; j = j + 32) {
-      var type = checkType(i, j)
-      var block = new Block(i, j, 'blueSquare', 32, 32, type)
+      var block = new Block(i, j, 'blueSquare', 32, 32, 'land')
       block.alpha = 0.0
       that.blocks.add(block)
       // that.fog.add(new Block(i, j, 'fogSquare', 32, 32, type))

@@ -16,7 +16,7 @@ firebase.initializeApp(FIREBASE_CONFIG)
 // write dumy data to start pple off
 function writeUserData () {
   firebase.database().ref('lobbies').set({
-    'VBusyLobby': {
+    VBusyLobby: {
       players: {
         1: {
           username: 'player1',

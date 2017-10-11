@@ -2,7 +2,7 @@
 import Phaser from 'phaser'
 import easystarjs from 'easystarjs'
 import {loadLevel} from './initialize'
-import newGrid from '../../processMap'
+// import newGrid from '../../processMap'
 import City from '../../sprites/City'
 // var easystarjs = require('easystarjs')
 var easystar = new easystarjs.js()
