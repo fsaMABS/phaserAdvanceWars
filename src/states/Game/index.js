@@ -60,7 +60,6 @@ export default class extends Phaser.State {
 
   checkForPieceOptions () {
     let defenders = []
-    console.log('selected', this.selectedPiece.position.x, this.selectedPiece.position.y)
     for (var key in this.pieces) {
       if (
         this.pieces[key] !== this.selectedPiece &&
