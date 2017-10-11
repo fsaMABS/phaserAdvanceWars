@@ -21,14 +21,13 @@ export default class extends Phaser.State {
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0
-      this.pieces[key].inputEnabled =
-        this.pieces[key].team === this.currentPlayer
+      this.pieces[key].inputEnabled = this.pieces[key].team === this.currentPlayer
     }
     this.playerText.text = this.currentPlayer
   }
 
   moveHere (sprite) {
-    console.log('sprite properties', sprite)
+    //console.log('sprite properties', sprite)
     this.selectedPiece.visible = true
     this.blocks.children.forEach(ele => {
       ele.alpha = 0
@@ -57,7 +56,7 @@ export default class extends Phaser.State {
         }, this)
       }
     )
-    console.log('spirteXSPriteY', this.selectedPiece.squareType = sprite.type)
+    //console.log('spirteXSPriteY', this.selectedPiece.squareType = sprite.type)
     easystar.calculate()
   }
 
@@ -107,8 +106,7 @@ export default class extends Phaser.State {
         this.selectedPiece.x,
         this.selectedPiece.y + 32,
         'waitSprite',
-        () => this.wait(defenders),
-        this,
+        () => this.wait(defenders), this,
         2,
         1,
         0
@@ -243,6 +241,7 @@ export default class extends Phaser.State {
       })
     }
   }
+
 
   wait (defenders) {
     this.disableDefenders(defenders)
