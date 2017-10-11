@@ -32,6 +32,7 @@ export default class extends Phaser.State {
       ele.alpha = 0
       ele.inputEnabled = false
     }, this)
+
     if (this.selectedPiece.team === this.currentPlayer) { this.changePosition = this.game.add.tween(this.selectedPiece) }
     easystar.findPath(
       this.selectedPiece.x / 32,
@@ -57,6 +58,8 @@ export default class extends Phaser.State {
     )
     easystar.calculate()
   }
+
+  
 
   checkForPieceOptions () {
     let defenders = []
