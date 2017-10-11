@@ -30,7 +30,7 @@ export default class extends Phaser.State {
     playerReady.anchor.set(0.5)
     const buton = this.game.add.text(this.game.world.centerX, startTop, 'WAITING FOR PLAYER 2', style)
     buton.anchor.set(0.5)
-    firebase.database().ref('lobbies/' + this.game.lobby).on('value', snapshot => {
+    firebase.database().ref('lobbiesTest/' + this.game.lobby).on('value', snapshot => {
       console.log('****firebase***', snapshot.toJSON())
       const lobbies = snapshot.toJSON().players
       let currentUserKey
@@ -45,7 +45,7 @@ export default class extends Phaser.State {
       if (lobbylist[0][1] && lobbylist[1][1]) {
         // if both are ready, start the game
         this.state.start('MultiplayerGame')
-        firebase.database().ref('lobbies/' + this.game.lobby).off()
+        firebase.database().ref('lobbiesTest/' + this.game.lobby).off()
       }
 
       var headings = [ 'Username', 'Ready?', 'role' ]
@@ -69,7 +69,7 @@ export default class extends Phaser.State {
               [currentUserKey]: this.game.currentUser
             })
           }
-          firebase.database().ref('lobbies/' + this.game.lobby).set(newPlayerData)
+          firebase.database().ref('lobbiesTest/' + this.game.lobby).set(newPlayerData)
           if (!lobbylist[0][1] && !lobbylist[1][1]) {
             // if both not ready, set self to ready and wait
             buton.setText('WAITING FOR OTHER PLAYER...')
@@ -77,7 +77,7 @@ export default class extends Phaser.State {
           } else {
             // if both are ready, start the game
             this.state.start('MultiplayerGame')
-            firebase.database().ref('lobbies/' + this.game.lobby).off()
+            firebase.database().ref('lobbiesTest/' + this.game.lobby).off()
           }
         }, this)
       }

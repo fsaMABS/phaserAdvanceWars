@@ -3,7 +3,6 @@ import newGrid, {startingPieces} from '../../maps/aw2'
 import easystarjs from 'easystarjs'
 var easystarz = new easystarjs.js()
 
-
 export const loadLevel = (that) => {
   that.background = that.game.add.sprite(0, 0, 'aw1Map')
   that.scale.pageAlignHorizontally = true

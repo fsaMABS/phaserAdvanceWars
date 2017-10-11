@@ -15,7 +15,7 @@ firebase.initializeApp(FIREBASE_CONFIG)
 
 // write dumy data to start pple off
 function writeUserData () {
-  firebase.database().ref('lobbies').set({
+  firebase.database().ref('lobbiesTest').set({
     VBusyLobby: {
       players: {
         1: {
@@ -35,6 +35,6 @@ function writeUserData () {
 }
 
 writeUserData()
-firebase.database().ref('lobbies').on('value', snapshot => {
+firebase.database().ref('lobbiesTest').on('value', snapshot => {
   fbdata = snapshot.toJSON()
 })
