@@ -45,12 +45,8 @@ const createPieces = (that) => {
     let added = that.game.world.add(current)
     added.inputEnabled = true
     if (added.key.indexOf('city') === -1) { added.events.onInputDown.add(showMoves(that), this) }
-    if (added.isFactory) { 
-      added.events.onInputDown.add(makeTroops(that), this) 
-    }
-
+    if (added.isFactory) { added.events.onInputDown.add(makeTroops(that), this) }
     that.pieces[key] = added
-    // revealedFog.push({ x: current.position.x, y: current.position.y })
 
     if(that.pieces[key].key.indexOf('city') === -1) {
       let healthShape = that.game.add.graphics(30, 30);
@@ -170,7 +166,7 @@ const addTroopToBoard = (that, sprite, pieceType, value) => {
         HP: 10,
         AP: 15,
         player: 1,
-        id: 8,
+        id: count,
         mobility: 5,
         team: that.currentPlayer.team,
         attackRadius: 4,
@@ -303,8 +299,8 @@ const removeOtherShowMoves = (pieces, spriteId) => {
 
 
 
-
-
+//goes in createPieces
+// revealedFog.push({ x: current.position.x, y: current.position.y })
 //goes in loadLevel
 // const revealedFog = []
 

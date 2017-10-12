@@ -83,7 +83,7 @@ export default class extends Phaser.State {
 
     if (!this.attackButton || !this.attackButton.alive) {
       if (defenders.length === 1) {
-        this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*2) + 35, 'fireSprite', 
+        this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*0) + 35, 'fireSprite', 
           () => this.attackPiece(this.selectedPiece, defenders[0], defenders), this, 2, 1, 0)
       } else if (defenders.length > 1) {
         this.selectTargets(this.selectedPiece, defenders)
@@ -102,7 +102,7 @@ export default class extends Phaser.State {
             this.selectedPiece.position.x === this.pieces[i].position.x &&
             this.selectedPiece.position.y === this.pieces[i].position.y
           ) {
-            this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*3) + 35, 'captSprite',
+            this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*2) + 35, 'captSprite',
               () => this.captureCity(this.pieces[i].position, i, defenders), this, 2, 1, 0)
             break;
           }
@@ -129,7 +129,12 @@ export default class extends Phaser.State {
     if (this.targets) this.targets.forEach(target => target.destroy())
     defender.HP -= attacker.AP
     this.add.tween(defender).to( { alpha: 0}, 80, Phaser.Easing.Linear.None, true, 0, 5, true);
-    if (defender.HP >= 0) {
+
+    let diffX = Math.abs(defender.position.x - attacker.position.x)
+    let diffY = Math.abs(defender.position.y - attacker.position.y)
+    let canAttackBack = ((diffX + diffY) <= defender.attackRadius * 32) ? true : false;
+
+    if (defender.HP >= 0 && canAttackBack) {
       let defenderAttack = Math.floor(defender.AP / 2)
       attacker.HP -= defenderAttack
       this.add.tween(attacker).to( { alpha: 0, tint: 0xffffff}, 80, Phaser.Easing.Linear.None, true, 0, 3, true);
