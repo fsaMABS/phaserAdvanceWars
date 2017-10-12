@@ -189,8 +189,8 @@ const addTroopToBoard = (that, sprite, pieceType, value) => {
 } 
 
 const addChoiceButton = (that, sprite, pieceType, value, offset) => {
-  const button = that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*offset) + 35, 'add_' + pieceType + '_' + that.currentPlayer.team,
-    () => addTroopToBoard(that, sprite, pieceType, 1000), this, 2, 1, 0)
+  const button = that.game.add.button(sprite.x + 35, sprite.y + (32*offset) + 35, 'add_' + pieceType + '_' + that.currentPlayer.team,
+    () => addTroopToBoard(that, sprite, pieceType, value), this, 2, 1, 0)
   const text = that.game.add.text(sprite.x + 70, sprite.y + (32*offset) + 40, '$' + value, {font: '18px Arial', fill: 'black' })
   addTroopButtons.push(button, text)
   button.events.onInputOver.add(() => button.tint = 0xd9cece, this)
