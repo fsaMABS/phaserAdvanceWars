@@ -83,7 +83,7 @@ export const startingPieces = that => ({
     game: that.game,
     x: 32 * 22,
     y: 32 * 5,
-    asset: 'infantry',
+    asset: 'infantry_red',
     width: 32,
     height: 32,
     HP: 10,
@@ -100,7 +100,7 @@ export const startingPieces = that => ({
     game: that.game,
     x: 32 * 24,
     y: 32 * 4,
-    asset: 'infantry',
+    asset: 'infantry_red',
     width: 32,
     height: 32,
     HP: 10,
@@ -147,7 +147,7 @@ export const startingPieces = that => ({
     troopType: 'infantry',
     squareType: 'land'
   }),
-  9: new City({
+  9: new Factory({
     game: that.game,
     x: 32 * 5,
     y: 32 * 14,
@@ -160,7 +160,8 @@ export const startingPieces = that => ({
     id: 9,
     team: 'blue',
     isHQ: false,
-    troopType: 'city'
+    troopType: 'city',
+    isFactory: true
   }),
   10: new City({
     game: that.game,
@@ -241,7 +242,7 @@ export const startingPieces = that => ({
     game: that.game,
     x: 32 * 23,
     y: 32 * 5,
-    asset: 'infantry',
+    asset: 'infantry_red',
     width: 32,
     height: 32,
     HP: 10,

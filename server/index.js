@@ -2,8 +2,10 @@ const firebase = require('firebase')
 const FIREBASE_CONFIG = require('./config').FIREBASE_CONFIG
 
 const server = require('swyx')()
-
 const app = server.app
+app.on('listening', () => {
+    console.log("LISTENING MY DUDES")
+  })
 app.get('/api', (req, res) => res.send('this is api route'))
 
 let fbdata = {}

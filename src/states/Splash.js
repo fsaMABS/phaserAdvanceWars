@@ -20,12 +20,19 @@ export default class extends Phaser.State {
     this.load.setPreloadSprite(this.loaderBar)
     this.load.spritesheet('explode', 'assets/images/explode.png', 32, 32);
     this.load.image('background', 'assets/images/menubackground.png')
-    this.load.image('infantry', 'assets/images/infantry.png')
+    this.load.image('infantry_red', 'assets/images/infantry.png')
     this.load.image('infantry_blue', 'assets/images/infantry_blue.png')
     this.load.image('smallTank_blue', 'assets/images/smallTank_blue.png')
     this.load.image('smallTank_red', 'assets/images/smallTank_red.png')
     this.load.image('longRange_blue', 'assets/images/longRange_blue.png')
     this.load.image('longRange_red', 'assets/images/longRange_red.png')
+
+    this.load.image('add_infantry_red', 'assets/images/add_infantry_red.png')
+    this.load.image('add_smallTank_red', 'assets/images/add_smallTank_red.png')
+    this.load.image('add_longRange_red', 'assets/images/add_longRange_red.png')
+    this.load.image('add_infantry_blue', 'assets/images/add_infantry_blue.png')
+    this.load.image('add_smallTank_blue', 'assets/images/add_smallTank_blue.png')
+    this.load.image('add_longRange_blue', 'assets/images/add_longRange_blue.png')
 
     this.load.image('city_blue', 'assets/images/city_blue.png')
     this.load.image('city_red', 'assets/images/city_red.png')
@@ -42,7 +49,7 @@ export default class extends Phaser.State {
   }
 
   create () {
-    this.state.start('MainMenu')
-    // this.state.start('Game');
+    //this.state.start('MainMenu')
+    this.state.start('Game');
   }
 }

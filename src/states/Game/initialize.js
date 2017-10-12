@@ -2,6 +2,8 @@ import Block from '../../sprites/Block'
 import newGrid, {startingPieces} from '../../maps/aw2'
 import easystarjs from 'easystarjs'
 import SmallTank from '../../sprites/SmallTank'
+import Infantry from '../../sprites/Infantry'
+import LongRange from '../../sprites/LongRange'
 var easystarz = new easystarjs.js()
 
 const setupPiece = (piece) => {
@@ -100,6 +102,8 @@ export const loadLevel = (that) => {
   return newGrid
 }
 
+const addTroopButtons = []
+
 const somethingIsThere = (that, sprite) => {
   let result = false;
   for (var key in that.pieces) {
@@ -114,31 +118,36 @@ const somethingIsThere = (that, sprite) => {
   return result;
 }
 
-const makeTroops = that => (sprite, event) => {
-  const budget = that.currentPlayer.money
-  let selected = '';
-
-  if (that.currentPlayer.team === sprite.team && budget >= 1000) {
-    var somethingThere = somethingIsThere(that, sprite)
-    if (!somethingThere) {
-      //render out an option for what unit to buy
-      // if(budget >= 1000) {
-      //   that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*0) + 35, 'waitSprite',
-      //     () => console.log('infantry'), this, 2, 1, 0)
-      // } else if(budget >= 4000) {
-      //   that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*1) + 35, 'waitSprite',
-      //     () => console.log('small tank'), this, 2, 1, 0)
-      // }
-      console.log('selected', selected)
-
-      that.currentPlayer.money -= 4000;
-      var count = Object.keys(that.pieces).length;
-      count = count + 1
-      var newTank = new SmallTank({
+const addTroopToBoard = (that, sprite, pieceType, value) => {
+  that.currentPlayer.money -= value;
+  let newPiece;
+  let count = Object.keys(that.pieces).length;
+  count = count + 1
+  switch(pieceType) {
+    case 'infantry':
+      newPiece = new Infantry({
         game: that.game,
         x: sprite.x,
         y: sprite.y + 32,
-        asset: 'smallTank_red',
+        asset: 'infantry_' + that.currentPlayer.team,
+        width: 32,
+        height: 32,
+        HP: 10, 
+        AP: 4,
+        player: 2,
+        id: count,
+        mobility: 5,
+        team: that.currentPlayer.team,
+        attackRadius: 1,
+        troopType: 'infantry'
+      })
+      break;
+    case 'smallTank':
+      newPiece = new SmallTank({
+        game: that.game,
+        x: sprite.x,
+        y: sprite.y + 32,
+        asset: 'smallTank_' + that.currentPlayer.team,
         width: 32,
         height: 32,
         HP: 20,
@@ -146,14 +155,62 @@ const makeTroops = that => (sprite, event) => {
         player: 2,
         id: count,
         mobility: 7,
-        team: 'red',
+        team: that.currentPlayer.team,
         attackRadius: 1,
         troopType: 'smallTank',
         squareType: 'land'
       })
-      let newTroop = that.game.world.add(newTank)
-      that.pieces[newTroop.id] = newTroop
-      newTroop.events.onInputDown.add(showMoves(that), this) 
+      break;
+    case 'longRange': 
+      newPiece = new LongRange({
+        game: that.game,
+        x: sprite.x,
+        y: sprite.y + 32,
+        asset: 'longRange_' + that.currentPlayer.team,
+        width: 32,
+        height: 32,
+        HP: 10,
+        AP: 15,
+        player: 1,
+        id: 8,
+        mobility: 5,
+        team: that.currentPlayer.team,
+        attackRadius: 4,
+        troopType: 'longRange',
+        squareType: 'land'
+      })
+      break;
+    }
+  addTroopButtons.forEach(button => button.destroy());
+  let newTroop = that.game.world.add(newPiece)
+  newTroop.alpha = 0.7
+  that.pieces[newTroop.id] = newTroop
+  newTroop.events.onInputDown.add(showMoves(that), this) 
+} 
+
+const addChoiceButton = (that, sprite, pieceType, value, offset) => {
+  const button = that.game.add.button(sprite.x + 35, sprite.y + (32*offset) + 35, 'add_' + pieceType + '_' + that.currentPlayer.team,
+    () => addTroopToBoard(that, sprite, pieceType, value), this, 2, 1, 0)
+  const text = that.game.add.text(sprite.x + 70, sprite.y + (32*offset) + 40, '$' + value, {font: '18px Arial', fill: 'black' })
+  addTroopButtons.push(button, text)
+  button.events.onInputOver.add(() => button.tint = 0xd9cece, this)
+  button.events.onInputOut.add(() => button.tint = 0xfffbfb, this)
+}
+
+const makeTroops = that => (sprite, event) => {
+  const budget = that.currentPlayer.money
+  if (that.currentPlayer.team === sprite.team && budget >= 1000) {
+    let somethingThere = somethingIsThere(that, sprite)
+    if (!somethingThere) {
+      if(budget >= 1000) {
+        addChoiceButton(that, sprite, 'infantry', 1000, 0)
+      } 
+      if(budget >= 4000) {
+        addChoiceButton(that, sprite, 'smallTank', 4000, 1)
+      }
+      if(budget >= 6000) {
+        addChoiceButton(that, sprite, 'longRange', 6000, 2)
+      }
     }
   }
 }
