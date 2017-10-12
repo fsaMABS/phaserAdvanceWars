@@ -2,6 +2,8 @@ import Block from '../../sprites/Block'
 import newGrid, {startingPieces} from '../../maps/aw2'
 import easystarjs from 'easystarjs'
 import SmallTank from '../../sprites/SmallTank'
+import Infantry from '../../sprites/Infantry'
+import LongRange from '../../sprites/LongRange'
 var easystarz = new easystarjs.js()
 
 const setupPiece = (piece) => {
@@ -114,31 +116,36 @@ const somethingIsThere = (that, sprite) => {
   return result;
 }
 
-const makeTroops = that => (sprite, event) => {
-  const budget = that.currentPlayer.money
-  let selected = '';
-
-  if (that.currentPlayer.team === sprite.team && budget >= 1000) {
-    var somethingThere = somethingIsThere(that, sprite)
-    if (!somethingThere) {
-      //render out an option for what unit to buy
-      // if(budget >= 1000) {
-      //   that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*0) + 35, 'waitSprite',
-      //     () => console.log('infantry'), this, 2, 1, 0)
-      // } else if(budget >= 4000) {
-      //   that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*1) + 35, 'waitSprite',
-      //     () => console.log('small tank'), this, 2, 1, 0)
-      // }
-      console.log('selected', selected)
-
-      that.currentPlayer.money -= 4000;
-      var count = Object.keys(that.pieces).length;
-      count = count + 1
-      var newTank = new SmallTank({
+const addTroopToBoard = (that, sprite, pieceType, value) => {
+  that.currentPlayer.money -= value;
+  let newPiece;
+  let count = Object.keys(that.pieces).length;
+  count = count + 1
+  switch(pieceType) {
+    case 'infantry':
+      newPiece = new Infantry({
         game: that.game,
         x: sprite.x,
         y: sprite.y + 32,
-        asset: 'smallTank_red',
+        asset: 'infantry_' + that.currentPlayer.team,
+        width: 32,
+        height: 32,
+        HP: 10, 
+        AP: 4,
+        player: 2,
+        id: count,
+        mobility: 5,
+        team: that.currentPlayer.team,
+        attackRadius: 1,
+        troopType: 'infantry'
+      })
+      break;
+    case 'smallTank':
+      newPiece = new SmallTank({
+        game: that.game,
+        x: sprite.x,
+        y: sprite.y + 32,
+        asset: 'smallTank_' + that.currentPlayer.team,
         width: 32,
         height: 32,
         HP: 20,
@@ -146,14 +153,63 @@ const makeTroops = that => (sprite, event) => {
         player: 2,
         id: count,
         mobility: 7,
-        team: 'red',
+        team: that.currentPlayer.team,
         attackRadius: 1,
         troopType: 'smallTank',
         squareType: 'land'
       })
-      let newTroop = that.game.world.add(newTank)
-      that.pieces[newTroop.id] = newTroop
-      newTroop.events.onInputDown.add(showMoves(that), this) 
+      break;
+    case 'rockets': 
+      newPiece = new LongRange({
+        game: that.game,
+        x: sprite.x,
+        y: sprite.y + 32,
+        asset: 'longRange_' + that.currentPlayer.team,
+        width: 32,
+        height: 32,
+        HP: 10,
+        AP: 15,
+        player: 1,
+        id: 8,
+        mobility: 5,
+        team: that.currentPlayer.team,
+        attackRadius: 4,
+        troopType: 'longRange',
+        squareType: 'land'
+      })
+      break;
+    }
+  that.addTroopButtons.forEach(button => button.destroy());
+  let newTroop = that.game.world.add(newPiece)
+  newTroop.alpha = 0.7
+  that.pieces[newTroop.id] = newTroop
+  newTroop.events.onInputDown.add(showMoves(that), this) 
+} 
+
+const makeTroops = that => (sprite, event) => {
+  const budget = that.currentPlayer.money
+  that.addTroopButtons = [];
+  if (that.currentPlayer.team === sprite.team && budget >= 1000) {
+    var somethingThere = somethingIsThere(that, sprite)
+    if (!somethingThere) {
+      if(budget >= 1000) {
+        const addInfantry = that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*0) + 35, 'add_infantry_red',
+          () => addTroopToBoard(that, sprite, 'infantry', 1000), this, 2, 1, 0)
+          const text = that.game.add.text(sprite.x + 70, sprite.y + (32*0) + 40, '$' + 1000, {font: '18px Arial', fill: 'black' })
+        that.addTroopButtons.push(addInfantry, text)
+      } 
+      if(budget >= 4000) {
+        const addSmallTank = that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*1) + 35, 'add_smallTank_red',
+          () => addTroopToBoard(that, sprite, 'smallTank', 4000), this, 2, 1, 0)
+        const text = that.game.add.text(sprite.x + 70, sprite.y + (32*1) + 40, '$' + 4000, {font: '18px Arial', fill: 'black' })
+        that.addTroopButtons.push(addSmallTank, text)
+      }
+      if(budget >= 6000) {
+        const addRockets = that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*2) + 35, 'add_longRange_red',
+          () => addTroopToBoard(that, sprite, 'rockets', 6000), this, 2, 1, 0)
+        const text = that.game.add.text(sprite.x + 70, sprite.y + (32*2) + 40, '$' + 6000, {font: '18px Arial', fill: 'black' })
+      that.addTroopButtons.push(addRockets)
+      }
     }
   }
 }
