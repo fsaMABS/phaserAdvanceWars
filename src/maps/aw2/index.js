@@ -2,6 +2,7 @@ import Infantry from '../../sprites/Infantry'
 import City from '../../sprites/City'
 import SmallTank from '../../sprites/SmallTank'
 import Factory from '../../sprites/Factory'
+import Boat from '../../sprites/Boat'
 import LongRange from '../../sprites/LongRange'
 import processMapcreateGrid from '../processMap'
 const mapdata = require('./map.json')
@@ -236,7 +237,7 @@ export const startingPieces = that => ({
     id: 14,
     team: 'neutral',
     isHQ: false,
-    troopType: 'city'
+    isFactory: true
   }),
   15: new Infantry({
     game: that.game,
@@ -272,8 +273,7 @@ export const startingPieces = that => ({
     troopType: 'smallTank',
     squareType: 'land'
   }),
-
-   17: new LongRange({
+  17: new LongRange({
     game: that.game,
     x: 32 * 22,
     y: 32 * 7,
@@ -290,7 +290,6 @@ export const startingPieces = that => ({
     troopType: 'longRange',
     squareType: 'land'
   }),
-
    18: new LongRange({
     game: that.game,
     x: 32 * 4,
@@ -307,5 +306,107 @@ export const startingPieces = that => ({
     attackRadius: 4,
     troopType: 'longRange',
     squareType: 'land'
+  }),
+  19: new Boat({
+    game: that.game,
+    x: 32 * 2,
+    y: 32 * 13,
+    asset: 'boat_blue',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 1,
+    id: 12,
+    mobility: 5,
+    team: 'blue',
+    attackRadius: 6,
+    troopType: 'boat',
+    squareType: 'water'
+  }),
+  20: new Boat({
+    game: that.game,
+    x: 32 * 8,
+    y: 32 * 7,
+    asset: 'boat_red',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 1,
+    id: 13,
+    mobility: 5,
+    team: 'red',
+    attackRadius: 6,
+    troopType: 'boat',
+    squareType: 'water'
+  }),
+  21: new Boat({
+    game: that.game,
+    x: 32 * 8,
+    y: 32 * 18,
+    asset: 'boat_blue',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 1,
+    id: 15,
+    mobility: 5,
+    team: 'blue',
+    attackRadius: 6,
+    troopType: 'boat',
+    squareType: 'water'
+  }),
+  22: new Boat({
+    game: that.game,
+    x: 32 * 12,
+    y: 32 * 1,
+    asset: 'boat_red',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 1,
+    id: 16,
+    mobility: 5,
+    team: 'red',
+    attackRadius: 6,
+    troopType: 'boat',
+    squareType: 'water'
+  }),
+  23: new Boat({
+    game: that.game,
+    x: 32 * 12,
+    y: 32 * 12,
+    asset: 'boat_blue',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 1,
+    id: 17,
+    mobility: 5,
+    team: 'blue',
+    attackRadius: 6,
+    troopType: 'boat',
+    squareType: 'water'
+  }),
+  24: new Boat({
+    game: that.game,
+    x: 32 * 19,
+    y: 32 * 14,
+    asset: 'boat_red',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 1,
+    id: 17,
+    mobility: 5,
+    team: 'red',
+    attackRadius: 6,
+    troopType: 'boat',
+    squareType: 'water'
   })
 })

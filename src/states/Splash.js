@@ -24,6 +24,8 @@ export default class extends Phaser.State {
     this.load.image('infantry_blue', 'assets/images/infantry_blue.png')
     this.load.image('smallTank_blue', 'assets/images/smallTank_blue.png')
     this.load.image('smallTank_red', 'assets/images/smallTank_red.png')
+    this.load.image('boat_red', 'assets/images/boat_red.png')
+    this.load.image('boat_blue', 'assets/images/boat_blue.png')
     this.load.image('longRange_blue', 'assets/images/longRange_blue.png')
     this.load.image('longRange_red', 'assets/images/longRange_red.png')
 

@@ -12,8 +12,7 @@ export default class extends Phaser.State {
   }
 
   create () {
-    console.log('this', this)
-    easystar.setAcceptableTiles([0, 2, 3, 4])
+    easystar.setAcceptableTiles([0, 1, 2, 3, 4])
     const level = loadLevel(this)
     easystar.setGrid(level())
   }
@@ -59,19 +58,19 @@ export default class extends Phaser.State {
   // CHECK FOR ACTION OPTIONS
   checkForPieceOptions () {
     let defenders = this.checkForDefenders();
-    if (!this.waitButton || !this.waitButton.alive) this.showWaitOption()
-    if (!this.attackButton || !this.attackButton.alive) this.showAttackOption()
-    if (!this.captButton || !this.captButton.alive) this.showCaptOption()
+    if (!this.waitButton || !this.waitButton.alive) this.showWaitOption(defenders)
+    if (!this.attackButton || !this.attackButton.alive) this.showAttackOption(defenders)
+    if (!this.captButton || !this.captButton.alive) this.showCaptOption(defenders)
   }
 
 
   // ACTION OPTIONS
-  showWaitOption() {
+  showWaitOption(defenders) {
     this.canEndTurn = false
     this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*1) + 35, 'waitSprite',
       () => this.wait(defenders), this, 2, 1, 0)
   }
-  showAttackOption() {
+  showAttackOption(defenders) {
     if (defenders.length === 1) {
       this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*0) + 35, 'fireSprite', 
         () => this.attackPiece(this.selectedPiece, defenders[0], defenders), this, 2, 1, 0)
@@ -79,7 +78,7 @@ export default class extends Phaser.State {
       this.selectTargets(this.selectedPiece, defenders)
     }
   }
-  showCaptOption() {
+  showCaptOption(defenders) {
     for (var i in this.pieces) {
       if (this.pieces[i].key.indexOf('city') !== -1) {
         if (
