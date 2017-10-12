@@ -12,7 +12,7 @@ export default class extends Phaser.State {
   }
 
   create () {
-    easystar.setAcceptableTiles([0, 2, 3, 4])
+    easystar.setAcceptableTiles([0, 1, 2, 3, 4])
     const level = loadLevel(this)
     easystar.setGrid(level())
   }
@@ -33,12 +33,15 @@ export default class extends Phaser.State {
       ele.inputEnabled = false
     }, this)
     if (this.selectedPiece.team === this.currentPlayer) { this.changePosition = this.game.add.tween(this.selectedPiece) }
+      console.log(this.selectedPiece.x, sprite.x)
+      console.log(this.selectedPiece.y, sprite.y)
     easystar.findPath(
       this.selectedPiece.x / 32,
       this.selectedPiece.y / 32,
       sprite.x / 32,
       sprite.y / 32,
       path => {
+        console.log(path)
         this.changePosition = this.game.add.tween(this.selectedPiece)
         for (var i = 0; i < path.length; i++) {
           var currCoords = path[i]

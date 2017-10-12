@@ -151,7 +151,7 @@ const showMoves = that => (sprite, event) => {
               case 'smallTank':
                 easystarz.setAcceptableTiles([0, 2])
                 break
-              case 'ship':
+              case 'boat':
                 easystarz.setAcceptableTiles([1])
                 break
               default:
