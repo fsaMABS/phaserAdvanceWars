@@ -22,7 +22,7 @@ export default class extends Phaser.State {
     this.currentPlayer = this.currentPlayer.team === 'red' ? this.blueTeam : this.redTeam
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0
-      this.pieces[key].inputEnabled = this.pieces[key].team === this.currentPlayer.team
+      this.pieces[key].inputEnabled = this.pieces[key].team == this.currentPlayer.team
     }
     this.playerText.text = this.currentPlayer.team
   }
@@ -35,7 +35,6 @@ export default class extends Phaser.State {
       ele.inputEnabled = false
     }, this)
     if (this.selectedPiece.team === this.currentPlayer.team) { this.changePosition = this.game.add.tween(this.selectedPiece) }
-    if (this.selectedPiece.team === this.currentPlayer) { this.changePosition = this.game.add.tween(this.selectedPiece) }
     easystar.findPath(this.selectedPiece.x / 32, this.selectedPiece.y / 32, sprite.x / 32, sprite.y / 32, 
       path => this.moveAndShowOptions(path)
     )
@@ -59,19 +58,19 @@ export default class extends Phaser.State {
   // CHECK FOR ACTION OPTIONS
   checkForPieceOptions () {
     let defenders = this.checkForDefenders();
-    if (!this.waitButton || !this.waitButton.alive) this.showWaitOption()
-    if (!this.attackButton || !this.attackButton.alive) this.showAttackOption()
-    if (!this.captButton || !this.captButton.alive) this.showCaptOption()
+    if (!this.waitButton || !this.waitButton.alive) this.showWaitOption(defenders)
+    if (!this.attackButton || !this.attackButton.alive) this.showAttackOption(defenders)
+    if (!this.captButton || !this.captButton.alive) this.showCaptOption(defenders)
   }
 
 
   // ACTION OPTIONS
-  showWaitOption() {
+  showWaitOption(defenders) {
     this.canEndTurn = false
     this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*1) + 35, 'waitSprite',
       () => this.wait(defenders), this, 2, 1, 0)
   }
-  showAttackOption() {
+  showAttackOption(defenders) {
     if (defenders.length === 1) {
       this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*0) + 35, 'fireSprite', 
         () => this.attackPiece(this.selectedPiece, defenders[0], defenders), this, 2, 1, 0)
@@ -79,7 +78,7 @@ export default class extends Phaser.State {
       this.selectTargets(this.selectedPiece, defenders)
     }
   }
-  showCaptOption() {
+  showCaptOption(defenders) {
     for (var i in this.pieces) {
       if (this.pieces[i].key.indexOf('city') !== -1) {
         if (
