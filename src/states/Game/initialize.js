@@ -12,6 +12,7 @@ const setupPiece = (piece) => {
     piece.animations.add('explode');
 }
 
+
 const createGrid = (that) => {
   for (var i = 0; i <= 928; i = i + 32) {
     for (var j = 0; j <= 768; j = j + 32) {
