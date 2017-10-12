@@ -203,7 +203,7 @@ export const startingPieces = that => ({
     Def: 3,
     Cap: 20,
     player: 1,
-    id: 10,
+    id: 12,
     team: 'red',
     isHQ: false,
     troopType: 'city'
@@ -218,7 +218,7 @@ export const startingPieces = that => ({
     Def: 3,
     Cap: 20,
     player: 1,
-    id: 10,
+    id: 13,
     team: 'neutral',
     isHQ: false,
     troopType: 'city'
@@ -233,7 +233,7 @@ export const startingPieces = that => ({
     Def: 3,
     Cap: 20,
     player: 1,
-    id: 10,
+    id: 14,
     team: 'neutral',
     isHQ: false,
     troopType: 'city'
@@ -248,7 +248,7 @@ export const startingPieces = that => ({
     HP: 10,
     AP: 5,
     player: 2,
-    id: 6,
+    id: 15,
     mobility: 5,
     team: 'red',
     attackRadius: 2,
@@ -265,7 +265,7 @@ export const startingPieces = that => ({
     HP: 20,
     AP: 8,
     player: 2,
-    id: 4,
+    id: 16,
     mobility: 7,
     team: 'red',
     attackRadius: 1,
@@ -283,7 +283,7 @@ export const startingPieces = that => ({
     HP: 10,
     AP: 15,
     player: 1,
-    id: 8,
+    id: 17,
     mobility: 5,
     team: 'red',
     attackRadius: 4,
@@ -301,12 +301,11 @@ export const startingPieces = that => ({
     HP: 10,
     AP: 15,
     player: 1,
-    id: 8,
+    id: 18,
     mobility: 5,
     team: 'blue',
     attackRadius: 4,
     troopType: 'longRange',
     squareType: 'land'
   })
-
 })
