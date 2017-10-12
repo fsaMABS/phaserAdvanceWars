@@ -308,5 +308,4 @@ export const startingPieces = that => ({
     troopType: 'longRange',
     squareType: 'land'
   })
-
 })

@@ -27,6 +27,7 @@ export default class extends Phaser.State {
     this.playerText.text = this.currentPlayer.team
   }
 
+  // CALCULATE PATH
   moveHere (sprite) {
     this.selectedPiece.visible = true
     this.blocks.children.forEach(ele => {
@@ -41,6 +42,7 @@ export default class extends Phaser.State {
     easystar.calculate()
   }
 
+  // MOVE PIECE
   moveAndShowOptions(path) {
     this.changePosition = this.game.add.tween(this.selectedPiece)
     for (var i = 0; i < path.length; i++) {
@@ -54,33 +56,39 @@ export default class extends Phaser.State {
     }, this)
   }
 
+  // CHECK FOR ACTION OPTIONS
   checkForPieceOptions () {
     let defenders = this.checkForDefenders();
-    if (!this.attackButton || !this.attackButton.alive) {
-      if (defenders.length === 1) {
-        this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*0) + 35, 'fireSprite', 
-          () => this.attackPiece(this.selectedPiece, defenders[0], defenders), this, 2, 1, 0)
-      } else if (defenders.length > 1) {
-        this.selectTargets(this.selectedPiece, defenders)
-      }
-    }
-    if (!this.waitButton || !this.waitButton.alive) {
-      this.canEndTurn = false
-      this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*1) + 35, 'waitSprite',
-        () => this.wait(defenders), this, 2, 1, 0)
-    }
+    if (!this.waitButton || !this.waitButton.alive) this.showWaitOption()
+    if (!this.attackButton || !this.attackButton.alive) this.showAttackOption()
+    if (!this.captButton || !this.captButton.alive) this.showCaptOption()
+  }
 
-    if (!this.captButton || !this.captButton.alive) {
-      for (var i in this.pieces) {
-        if (this.pieces[i].key.indexOf('city') !== -1) {
-          if (
-            this.selectedPiece.position.x === this.pieces[i].position.x &&
-            this.selectedPiece.position.y === this.pieces[i].position.y
-          ) {
-            this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*2) + 35, 'captSprite',
-              () => this.captureCity(this.pieces[i].position, i, defenders), this, 2, 1, 0)
-            break;
-          }
+
+  // ACTION OPTIONS
+  showWaitOption() {
+    this.canEndTurn = false
+    this.waitButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*1) + 35, 'waitSprite',
+      () => this.wait(defenders), this, 2, 1, 0)
+  }
+  showAttackOption() {
+    if (defenders.length === 1) {
+      this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*0) + 35, 'fireSprite', 
+        () => this.attackPiece(this.selectedPiece, defenders[0], defenders), this, 2, 1, 0)
+    } else if (defenders.length > 1) {
+      this.selectTargets(this.selectedPiece, defenders)
+    }
+  }
+  showCaptOption() {
+    for (var i in this.pieces) {
+      if (this.pieces[i].key.indexOf('city') !== -1) {
+        if (
+          this.selectedPiece.position.x === this.pieces[i].position.x &&
+          this.selectedPiece.position.y === this.pieces[i].position.y
+        ) {
+          this.captButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*2) + 35, 'captSprite',
+            () => this.captureCity(this.pieces[i].position, i, defenders), this, 2, 1, 0)
+          break;
         }
       }
     }
@@ -236,11 +244,20 @@ export default class extends Phaser.State {
     let cities = pieces.filter((piece) => {
        return piece.troopType === 'city'
     })
-    //adding money per each city
 
+    //adding money per each city
     cities.forEach((city) => {
-      if(city.team == 'red' && currentPlayer == 'red') this.redTeam.money += 1000
+      if(city.team == 'red' && currentPlayer == 'red') {
+        let moneyStyle = { font: '24px Arial', fill: '#498304' }
+        let cashMoney = this.game.add.text(city.position.x+8, city.position.y - 35, '$', moneyStyle)
+        this.time.events.add(1000, () => {
+          this.add.tween(cashMoney).to( { tint: 'white'}, 100, Phaser.Easing.Linear.None, true, 0, 5, true);
+          cashMoney.destroy();
+          this.redTeam.money += 1000
+        });
+      }
       if(city.team == 'blue' && currentPlayer == 'blue') this.blueTeam.money += 1000
+
       infantry_men.forEach(function (infantry) {
         if (((city.position.x === infantry.position.x) && (city.position.y === infantry.position.y)) && (city.team === infantry.team)) {
           if(currentPlayer.team == infantry.team && infantry.HP < 10) {
@@ -249,10 +266,10 @@ export default class extends Phaser.State {
             infantry.HP = newHealth;
           }
           // currentPlayer.team !== infantry.team && infantry.HP <= 10 ? infantry.HP += 2 : console.log('do nothing')
-      }
+        }
+      })
     })
-  })
-}
+  }
 
   stayInPlace () {
     this.shiftKey.onDown.remove(this.stayInPlace, this)
@@ -278,7 +295,6 @@ export default class extends Phaser.State {
     let blueLose = true
     for (var piece in this.pieces) {
       const pc = this.pieces[piece]
-
 
       //if piece is dead
       if (pc.HP <= 0) {
@@ -321,6 +337,16 @@ export default class extends Phaser.State {
 
   render () {}
 }
+
+
+
+
+
+
+
+
+
+
 // let revealedFog = {}
 
 //under path finding move her
