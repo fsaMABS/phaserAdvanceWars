@@ -25,7 +25,6 @@ export const loadLevel = (that) => {
   that.explosions = game.add.group();
   that.explosions.createMultiple(400, 'explode');
   that.explosions.forEach(setupPiece, this);
-
   var style = { font: '20px Arial', fill: '#fff' }
   that.game.add.text(410, 20, 'Player:', style)
   that.currentPlayer = 'blue'

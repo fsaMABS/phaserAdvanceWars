@@ -34,7 +34,7 @@ that.explosions.forEach(setupPiece, this);
 
 var style = { font: '20px Arial', fill: '#fff' }
 that.game.add.text(410, 20, 'Player:', style)
-that.currentPlayer = 'blue'
+that.currentPlayer = 'red'
 that.playerText = that.game.add.text(480, 20, that.currentPlayer, style)
 that.blocks = that.add.group()
 that.fog = that.add.group()
@@ -99,7 +99,6 @@ return newGrid
 
 const makeTroops = that => (sprite, event) => {
 var isThereSomethingThere = false;
-console.log('ANYTHING!')
 for (var key in that.pieces) {
   var currPieceX = that.pieces[key].position.x
   var factoryPositionX = sprite.position.x
@@ -140,8 +139,12 @@ if (!isThereSomethingThere) {
 }
 
 const showMoves = that => (sprite, event) => {
-if (!that.selectedPiece) that.selectedPiece = sprite
-if (that.currentPlayer === that.selectedPiece.team) {
+// if (!that.selectedPiece) {
+  that.selectedPiece = sprite
+// } 
+  console.log('hamecurrent user', that.currentPlayer,that.game.currentUser.role)
+  console.log('selectedpiece team', that.selectedPiece.team)
+if ((that.currentPlayer === that.selectedPiece.team) && (that.game.currentUser.role === that.selectedPiece.team)) {
   that.showingMoves = that.showingMoves !== true
   that.showingBlue = !that.showingBlue
   var alpha = that.showingBlue ? 0.5 : 0
