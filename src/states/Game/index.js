@@ -21,7 +21,7 @@ export default class extends Phaser.State {
     this.currentPlayer = this.currentPlayer.team === 'red' ? this.blueTeam : this.redTeam
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0
-      this.pieces[key].inputEnabled = this.pieces[key].team === this.currentPlayer.team
+      this.pieces[key].inputEnabled = this.pieces[key].team == this.currentPlayer.team
     }
     this.playerText.text = this.currentPlayer.team
   }
@@ -34,7 +34,6 @@ export default class extends Phaser.State {
       ele.inputEnabled = false
     }, this)
     if (this.selectedPiece.team === this.currentPlayer.team) { this.changePosition = this.game.add.tween(this.selectedPiece) }
-    if (this.selectedPiece.team === this.currentPlayer) { this.changePosition = this.game.add.tween(this.selectedPiece) }
     easystar.findPath(this.selectedPiece.x / 32, this.selectedPiece.y / 32, sprite.x / 32, sprite.y / 32, 
       path => this.moveAndShowOptions(path)
     )
