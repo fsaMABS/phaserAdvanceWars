@@ -2,6 +2,8 @@ import Block from '../../sprites/Block'
 import newGrid, {startingPieces} from '../../maps/aw2'
 import easystarjs from 'easystarjs'
 import SmallTank from '../../sprites/SmallTank'
+import Infantry from '../../sprites/Infantry'
+import LongRange from '../../sprites/LongRange'
 var easystarz = new easystarjs.js()
 
 const setupPiece = (piece) => {
@@ -10,29 +12,8 @@ const setupPiece = (piece) => {
     piece.animations.add('explode');
 }
 
-export const loadLevel = (that) => {
-  that.background = that.game.add.sprite(0, 0, 'aw1Map')
-  that.scale.pageAlignHorizontally = true
-  that.scale.pageAlignVertically = true
-  that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
-  that.shiftKey = that.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT)
-  that.canEndTurn = true
-  that.attackButton = undefined
-  that.waitButton = undefined
-  that.healthStyle = { font: '18px Arial', fill: 'black', align: 'center'}
-  that.gameOver = false
-  that.winner = ''
-  that.explosions = game.add.group();
-  that.explosions.createMultiple(400, 'explode');
-  that.explosions.forEach(setupPiece, this);
-  var style = { font: '20px Arial', fill: '#fff' }
-  that.game.add.text(410, 20, 'Player:', style)
-  that.currentPlayer = 'blue'
-  that.playerText = that.game.add.text(480, 20, that.currentPlayer, style)
-  that.blocks = that.add.group()
-  that.fog = that.add.group()
-  const isNear = (ele, sprite, dist) =>
-    Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
+
+const createGrid = (that) => {
   for (var i = 0; i <= 928; i = i + 32) {
     for (var j = 0; j <= 768; j = j + 32) {
       var ourGrid = newGrid()
@@ -40,7 +21,7 @@ export const loadLevel = (that) => {
       var secondIndex = i/32;
       var numberType = (ourGrid[firstIndex][secondIndex])
       var type;
-
+  
       if (numberType === 0) {
         type = 'land'
       } else if (numberType ===  1) {
@@ -57,10 +38,9 @@ export const loadLevel = (that) => {
       that.blocks.add(block)
     }
   }
+}
 
-  that.pieces = startingPieces(that)
-  const revealedFog = []
-
+const createPieces = (that) => {
   for (var key in that.pieces) {
     let current = that.pieces[key]
     let added = that.game.world.add(current)
@@ -68,7 +48,6 @@ export const loadLevel = (that) => {
     if (added.key.indexOf('city') === -1) { added.events.onInputDown.add(showMoves(that), this) }
     if (added.isFactory) { added.events.onInputDown.add(makeTroops(that), this) }
     that.pieces[key] = added
-    revealedFog.push({ x: current.position.x, y: current.position.y })
 
     if(that.pieces[key].key.indexOf('city') === -1) {
       let healthShape = that.game.add.graphics(30, 30);
@@ -82,59 +61,158 @@ export const loadLevel = (that) => {
       that.pieces[key].addChild(pieceHealth)
     }
   }
-  that.fog.children.map(ele => {
-    revealedFog.forEach(fog => {
-      if (ele.alpha && isNear(ele, fog, 10)) ele.alpha = 0
-    })
-  })
+}
+
+const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
+
+export const loadLevel = (that) => {
+  that.background = that.game.add.sprite(0, 0, 'aw1Map')
+  that.scale.pageAlignHorizontally = true
+  that.scale.pageAlignVertically = true
+  that.enterKey = that.game.input.keyboard.addKey(Phaser.Keyboard.ENTER)
+  that.shiftKey = that.game.input.keyboard.addKey(Phaser.Keyboard.SHIFT)
+  that.canEndTurn = true
+  that.attackButton = undefined
+  that.waitButton = undefined
+  that.healthStyle = { font: '18px Arial', fill: 'black', align: 'center'}
+  that.gameOver = false
+  that.redTeam = {team: 'red', money: 10000}
+  that.blueTeam = {team: 'blue', money: 10000}
+  that.currentPlayer = that.blueTeam;
+  that.winner = ''
+  that.explosions = game.add.group();
+  that.explosions.createMultiple(400, 'explode');
+  that.explosions.forEach(setupPiece, this);
+  that.textStyle = { font: '20px Arial', fill: '#fff' }
+  that.game.add.text(410, 20, 'Player:', that.textStyle)
+  that.playerText = that.game.add.text(480, 20, that.currentPlayer.team, that.textStyle)
+  that.moneyText = that.game.add.text(20, 20, '$' + that.currentPlayer.money, that.textStyle)
+  that.blocks = that.add.group()
+  that.fog = that.add.group()
+  that.pieces = startingPieces(that)
+
+  createGrid(that)
+  createPieces(that);
+
   return newGrid
 }
 
-const makeTroops = that => (sprite, event) => {
-  var isThereSomethingThere = false;
-  console.log('ANYTHING!')
+const addTroopButtons = []
+
+const somethingIsThere = (that, sprite) => {
+  let result = false;
   for (var key in that.pieces) {
     var currPieceX = that.pieces[key].position.x
     var factoryPositionX = sprite.position.x
     var currPieceY = that.pieces[key].position.y
     var factoryPositionY = sprite.position.y + 32
     if ((currPieceX === factoryPositionX) && (currPieceY === factoryPositionY)) {
-      isThereSomethingThere = true
+      result = true;
     }
   }
-  console.log(isThereSomethingThere)  
-  if (!isThereSomethingThere) {
-    var count = Object.keys(that.pieces).length;
-    count = count + 1
-    var newTank = new SmallTank({
-      game: that.game,
-      x: sprite.x,
-      y: sprite.y + 32,
-      asset: 'smallTank_red',
-      width: 32,
-      height: 32,
-      HP: 20,
-      AP: 8,
-      player: 2,
-      id: count,
-      mobility: 7,
-      team: 'red',
-      attackRadius: 1,
-      troopType: 'smallTank',
-      squareType: 'land'
-    })
-    let newTroop = that.game.world.add(newTank)
-    that.pieces[newTroop.id] = newTroop
-    newTroop.events.onInputDown.add(showMoves(that), this)
-    console.log(that.pieces)  
-  }
+  return result;
+}
 
-  
+const addTroopToBoard = (that, sprite, pieceType, value) => {
+  that.currentPlayer.money -= value;
+  let newPiece;
+  let count = Object.keys(that.pieces).length;
+  count = count + 1
+  switch(pieceType) {
+    case 'infantry':
+      newPiece = new Infantry({
+        game: that.game,
+        x: sprite.x,
+        y: sprite.y + 32,
+        asset: 'infantry_' + that.currentPlayer.team,
+        width: 32,
+        height: 32,
+        HP: 10, 
+        AP: 4,
+        player: 2,
+        id: count,
+        mobility: 5,
+        team: that.currentPlayer.team,
+        attackRadius: 1,
+        troopType: 'infantry'
+      })
+      break;
+    case 'smallTank':
+      newPiece = new SmallTank({
+        game: that.game,
+        x: sprite.x,
+        y: sprite.y + 32,
+        asset: 'smallTank_' + that.currentPlayer.team,
+        width: 32,
+        height: 32,
+        HP: 20,
+        AP: 8,
+        player: 2,
+        id: count,
+        mobility: 7,
+        team: that.currentPlayer.team,
+        attackRadius: 1,
+        troopType: 'smallTank',
+        squareType: 'land'
+      })
+      break;
+    case 'longRange': 
+      newPiece = new LongRange({
+        game: that.game,
+        x: sprite.x,
+        y: sprite.y + 32,
+        asset: 'longRange_' + that.currentPlayer.team,
+        width: 32,
+        height: 32,
+        HP: 10,
+        AP: 15,
+        player: 1,
+        id: count,
+        mobility: 5,
+        team: that.currentPlayer.team,
+        attackRadius: 4,
+        troopType: 'longRange',
+        squareType: 'land'
+      })
+      break;
+    }
+  addTroopButtons.forEach(button => button.destroy());
+  let newTroop = that.game.world.add(newPiece)
+  newTroop.alpha = 0.7
+  that.pieces[newTroop.id] = newTroop
+  newTroop.events.onInputDown.add(showMoves(that), this) 
+} 
+
+const troopChoiceButton = (that, sprite, pieceType, value, offset) => {
+  const button = that.game.add.button(sprite.x + 35, sprite.y + (32*offset) + 35, 'add_' + pieceType + '_' + that.currentPlayer.team,
+    () => addTroopToBoard(that, sprite, pieceType, value), this, 2, 1, 0)
+  const text = that.game.add.text(sprite.x + 70, sprite.y + (32*offset) + 40, '$' + value, {font: '18px Arial', fill: 'black' })
+  addTroopButtons.push(button, text)
+  button.events.onInputOver.add(() => button.tint = 0xd9cece, this)
+  button.events.onInputOut.add(() => button.tint = 0xfffbfb, this)
+}
+
+const makeTroops = that => (sprite, event) => {
+  const budget = that.currentPlayer.money
+  if (that.currentPlayer.team === sprite.team && budget >= 1000) {
+    let somethingThere = somethingIsThere(that, sprite)
+    if (!somethingThere) {
+      if(budget >= 1000) {
+        troopChoiceButton(that, sprite, 'infantry', 1000, 0)
+      } 
+      if(budget >= 4000) {
+        troopChoiceButton(that, sprite, 'smallTank', 4000, 1)
+      }
+      if(budget >= 6000) {
+        troopChoiceButton(that, sprite, 'longRange', 6000, 2)
+      }
+    }
+  }
 }
 
 const showMoves = that => (sprite, event) => {
   if (!that.selectedPiece) that.selectedPiece = sprite
-  if (that.currentPlayer === that.selectedPiece.team) {
+  if (that.currentPlayer.team === that.selectedPiece.team) {
     that.showingMoves = that.showingMoves !== true
     that.showingBlue = !that.showingBlue
     var alpha = that.showingBlue ? 0.5 : 0
@@ -218,6 +296,21 @@ const removeOtherShowMoves = (pieces, spriteId) => {
     }
   }
 }
+
+
+
+
+//goes in createPieces
+// revealedFog.push({ x: current.position.x, y: current.position.y })
+//goes in loadLevel
+// const revealedFog = []
+
+  // that.fog.children.map(ele => {
+  //   revealedFog.forEach(fog => {
+  //     if (ele.alpha && isNear(ele, fog, 10)) ele.alpha = 0
+  //   })
+  // })
+
 
 
 // const disableMovementToOtherPieces = (x, y) => {

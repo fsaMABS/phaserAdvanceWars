@@ -2,6 +2,7 @@ import Infantry from '../../sprites/Infantry'
 import City from '../../sprites/City'
 import SmallTank from '../../sprites/SmallTank'
 import Factory from '../../sprites/Factory'
+import LongRange from '../../sprites/LongRange'
 import processMapcreateGrid from '../processMap'
 const mapdata = require('./map.json')
 
@@ -80,9 +81,9 @@ export const startingPieces = that => ({
   }),
   5: new Infantry({
     game: that.game,
-    x: 32 * 0,
-    y: 32 * 16,
-    asset: 'infantry',
+    x: 32 * 22,
+    y: 32 * 5,
+    asset: 'infantry_red',
     width: 32,
     height: 32,
     HP: 10,
@@ -99,7 +100,7 @@ export const startingPieces = that => ({
     game: that.game,
     x: 32 * 24,
     y: 32 * 4,
-    asset: 'infantry',
+    asset: 'infantry_red',
     width: 32,
     height: 32,
     HP: 10,
@@ -114,7 +115,7 @@ export const startingPieces = that => ({
   }),
   7: new SmallTank({
     game: that.game,
-    x: 32 * 1,
+    x: 32 * 4,
     y: 32 * 17,
     asset: 'smallTank_blue',
     width: 32,
@@ -146,48 +147,165 @@ export const startingPieces = that => ({
     troopType: 'infantry',
     squareType: 'land'
   }),
-  9: new City({
+  9: new Factory({
     game: that.game,
     x: 32 * 5,
     y: 32 * 14,
-    asset: 'city_grey',
+    asset: 'city_blue',
     width: 30,
     height: 40,
     Def: 3,
     Cap: 20,
     player: 1,
     id: 9,
-    team: 'neutral',
+    team: 'blue',
     isHQ: false,
-    troopType: 'city'
+    troopType: 'city',
+    isFactory: true
   }),
   10: new City({
     game: that.game,
     x: 32,
     y: 32 * 18,
-    asset: 'city_grey',
+    asset: 'city_blue',
     width: 30,
     height: 40,
     Def: 3,
     Cap: 20,
     player: 1,
     id: 10,
-    team: 'neutral',
-    isHQ: false
+    team: 'blue',
+    isHQ: false,
+    troopType: 'city'
   }),
   11: new Factory({
     game: that.game,
     x: 32*23,
     y: 32 * 6,
+    asset: 'city_red',
+    width: 30,
+    height: 40,
+    Def: 3,
+    Cap: 20,
+    player: 1,
+    id: 11,
+    team: 'red',
+    isHQ: false,
+    isFactory: true
+  }),
+  12: new City({
+    game: that.game,
+    x: 32*23,
+    y: 32 * 20,
+    asset: 'city_red',
+    width: 30,
+    height: 40,
+    Def: 3,
+    Cap: 20,
+    player: 1,
+    id: 12,
+    team: 'red',
+    isHQ: false,
+    troopType: 'city'
+  }),
+  13: new City({
+    game: that.game,
+    x: 32*16,
+    y: 32*8,
     asset: 'city_grey',
     width: 30,
     height: 40,
     Def: 3,
     Cap: 20,
     player: 1,
-    id: 10,
+    id: 13,
     team: 'neutral',
     isHQ: false,
-    isFactory: true,
+    troopType: 'city'
+  }),
+  14: new City({
+    game: that.game,
+    x: 32*15,
+    y: 32*9,
+    asset: 'city_grey',
+    width: 30,
+    height: 40,
+    Def: 3,
+    Cap: 20,
+    player: 1,
+    id: 14,
+    team: 'neutral',
+    isHQ: false,
+    troopType: 'city'
+  }),
+  15: new Infantry({
+    game: that.game,
+    x: 32 * 23,
+    y: 32 * 5,
+    asset: 'infantry_red',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 5,
+    player: 2,
+    id: 15,
+    mobility: 5,
+    team: 'red',
+    attackRadius: 2,
+    troopType: 'infantry',
+    squareType: 'land'
+  }),
+  16: new SmallTank({
+    game: that.game,
+    x: 32 * 22,
+    y: 32 * 6,
+    asset: 'smallTank_red',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    player: 2,
+    id: 16,
+    mobility: 7,
+    team: 'red',
+    attackRadius: 1,
+    troopType: 'smallTank',
+    squareType: 'land'
+  }),
+
+   17: new LongRange({
+    game: that.game,
+    x: 32 * 22,
+    y: 32 * 7,
+    asset: 'longRange_red',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 15,
+    player: 1,
+    id: 17,
+    mobility: 5,
+    team: 'red',
+    attackRadius: 4,
+    troopType: 'longRange',
+    squareType: 'land'
+  }),
+
+   18: new LongRange({
+    game: that.game,
+    x: 32 * 4,
+    y: 32 * 15,
+    asset: 'longRange_blue',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 15,
+    player: 1,
+    id: 18,
+    mobility: 5,
+    team: 'blue',
+    attackRadius: 4,
+    troopType: 'longRange',
+    squareType: 'land'
   })
 })
