@@ -293,5 +293,5 @@ export const startingPieces = that => ({
     attackRadius: 6,
     troopType: 'boat',
     squareType: 'water'
-  }),
+  })
 })
