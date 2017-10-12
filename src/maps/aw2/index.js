@@ -237,10 +237,9 @@ export const startingPieces = that => ({
     id: 11,
     team: 'neutral',
     isHQ: false,
-<<<<<<< HEAD
     isFactory: true
   }),
-  12: new Boat({
+  19: new Boat({
     game: that.game,
     x: 32 * 2,
     y: 32 * 13,
@@ -257,7 +256,7 @@ export const startingPieces = that => ({
     troopType: 'boat',
     squareType: 'water'
   }),
-  13: new Boat({
+  20: new Boat({
     game: that.game,
     x: 32 * 8,
     y: 32 * 7,
@@ -274,12 +273,6 @@ export const startingPieces = that => ({
     troopType: 'boat',
     squareType: 'water'
   }),
-  14: new Boat({
-    game: that.game,
-    x: 32 * 19,
-    y: 32 * 13,
-    asset: 'boat_red',
-=======
     troopType: 'city'
   }),
   15: new Infantry({
@@ -304,21 +297,14 @@ export const startingPieces = that => ({
     x: 32 * 22,
     y: 32 * 6,
     asset: 'smallTank_red',
->>>>>>> master
     width: 32,
     height: 32,
     HP: 20,
     AP: 8,
-<<<<<<< HEAD
-    player: 1,
-    id: 14,
-    mobility: 5,
-    team: 'red',
-    attackRadius: 6,
-    troopType: 'boat',
-    squareType: 'water'
+    troopType: 'smallTank',
+    squareType: 'land'
   }),
-  15: new Boat({
+  21: new Boat({
     game: that.game,
     x: 32 * 8,
     y: 32 * 18,
@@ -335,7 +321,7 @@ export const startingPieces = that => ({
     troopType: 'boat',
     squareType: 'water'
   }),
-  16: new Boat({
+  22: new Boat({
     game: that.game,
     x: 32 * 12,
     y: 32 * 1,
@@ -352,7 +338,7 @@ export const startingPieces = that => ({
     troopType: 'boat',
     squareType: 'water'
   }),
-  17: new Boat({
+  23: new Boat({
     game: that.game,
     x: 32 * 12,
     y: 32 * 12,
@@ -368,14 +354,6 @@ export const startingPieces = that => ({
     attackRadius: 6,
     troopType: 'boat',
     squareType: 'water'
-=======
-    player: 2,
-    id: 4,
-    mobility: 7,
-    team: 'red',
-    attackRadius: 1,
-    troopType: 'smallTank',
-    squareType: 'land'
   }),
 
    17: new LongRange({
@@ -412,7 +390,6 @@ export const startingPieces = that => ({
     attackRadius: 4,
     troopType: 'longRange',
     squareType: 'land'
->>>>>>> master
   })
 
 })
