@@ -239,6 +239,73 @@ export const startingPieces = that => ({
     isHQ: false,
     isFactory: true
   }),
+  15: new Infantry({
+    game: that.game,
+    x: 32 * 23,
+    y: 32 * 5,
+    asset: 'infantry_red',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 5,
+    player: 2,
+    id: 6,
+    mobility: 5,
+    team: 'red',
+    attackRadius: 2,
+    troopType: 'infantry',
+    squareType: 'land'
+  }),
+  16: new SmallTank({
+    game: that.game,
+    x: 32 * 22,
+    y: 32 * 6,
+    asset: 'smallTank_red',
+    width: 32,
+    height: 32,
+    HP: 20,
+    AP: 8,
+    id: 4,
+    mobility: 7,
+    team: 'red',
+    attackRadius: 1,
+    troopType: 'smallTank',
+    squareType: 'land'
+  }),
+   17: new LongRange({
+    game: that.game,
+    x: 32 * 22,
+    y: 32 * 7,
+    asset: 'longRange_red',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 15,
+    player: 1,
+    id: 8,
+    mobility: 5,
+    team: 'red',
+    attackRadius: 4,
+    troopType: 'longRange',
+    squareType: 'land'
+  }),
+   18: new LongRange({
+    game: that.game,
+    x: 32 * 4,
+    y: 32 * 15,
+    asset: 'longRange_blue',
+    width: 32,
+    height: 32,
+    HP: 10,
+    AP: 15,
+    player: 1,
+    id: 8,
+    mobility: 5,
+    team: 'blue',
+    attackRadius: 4,
+    troopType: 'longRange',
+    squareType: 'land'
+  }),
   19: new Boat({
     game: that.game,
     x: 32 * 2,
@@ -272,37 +339,6 @@ export const startingPieces = that => ({
     attackRadius: 6,
     troopType: 'boat',
     squareType: 'water'
-  }),
-    troopType: 'city'
-  }),
-  15: new Infantry({
-    game: that.game,
-    x: 32 * 23,
-    y: 32 * 5,
-    asset: 'infantry_red',
-    width: 32,
-    height: 32,
-    HP: 10,
-    AP: 5,
-    player: 2,
-    id: 6,
-    mobility: 5,
-    team: 'red',
-    attackRadius: 2,
-    troopType: 'infantry',
-    squareType: 'land'
-  }),
-  16: new SmallTank({
-    game: that.game,
-    x: 32 * 22,
-    y: 32 * 6,
-    asset: 'smallTank_red',
-    width: 32,
-    height: 32,
-    HP: 20,
-    AP: 8,
-    troopType: 'smallTank',
-    squareType: 'land'
   }),
   21: new Boat({
     game: that.game,
@@ -355,41 +391,21 @@ export const startingPieces = that => ({
     troopType: 'boat',
     squareType: 'water'
   }),
-
-   17: new LongRange({
+  24: new Boat({
     game: that.game,
-    x: 32 * 22,
-    y: 32 * 7,
-    asset: 'longRange_red',
+    x: 32 * 19,
+    y: 32 * 14,
+    asset: 'boat_red',
     width: 32,
     height: 32,
-    HP: 10,
-    AP: 15,
+    HP: 20,
+    AP: 8,
     player: 1,
-    id: 8,
+    id: 17,
     mobility: 5,
     team: 'red',
-    attackRadius: 4,
-    troopType: 'longRange',
-    squareType: 'land'
-  }),
-
-   18: new LongRange({
-    game: that.game,
-    x: 32 * 4,
-    y: 32 * 15,
-    asset: 'longRange_blue',
-    width: 32,
-    height: 32,
-    HP: 10,
-    AP: 15,
-    player: 1,
-    id: 8,
-    mobility: 5,
-    team: 'blue',
-    attackRadius: 4,
-    troopType: 'longRange',
-    squareType: 'land'
+    attackRadius: 6,
+    troopType: 'boat',
+    squareType: 'water'
   })
-
 })
