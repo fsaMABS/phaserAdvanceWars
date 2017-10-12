@@ -15,6 +15,7 @@ export default class extends Phaser.State {
     console.log('this', this)
     easystar.setAcceptableTiles([0, 2, 3, 4])
     const level = loadLevel(this)
+    this.enterKey.onDown.add(this.endTurn, this)    
     easystar.setGrid(level())
   }
 
@@ -35,7 +36,6 @@ export default class extends Phaser.State {
       ele.inputEnabled = false
     }, this)
     if (this.selectedPiece.team === this.currentPlayer.team) { this.changePosition = this.game.add.tween(this.selectedPiece) }
-    if (this.selectedPiece.team === this.currentPlayer) { this.changePosition = this.game.add.tween(this.selectedPiece) }
     easystar.findPath(this.selectedPiece.x / 32, this.selectedPiece.y / 32, sprite.x / 32, sprite.y / 32, 
       path => this.moveAndShowOptions(path)
     )
@@ -284,7 +284,6 @@ export default class extends Phaser.State {
     this.moneyText.destroy();
     this.moneyText = this.game.add.text(20, 20, '$' + this.currentPlayer.money, this.textStyle)
 
-    this.enterKey.onDown.add(this.endTurn, this)
     if (!this.shiftKey.onDown._bindings || (this.shiftKey.onDown._bindings && !this.shiftKey.onDown._bindings.length)) {
       this.shiftKey.onDown.add(this.stayInPlace, this)
     }
