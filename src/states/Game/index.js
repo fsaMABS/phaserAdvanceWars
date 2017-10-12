@@ -34,53 +34,28 @@ export default class extends Phaser.State {
       ele.inputEnabled = false
     }, this)
     if (this.selectedPiece.team === this.currentPlayer.team) { this.changePosition = this.game.add.tween(this.selectedPiece) }
-
     if (this.selectedPiece.team === this.currentPlayer) { this.changePosition = this.game.add.tween(this.selectedPiece) }
-    easystar.findPath(
-      this.selectedPiece.x / 32,
-      this.selectedPiece.y / 32,
-      sprite.x / 32,
-      sprite.y / 32,
-      path => {
-        this.changePosition = this.game.add.tween(this.selectedPiece)
-        for (var i = 0; i < path.length; i++) {
-          var currCoords = path[i]
-          this.changePosition.to(
-            { x: currCoords.x * 32, y: currCoords.y * 32 },
-            150
-          )
-          // revealedFog = {x: currCoords.x*32, y: currCoords.y*32}
-        }
-        this.changePosition.start()
-        this.changePosition.onComplete.add(function () {
-          this.checkForPieceOptions()
-          this.disablePieceMovement(this.selectedPiece)
-        }, this)
-      }
+    easystar.findPath(this.selectedPiece.x / 32, this.selectedPiece.y / 32, sprite.x / 32, sprite.y / 32, 
+      path => this.moveAndShowOptions(path)
     )
     easystar.calculate()
   }
 
-  
+  moveAndShowOptions(path) {
+    this.changePosition = this.game.add.tween(this.selectedPiece)
+    for (var i = 0; i < path.length; i++) {
+      var currCoords = path[i]
+      this.changePosition.to({ x: currCoords.x * 32, y: currCoords.y * 32 }, 150)
+    }
+    this.changePosition.start()
+    this.changePosition.onComplete.add(function () {
+      this.checkForPieceOptions()
+      this.disablePieceMovement(this.selectedPiece)
+    }, this)
+  }
 
   checkForPieceOptions () {
-    let defenders = []
-    for (var key in this.pieces) {
-      if (
-        this.pieces[key] !== this.selectedPiece &&
-        this.pieces[key].team !== this.selectedPiece.team &&
-        this.pieces[key].key.indexOf('city') === -1
-      ) {
-        //console.log('pieces', this.pieces[key].position.x, this.pieces[key].position.y)
-        let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
-        let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
-        
-        if (diffX + diffY <= this.selectedPiece.attackRadius * 32) {
-          defenders.push(this.pieces[key])
-        }
-      }
-    }
-
+    let defenders = this.checkForDefenders();
     if (!this.attackButton || !this.attackButton.alive) {
       if (defenders.length === 1) {
         this.attackButton = this.game.add.button(this.selectedPiece.x, this.selectedPiece.y + (32*0) + 35, 'fireSprite', 
@@ -109,6 +84,24 @@ export default class extends Phaser.State {
         }
       }
     }
+  }
+
+  checkForDefenders() {
+    let defenders = [];
+    for (var key in this.pieces) {
+      if (
+        this.pieces[key] !== this.selectedPiece &&
+        this.pieces[key].team !== this.selectedPiece.team &&
+        this.pieces[key].key.indexOf('city') === -1
+      ) {
+        let diffX = Math.abs(this.pieces[key].position.x - this.selectedPiece.position.x)
+        let diffY = Math.abs(this.pieces[key].position.y - this.selectedPiece.position.y)
+        if (diffX + diffY <= this.selectedPiece.attackRadius * 32) {
+          defenders.push(this.pieces[key])
+        }
+      }
+    }
+    return defenders;
   }
 
   selectTargets (attacker, defenders) {
@@ -157,13 +150,7 @@ export default class extends Phaser.State {
         }
       }
     }
-
     campedCity.Cap -= this.selectedPiece.HP
-
-    // ======== CITY ISSUE ======
-    // is this 'camped City' being persisted? after its been captured once, when I start to
-    // capture with the other team, it says the new Cap is -10, so its not being destroyed? Not sure
-    // just a heads up
 
     if (campedCity.Cap <= 0) {
       let newCityColorAsset =
@@ -204,7 +191,6 @@ export default class extends Phaser.State {
     if (this.captButton) this.captButton.destroy()
     if (this.waitButton) this.waitButton.destroy()
     if (this.attackButton) this.attackButton.destroy()
-    if (this.captButton) this.captButton.destroy()
     if (this.targets) this.targets.forEach(target => target.destroy())
     if (this.showingMoves) this.showingMoves = false
     this.showingBlue = false
@@ -253,12 +239,16 @@ export default class extends Phaser.State {
     //adding money per each city
 
     cities.forEach((city) => {
-      console.log('city', city)
       if(city.team == 'red' && currentPlayer == 'red') this.redTeam.money += 1000
       if(city.team == 'blue' && currentPlayer == 'blue') this.blueTeam.money += 1000
       infantry_men.forEach(function (infantry) {
         if (((city.position.x === infantry.position.x) && (city.position.y === infantry.position.y)) && (city.team === infantry.team)) {
-          currentPlayer.team !== infantry.team && infantry.HP <= 10 ? infantry.HP += 2 : console.log('do nothing')
+          if(currentPlayer.team == infantry.team && infantry.HP < 10) {
+            let newHealth = infantry.HP + 2;
+            if(newHealth >= 10) newHealth = 10;
+            infantry.HP = newHealth;
+          }
+          // currentPlayer.team !== infantry.team && infantry.HP <= 10 ? infantry.HP += 2 : console.log('do nothing')
       }
     })
   })
@@ -332,6 +322,9 @@ export default class extends Phaser.State {
   render () {}
 }
 // let revealedFog = {}
+
+//under path finding move her
+// revealedFog = {x: currCoords.x*32, y: currCoords.y*32}
 
 // Helper Functions
 // const isNear = (ele, sprite, dist) =>
