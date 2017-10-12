@@ -28,11 +28,10 @@ export default class extends Phaser.State {
   }
 
   create () {
+    
     easystar.setGrid(newGrid())
     easystar.setAcceptableTiles([0,1,2,3,4])    
     firebase.database().ref(`lobbies/${this.game.lobby}/pieces/pieces`).on('child_changed', (snapshot) => {
-      console.log('logged', snapshot.val())
-      console.log('thispeices i', this.pieces[snapshot.val().id])
       this.selectedPiece = this.pieces[snapshot.val().id]
 
       // console.log('starting and ending', selectedPiece.x/32, selectedPiece.y/32, snapshot.val().x/32, snapshot.val().y/32)
@@ -52,24 +51,25 @@ export default class extends Phaser.State {
           this.disablePieceMovement(this.selectedPiece);
           if (true) {
             firebase.database().ref(`lobbies/${this.game.lobby}/pieces`).set(turnobjectToArray(this.pieces))
-            // console.log('firebase ref', firebase.database().ref(`lobbies/${this.game.lobby}/pieces`).child("pieces"))
-           
           }
-    
         }, this)
         
       
       });
       easystar.calculate()
-
-
-      // for (var i = 0; i < snapshot.val().pieces.length; i++) {
-      //   var eleX = snapshot.val().pieces[i].x
-      //   var eleY = snapshot.val().pieces[i].y       
-      //   var 
-      // }
     })
     loadLevel(this)
+    this.enterKey.onDown.add(this.endTurn, this)
+    
+
+    console.log('GAMECURERTNSUEREFINRGIGN', this.game.currentUser.role, this.currentPlayer)
+    if (this.game.currentUser.role !== this.currentPlayer)  {
+      // console.log('turning off all input for game')
+      // for (var key in this.pieces) {
+      //   this.pieces[key].alpha = 1.0; 
+      //   this.pieces[key].inputEnabled = false
+      // }
+    }
     firebase.database().ref(`lobbies/${this.game.lobby}/pieces`).set(turnobjectToArray(this.pieces))
   }
 
@@ -78,9 +78,15 @@ export default class extends Phaser.State {
     this.currentPlayer = this.currentPlayer === 'red' ? 'blue' : 'red'
     firebase.database().ref(`lobbies/${this.game.lobby}/game`).set({currentPlayer: this.currentPlayer})
     // ENABLE PIECES
+    console.log(firebase.database().ref(`lobbies/${this.game.lobby}/game`).on('child_changed' , (snapshot) => {
+      console.log(snapshot.val())
+
+      
+    }))
+
     for (var key in this.pieces) {
       this.pieces[key].alpha = 1.0;
-      this.pieces[key].inputEnabled = this.pieces[key].team == this.currentPlayer ? true : false
+      this.pieces[key].inputEnabled = ((this.pieces[key].team == this.currentPlayer) && (this.pieces[key].team === this.game.currentUser.role)) ? true : false
     }
     this.playerText.text = this.currentPlayer
 
@@ -310,38 +316,41 @@ export default class extends Phaser.State {
   }
 
   endTurn () {
-    this.selectedPiece = undefined
-    this.disablePieceOptions()
-    // var style = { font: '18px Arial', fill: '#fff' }
-    // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
-    // this.time.events.add(1000, () => {
-    // this.turnEnded.destroy()
-    this.togglePlayer()
-    // }, this.turnEnded);
+    console.log(' im registering an enter button', this.currentPlayer, this.game.currentUser.role)
+    if (this.currentPlayer === this.game.currentUser.role) {
+      this.selectedPiece = undefined
+      this.disablePieceOptions()
+      // var style = { font: '18px Arial', fill: '#fff' }
+      // this.turnEnded = this.game.add.text(this.game.world.centerX-32, this.game.world.centerY-32, "Turn Ended", style)
+      // this.time.events.add(1000, () => {
+      // this.turnEnded.destroy()
+      this.togglePlayer()
+      // }, this.turnEnded);
 
-    let currentPlayer = this.currentPlayer
-    let pieces = Object.values(this.pieces)
-
-
-    let infantry_men = pieces.filter(function (piece) {
-        return piece.troopType === 'infantry'
-    })
+      let currentPlayer = this.currentPlayer
+      let pieces = Object.values(this.pieces)
 
 
-    let cities = pieces.filter(function (piece) {
-       return piece.troopType === 'city'
-    })
+      let infantry_men = pieces.filter(function (piece) {
+          return piece.troopType === 'infantry'
+      })
 
-    console.log(currentPlayer)
 
-    cities.forEach(function (city) {
-      infantry_men .forEach(function (infantry) {
-        if (((city.position.x === infantry.position.x) && (city.position.y === infantry.position.y)) && (city.team === infantry.team)) {
-          currentPlayer !== infantry.team ? infantry.HP += 2 : console.log('do nothing')
-      }
-    })
-  })
-}
+      let cities = pieces.filter(function (piece) {
+        return piece.troopType === 'city'
+      })
+
+      console.log(currentPlayer)
+
+      cities.forEach(function (city) {
+        infantry_men .forEach(function (infantry) {
+          if (((city.position.x === infantry.position.x) && (city.position.y === infantry.position.y)) && (city.team === infantry.team)) {
+            currentPlayer !== infantry.team ? infantry.HP += 2 : console.log('do nothing')
+          }
+          })
+      })
+    }
+  }
 
   stayInPlace () {
     this.shiftKey.onDown.remove(this.stayInPlace, this)
@@ -352,9 +361,15 @@ export default class extends Phaser.State {
     this.checkForPieceOptions()
   }
 
-  update () {
-    this.enterKey.onDown.add(this.endTurn, this)
-
+  update () {    
+    firebase.database().ref(`lobbies/${this.game.lobby}/game`).on('value', (snapshot) => {
+      // console.log('snapshoptvalueee', snapshot.val().currentPlayer)
+      if(snapshot.val() === null ) return {}
+      this.currentPlayer = snapshot.val().currentPlayer
+      this.playerText.text = this.currentPlayer      
+      // console.log('after changed', this.currentPlayer)
+    })
+    
     if (
       !this.shiftKey.onDown._bindings ||
       (this.shiftKey.onDown._bindings && !this.shiftKey.onDown._bindings.length)

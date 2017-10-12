@@ -12,6 +12,7 @@ const setupPiece = (piece) => {
     piece.animations.add('explode');
 }
 
+
 const createGrid = (that) => {
   for (var i = 0; i <= 928; i = i + 32) {
     for (var j = 0; j <= 768; j = j + 32) {
@@ -39,6 +40,31 @@ const createGrid = (that) => {
   }
 }
 
+const createPieces = (that) => {
+  for (var key in that.pieces) {
+    let current = that.pieces[key]
+    let added = that.game.world.add(current)
+    added.inputEnabled = true
+    if (added.key.indexOf('city') === -1) { added.events.onInputDown.add(showMoves(that), this) }
+    if (added.isFactory) { added.events.onInputDown.add(makeTroops(that), this) }
+    that.pieces[key] = added
+
+    if(that.pieces[key].key.indexOf('city') === -1) {
+      let healthShape = that.game.add.graphics(30, 30);
+      let pieceHealth = that.game.add.text(31, 31, that.pieces[key].HP, that.healthStyle)
+      pieceHealth.anchor.set(1)
+
+      healthShape.beginFill(0xffffff, 1);
+      healthShape.drawRoundedRect(0,0,23,23,5)
+
+      that.pieces[key].addChild(healthShape)
+      that.pieces[key].addChild(pieceHealth)
+    }
+  }
+}
+
+const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
+
 export const loadLevel = (that) => {
   that.background = that.game.add.sprite(0, 0, 'aw1Map')
   that.scale.pageAlignHorizontally = true
@@ -63,42 +89,11 @@ export const loadLevel = (that) => {
   that.moneyText = that.game.add.text(20, 20, '$' + that.currentPlayer.money, that.textStyle)
   that.blocks = that.add.group()
   that.fog = that.add.group()
-  const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
-
-  createGrid(that)
   that.pieces = startingPieces(that)
 
-  const revealedFog = []
+  createGrid(that)
+  createPieces(that);
 
-  for (var key in that.pieces) {
-    let current = that.pieces[key]
-    let added = that.game.world.add(current)
-    added.inputEnabled = true
-    if (added.key.indexOf('city') === -1) { added.events.onInputDown.add(showMoves(that), this) }
-    if (added.isFactory) { 
-      added.events.onInputDown.add(makeTroops(that), this) 
-    }
-
-    that.pieces[key] = added
-    revealedFog.push({ x: current.position.x, y: current.position.y })
-
-    if(that.pieces[key].key.indexOf('city') === -1) {
-      let healthShape = that.game.add.graphics(30, 30);
-      let pieceHealth = that.game.add.text(31, 31, that.pieces[key].HP, that.healthStyle)
-      pieceHealth.anchor.set(1)
-
-      healthShape.beginFill(0xffffff, 1);
-      healthShape.drawRoundedRect(0,0,23,23,5)
-
-      that.pieces[key].addChild(healthShape)
-      that.pieces[key].addChild(pieceHealth)
-    }
-  }
-  that.fog.children.map(ele => {
-    revealedFog.forEach(fog => {
-      if (ele.alpha && isNear(ele, fog, 10)) ele.alpha = 0
-    })
-  })
   return newGrid
 }
 
@@ -172,7 +167,7 @@ const addTroopToBoard = (that, sprite, pieceType, value) => {
         HP: 10,
         AP: 15,
         player: 1,
-        id: 8,
+        id: count,
         mobility: 5,
         team: that.currentPlayer.team,
         attackRadius: 4,
@@ -188,7 +183,7 @@ const addTroopToBoard = (that, sprite, pieceType, value) => {
   newTroop.events.onInputDown.add(showMoves(that), this) 
 } 
 
-const addChoiceButton = (that, sprite, pieceType, value, offset) => {
+const troopChoiceButton = (that, sprite, pieceType, value, offset) => {
   const button = that.game.add.button(sprite.x + 35, sprite.y + (32*offset) + 35, 'add_' + pieceType + '_' + that.currentPlayer.team,
     () => addTroopToBoard(that, sprite, pieceType, value), this, 2, 1, 0)
   const text = that.game.add.text(sprite.x + 70, sprite.y + (32*offset) + 40, '$' + value, {font: '18px Arial', fill: 'black' })
@@ -203,13 +198,13 @@ const makeTroops = that => (sprite, event) => {
     let somethingThere = somethingIsThere(that, sprite)
     if (!somethingThere) {
       if(budget >= 1000) {
-        addChoiceButton(that, sprite, 'infantry', 1000, 0)
+        troopChoiceButton(that, sprite, 'infantry', 1000, 0)
       } 
       if(budget >= 4000) {
-        addChoiceButton(that, sprite, 'smallTank', 4000, 1)
+        troopChoiceButton(that, sprite, 'smallTank', 4000, 1)
       }
       if(budget >= 6000) {
-        addChoiceButton(that, sprite, 'longRange', 6000, 2)
+        troopChoiceButton(that, sprite, 'longRange', 6000, 2)
       }
     }
   }
@@ -301,6 +296,21 @@ const removeOtherShowMoves = (pieces, spriteId) => {
     }
   }
 }
+
+
+
+
+//goes in createPieces
+// revealedFog.push({ x: current.position.x, y: current.position.y })
+//goes in loadLevel
+// const revealedFog = []
+
+  // that.fog.children.map(ele => {
+  //   revealedFog.forEach(fog => {
+  //     if (ele.alpha && isNear(ele, fog, 10)) ele.alpha = 0
+  //   })
+  // })
+
 
 
 // const disableMovementToOtherPieces = (x, y) => {

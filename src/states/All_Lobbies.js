@@ -18,7 +18,7 @@ export default class extends Phaser.State {
     const tableTop = 220;
     const firebase = this.game.firebase
     const myId = window.prompt('What\'s Your Name?')
-    console.log(myId)
+    // console.log(myId)
     if(myId === null) { 
       this.state.start('MainMenu')
       return;
@@ -31,12 +31,12 @@ export default class extends Phaser.State {
     }
 
     firebase.database().ref('lobbies').on('value', snapshot => {
-      console.log('****firebase***', snapshot.toJSON())
+      // console.log('****firebase***', snapshot.toJSON())
       const lobbies = snapshot.toJSON()
       let lobbylist = Object.keys(lobbies)
         .filter(key => lobbies[key].players) // ensure validity
         .map(key => [key, Object.keys(lobbies[key].players).length])
-      console.log('lobbylist', lobbylist)
+      // console.log('lobbylist', lobbylist)
       let style = { font: '24px Arial', fill: '#fff', tabs: [ 164, 120, 80 ] }
       let headings = [ 'Lobby', 'Players' ]
       let text = this.game.add.text(tableTab, tableTop, '', style)

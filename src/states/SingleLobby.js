@@ -31,7 +31,7 @@ export default class extends Phaser.State {
     const buton = this.game.add.text(this.game.world.centerX, startTop, 'WAITING FOR PLAYER 2', style)
     buton.anchor.set(0.5)
     firebase.database().ref('lobbies/' + this.game.lobby).on('value', snapshot => {
-      console.log('****firebase***', snapshot.toJSON())
+      // console.log('****firebase***', snapshot.toJSON())
       const lobbies = snapshot.toJSON().players
       let currentUserKey
       var lobbylist = Object.keys(lobbies).map(key => {
@@ -41,7 +41,7 @@ export default class extends Phaser.State {
         }
         return [lobbies[key].username, lobbies[key].readyState, lobbies[key].role]
       })
-      console.log('lobbylist', lobbylist)
+      // console.log('lobbylist', lobbylist)
       if (lobbylist[0][1] && lobbylist[1][1]) {
         // if both are ready, start the game
         this.state.start('MultiplayerGame')
