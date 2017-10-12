@@ -102,6 +102,8 @@ export const loadLevel = (that) => {
   return newGrid
 }
 
+const addTroopButtons = []
+
 const somethingIsThere = (that, sprite) => {
   let result = false;
   for (var key in that.pieces) {
@@ -159,7 +161,7 @@ const addTroopToBoard = (that, sprite, pieceType, value) => {
         squareType: 'land'
       })
       break;
-    case 'rockets': 
+    case 'longRange': 
       newPiece = new LongRange({
         game: that.game,
         x: sprite.x,
@@ -179,36 +181,35 @@ const addTroopToBoard = (that, sprite, pieceType, value) => {
       })
       break;
     }
-  that.addTroopButtons.forEach(button => button.destroy());
+  addTroopButtons.forEach(button => button.destroy());
   let newTroop = that.game.world.add(newPiece)
   newTroop.alpha = 0.7
   that.pieces[newTroop.id] = newTroop
   newTroop.events.onInputDown.add(showMoves(that), this) 
 } 
 
+const addChoiceButton = (that, sprite, pieceType, value, offset) => {
+  const button = that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*offset) + 35, 'add_' + pieceType + '_' + that.currentPlayer.team,
+    () => addTroopToBoard(that, sprite, pieceType, 1000), this, 2, 1, 0)
+  const text = that.game.add.text(sprite.x + 70, sprite.y + (32*offset) + 40, '$' + value, {font: '18px Arial', fill: 'black' })
+  addTroopButtons.push(button, text)
+  button.events.onInputOver.add(() => button.tint = 0xd9cece, this)
+  button.events.onInputOut.add(() => button.tint = 0xfffbfb, this)
+}
+
 const makeTroops = that => (sprite, event) => {
   const budget = that.currentPlayer.money
-  that.addTroopButtons = [];
   if (that.currentPlayer.team === sprite.team && budget >= 1000) {
-    var somethingThere = somethingIsThere(that, sprite)
+    let somethingThere = somethingIsThere(that, sprite)
     if (!somethingThere) {
       if(budget >= 1000) {
-        const addInfantry = that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*0) + 35, 'add_infantry_red',
-          () => addTroopToBoard(that, sprite, 'infantry', 1000), this, 2, 1, 0)
-          const text = that.game.add.text(sprite.x + 70, sprite.y + (32*0) + 40, '$' + 1000, {font: '18px Arial', fill: 'black' })
-        that.addTroopButtons.push(addInfantry, text)
+        addChoiceButton(that, sprite, 'infantry', 1000, 0)
       } 
       if(budget >= 4000) {
-        const addSmallTank = that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*1) + 35, 'add_smallTank_red',
-          () => addTroopToBoard(that, sprite, 'smallTank', 4000), this, 2, 1, 0)
-        const text = that.game.add.text(sprite.x + 70, sprite.y + (32*1) + 40, '$' + 4000, {font: '18px Arial', fill: 'black' })
-        that.addTroopButtons.push(addSmallTank, text)
+        addChoiceButton(that, sprite, 'smallTank', 4000, 1)
       }
       if(budget >= 6000) {
-        const addRockets = that.game.add.button(sprite.x + (32*0) + 35, sprite.y + (32*2) + 35, 'add_longRange_red',
-          () => addTroopToBoard(that, sprite, 'rockets', 6000), this, 2, 1, 0)
-        const text = that.game.add.text(sprite.x + 70, sprite.y + (32*2) + 40, '$' + 6000, {font: '18px Arial', fill: 'black' })
-      that.addTroopButtons.push(addRockets)
+        addChoiceButton(that, sprite, 'longRange', 6000, 2)
       }
     }
   }
