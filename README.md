@@ -1,20 +1,15 @@
-# Phaser + ES6 + Webpack.
-#### A bootstrap project to create games with Phaser + ES6 + Webpack.
+# Advance Wars Online
+#### A Capstone Project by Brian Parrish, Abrar Sher, and Max Allen
 
 ![Phaser+ES6+Webpack](https://raw.githubusercontent.com/lean/phaser-es6-webpack/master/assets/images/phaser-es6-webpack.jpg)
 
 [![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
 
 
-## Features
-- ESLINT with JavaScript Standard Style configuration
-- Next generation of Javascript
-- Browsers are automatically updated as you change project files
-- Webpack ready
-- WebFont Loader
+## Welcome to Advance Wars Online
 
-## Typescript 
-If you need typescript support checkout the ```typescript``` branch. Thanks to @MatsMaker
+This is Advance Wars Online, a remake of the classic for the Nintendo Gameboy. Built into the browser using Javascript, Phaser, and Firebase, this 2-D turn-based strategy game can be played locally or online between two friends. Check 
+out the Setup instructions below for using the codebase. 
 
 # Setup
 To use this bootstrap you’ll need to install a few things before you have a working copy of the project.
@@ -25,14 +20,10 @@ Navigate into your workspace directory.
 
 Run:
 
-```git clone https://github.com/lean/phaser-es6-webpack.git```
-
-## 2. Install node.js and npm:
-
-https://nodejs.org/en/
+```git clone https://github.com/fsaMABS/phaserAdvanceWars```
 
 
-## 3. Install dependencies (optionally you could install [yarn](https://yarnpkg.com/)):
+## 2. Install dependencies (optionally you could install [yarn](https://yarnpkg.com/)):
 
 Navigate to the cloned repo’s directory.
 
@@ -42,7 +33,7 @@ Run:
 
 or if you choose yarn, just run ```yarn```
 
-## 4. Run the development server:
+## 3. Run the development server:
 
 Run:
 
@@ -55,17 +46,10 @@ Open your browser and enter localhost:3000 into the address bar.
 Also this will start a watch process, so you can change the source and the process will recompile and refresh the browser
 
 
-## Build for deployment:
-
-Run:
-
-```npm run deploy```
-
-This will optimize and minimize the compiled bundle.
-
 ## Credits
-Big thanks to this great repos:
+Big thanks to
 
-https://github.com/belohlavek/phaser-es6-boilerplate
+https://github.com/lean/phaser-es6-webpack.git 
 
-https://github.com/cstuncsik/phaser-es6-demo
+For the Phaser/Webpack Foundation
+
