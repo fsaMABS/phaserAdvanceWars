@@ -14,6 +14,7 @@ export default class extends Phaser.State {
   create () {
     easystar.setAcceptableTiles([0, 1, 2, 3, 4])
     const level = loadLevel(this)
+    this.enterKey.onDown.add(this.endTurn, this)    
     easystar.setGrid(level())
   }
 
@@ -282,7 +283,6 @@ export default class extends Phaser.State {
     this.moneyText.destroy();
     this.moneyText = this.game.add.text(20, 20, '$' + this.currentPlayer.money, this.textStyle)
 
-    this.enterKey.onDown.add(this.endTurn, this)
     if (!this.shiftKey.onDown._bindings || (this.shiftKey.onDown._bindings && !this.shiftKey.onDown._bindings.length)) {
       this.shiftKey.onDown.add(this.stayInPlace, this)
     }
