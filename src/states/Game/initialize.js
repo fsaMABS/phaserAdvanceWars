@@ -219,10 +219,7 @@ const showMoves = that => (sprite, event) => {
     removeOtherShowMoves(that.pieces, sprite.id)
     var childrenPromises = that.blocks.children
       .map(ele => {
-        if (
-          Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) <
-          32 * sprite.mobility
-        ) {
+        if (Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * sprite.mobility) {
             easystarz.setGrid(newGrid())
             switch (that.selectedPiece.troopType) {
               case 'smallTank':
@@ -235,11 +232,7 @@ const showMoves = that => (sprite, event) => {
                 easystarz.setAcceptableTiles([0, 2, 3, 4])
             }
             return new Promise((resolve, reject) => {
-              easystarz.findPath(
-                sprite.x / 32,
-                sprite.y / 32,
-                ele.x / 32,
-                ele.y / 32,
+              easystarz.findPath(sprite.x / 32, sprite.y / 32, ele.x / 32, ele.y / 32,
                 function (path) {
                   if (path === null || path.length > sprite.mobility) {
                     resolve(null)
