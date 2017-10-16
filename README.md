@@ -12,7 +12,7 @@ This is Advance Wars Online, a remake of the classic for the Nintendo Gameboy. B
 out the Setup instructions below for using the codebase. 
 
 # Setup
-To use this bootstrap you’ll need to install a few things before you have a working copy of the project.
+You’ll need to install a few things to setup...
 
 ## 1. Clone this repo:
 
