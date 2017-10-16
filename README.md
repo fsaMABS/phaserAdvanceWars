@@ -1,11 +1,6 @@
 # Advance Wars Online
 #### A Capstone Project by Brian Parrish, Abrar Sher, and Max Allen
 
-![Phaser+ES6+Webpack](https://raw.githubusercontent.com/lean/phaser-es6-webpack/master/assets/images/phaser-es6-webpack.jpg)
-
-[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
-
-
 ## Welcome to Advance Wars Online
 
 This is Advance Wars Online, a remake of the classic for the Nintendo Gameboy. Built into the browser using Javascript, Phaser, and Firebase, this 2-D turn-based strategy game can be played locally or online between two friends. Check 
@@ -53,3 +48,6 @@ https://github.com/lean/phaser-es6-webpack.git
 
 For the Phaser/Webpack Foundation
 
+![Phaser+ES6+Webpack](https://raw.githubusercontent.com/lean/phaser-es6-webpack/master/assets/images/phaser-es6-webpack.jpg)
+
+[![js-standard-style](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
