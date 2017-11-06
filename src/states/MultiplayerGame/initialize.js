@@ -221,6 +221,16 @@ const makeTroops = that => (sprite, event) => {
     }
   }
 }
+const toFirebasePiece = sprite => {
+  return {
+    alpha: 1,
+    id: sprite.id,
+    key: sprite.key,
+    team: sprite.team,
+    x: sprite.position.x,
+    y: sprite.position.y
+  }
+}
 
 const showMoves = that => (sprite, event) => {
 
@@ -234,7 +244,8 @@ console.log('currentplayer team', that.currentPlayer.team)
 console.log('currentSuerteam', that.game.currentUser.role)
 if ((that.currentPlayer.team === sprite.team) && (that.game.currentUser.role === sprite.team)) {
   that.selectedPiece = sprite  
-  that.game.firebase.database().ref(`lobbies/${that.game.lobby}/game`).set({currentPieceId: sprite.id})
+  let firebasePiece = toFirebasePiece(sprite)
+  that.game.firebase.database().ref(`lobbies/${that.game.lobby}/game`).set({currentPiece: firebasePiece})
   that.showingMoves = that.showingMoves !== true
   that.showingBlue = !that.showingBlue
   var alpha = that.showingBlue ? 0.5 : 0
@@ -257,12 +268,8 @@ if ((that.currentPlayer.team === sprite.team) && (that.game.currentUser.role ===
               easystarz.setAcceptableTiles([0, 2, 3, 4])
           }
           return new Promise((resolve, reject) => {
-            easystarz.findPath(
-              sprite.x / 32,
-              sprite.y / 32,
-              ele.x / 32,
-              ele.y / 32,
-              function (path) {
+            easystarz.findPath(sprite.x / 32, sprite.y / 32, ele.x / 32, ele.y / 32,
+              path => {
                 if (path === null || path.length > sprite.mobility) {
                   resolve(null)
                 } else {
