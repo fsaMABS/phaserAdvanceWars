@@ -29,14 +29,17 @@ export default class extends Phaser.State {
   create () {
     easystar.setGrid(newGrid())
     easystar.setAcceptableTiles([0,1,2,3,4])    
-    this.game.firebase.database().ref(`lobbies/${this.game.lobby}/game`).set({currentPieceId: 'null'})
-    firebase.database().ref(`lobbies/${this.game.lobby}/game/currentPieceId`).on('value', (snapshot) => {
+    const level = loadLevel(this)
+
+    this.game.firebase.database().ref(`lobbies/${this.game.lobby}/game`).set({currentPiece: 'null'})
+
+    firebase.database().ref(`lobbies/${this.game.lobby}/game/currentPiece`).on('value', (snapshot) => {
       console.log('snapshotval, ', snapshot.val())
-      this.selectedPiece = this.pieces[snapshot.val()]
+      this.selectedPiece = this.pieces[snapshot.val().id]
     })
       
     firebase.database().ref(`lobbies/${this.game.lobby}/pieces/pieces`).on('child_changed', (snapshot) => {
-      console.log('u shjould have changed')
+      console.log('moved: ', snapshot)
       this.selectedPiece = this.pieces[snapshot.val().id]
       easystar.findPath(this.selectedPiece.x/32, this.selectedPiece.y/32, snapshot.val().x/32, snapshot.val().y/32, ( path ) => {
         this.changePosition = this.game.add.tween(this.selectedPiece) 
@@ -48,8 +51,6 @@ export default class extends Phaser.State {
         this.changePosition.start()
         this.changePosition.onComplete.add(function () {
           this.sendMoveMessage(this.selectedPiece);
-          // this.checkForPieceOptions();
-          // this.disablePieceMovement(this.selectedPiece);
           if (true) {
             firebase.database().ref(`lobbies/${this.game.lobby}/pieces`).set(turnobjectToArray(this.pieces))
           }
@@ -57,9 +58,10 @@ export default class extends Phaser.State {
       });
       easystar.calculate()
     })
-    const level = loadLevel(this)
     this.enterKey.onDown.add(this.endTurn, this)
+
     firebase.database().ref(`lobbies/${this.game.lobby}/pieces`).set(turnobjectToArray(this.pieces))
+    
     firebase.database().ref(`lobbies/${this.game.lobby}/game`).on('value', (snapshot) => {
       if(snapshot.val() !== null ) {
         console.log('snapshot val', snapshot.val())
@@ -102,11 +104,7 @@ export default class extends Phaser.State {
     }, this)
 
     if (this.selectedPiece.team === this.currentPlayer.team) { this.changePosition = this.game.add.tween(this.selectedPiece) }
-    easystar.findPath(
-      this.selectedPiece.x / 32,
-      this.selectedPiece.y / 32,
-      sprite.x / 32,
-      sprite.y / 32,
+    easystar.findPath(this.selectedPiece.x / 32, this.selectedPiece.y / 32, sprite.x / 32, sprite.y / 32,
       path => this.moveAndShowOptions(path)
     )
     easystar.calculate()
@@ -120,7 +118,8 @@ export default class extends Phaser.State {
     }
     this.changePosition.start()
     this.changePosition.onComplete.add(function () {
-      firebase.database().ref(`lobbies/${this.game.lobby}/pieces`).set(turnobjectToArray(this.pieces))                
+      let firebasePiece = this.toFirebasePiece(this.selectedPiece);
+      firebase.database().ref(`lobbies/${this.game.lobby}/pieces/${this.selectedPiece.id}`).set(firebasePiece)                
       this.checkForPieceOptions()
       this.disablePieceMovement(this.selectedPiece)
     }, this)
@@ -284,6 +283,17 @@ export default class extends Phaser.State {
     }
   }
 
+  toFirebasePiece(sprite) {
+    return {
+      alpha: 1,
+      id: sprite.id,
+      key: sprite.key,
+      player: sprite.player,
+      team: sprite.team,
+      x: sprite.position.x,
+      y: sprite.position.y
+    }
+  }
 
   wait (defenders) {
     this.disableDefenders(defenders)
@@ -359,11 +369,6 @@ export default class extends Phaser.State {
     }
     this.moneyText.destroy();
     this.moneyText = this.game.add.text(20, 20, '$' + this.currentPlayer.money, this.textStyle)    
-    // firebase.database().ref(`lobbies/${this.game.lobby}/game`).on('value', (snapshot) => {
-    //   if(snapshot.val() === null ) return {}
-    //   this.currentPlayer.team = snapshot.val().currentPlayer
-    //   this.playerText.text = this.currentPlayer.team      
-    // })
 
     if (!this.shiftKey.onDown._bindings || (this.shiftKey.onDown._bindings && !this.shiftKey.onDown._bindings.length)) {
       this.shiftKey.onDown.add(this.stayInPlace, this)
@@ -423,3 +428,11 @@ export default class extends Phaser.State {
 let revealedFog = {}
 
 const isNear = (ele, sprite, dist) => Math.abs(ele.x - sprite.x) + Math.abs(ele.y - sprite.y) < 32 * dist
+
+
+//  was in update():   
+// firebase.database().ref(`lobbies/${this.game.lobby}/game`).on('value', (snapshot) => {
+    //   if(snapshot.val() === null ) return {}
+    //   this.currentPlayer.team = snapshot.val().currentPlayer
+    //   this.playerText.text = this.currentPlayer.team      
+    // })
