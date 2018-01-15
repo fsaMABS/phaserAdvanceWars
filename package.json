@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack -w & nodemon server/index.js --experimental-modules",
-    "deploy": "PLSDOUBLECHECK THIS IS OUTDATED webpack --config webpack.production.config.js",
+    "deploy": "git checkout -b deploy && webpack -p && git add -f public/bundle.js public/bundle.js.map public/vendor.bundle.js public/vendor.bundle.js.map && git commit --allow-empty -m 'Deploying' && git push --force heroku deploy:master && git checkout master && git branch -D deploy",
     "test": "eslint ./src/**/**.js"
   },
   "license": "MIT",
