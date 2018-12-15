@@ -1,5 +1,4 @@
 # Advance Wars Online
-#### A Capstone Project by Brian Parrish, Abrar Sher, and Max Allen
 
 ![Phaser+ES6+Webpack](https://raw.githubusercontent.com/lean/phaser-es6-webpack/master/assets/images/phaser-es6-webpack.jpg)
 
